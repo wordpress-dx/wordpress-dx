@@ -1,5 +1,13 @@
 {
   "name": "@wordpress-dx/assets",
   "version": "1.0.0",
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "SEE LICENSE IN LICENSE",
+  "files": [
+    "*.svg",
+    "*.png",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
