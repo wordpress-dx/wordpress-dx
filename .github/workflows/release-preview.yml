@@ -1,30 +1,31 @@
 name: 🦋 Release preview
 
 on:
-  pull_request:
-    branches:
-      - main
+  pull_request_target:
+
+permissions: {}
 
 jobs:
-  preview:
-    name: Preview
+  pr-status:
+    name: Changeset status
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      comment-body: ${{ steps.pr-status.outputs.comment-body }}
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - id: pr-status
+        uses: changesets/action/pr-status@v1
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+  pr-comment:
+    name: Comment on PR
+    runs-on: ubuntu-latest
+    needs: pr-status
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: changesets/action/pr-comment@v1
         with:
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Comment release preview on PR
-        uses: changesets/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ needs.pr-status.outputs.comment-body }}
