@@ -1,0 +1,32 @@
+name: 🦋 Release preview
+
+on:
+  pull_request_target:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  pr-status:
+    name: Changeset status
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      comment-body: ${{ steps.pr-status.outputs.comment-body }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pr-status
+        uses: changesets/action/pr-status@v1
+
+  pr-comment:
+    name: Comment on PR
+    runs-on: ubuntu-latest
+    needs: pr-status
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: changesets/action/pr-comment@v1
+        with:
+          body: ${{ needs.pr-status.outputs.comment-body }}
