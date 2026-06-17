@@ -1,7 +1,9 @@
 packages:
   - "assets"
+  - "documentation"
   - "website"
 allowBuilds:
   esbuild: true
+  sharp: true
 minimumReleaseAgeExclude:
   - '@loopress/assets@1.0.0'

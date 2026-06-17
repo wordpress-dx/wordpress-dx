@@ -1,0 +1,55 @@
+---
+title: Dependency Management
+description: Search, install and remove Composer packages from the WordPress admin panel.
+---
+
+The **Dependency Management** card lets you browse [Packagist](https://packagist.org/) and install PHP packages directly from your WordPress admin, without SSH access.
+
+## Where packages are stored
+
+WDX maintains its own `composer.json` under `wp-content/wdx/`. Installed packages land in `wp-content/wdx/vendor/`. This location is separate from the plugin itself so packages survive plugin updates and can be used anywhere on the site via the Composer autoloader.
+
+```
+wp-content/
+  wdx/
+    composer.json        ← managed by WDX
+    vendor/
+      autoload.php       ← require this in your snippets
+      guzzlehttp/guzzle/
+      ...
+```
+
+## Installing a package
+
+1. Type the package name or a keyword in the **Search a Composer package** field (minimum 2 characters)
+2. Select the package from the dropdown
+3. Choose a version (compatible versions are pre-selected automatically based on your PHP version)
+4. Click **Install**
+
+Version compatibility indicators:
+
+| Icon | Meaning |
+|------|---------|
+| 🟢 | Compatible with your PHP version |
+| 🔴 | Requires a different PHP version |
+| ❓ | No PHP constraint declared |
+
+## Removing a package
+
+In the **Installed Packages** card, click **Remove** next to the package you want to uninstall.
+
+## Repair
+
+The **Repair** action runs `composer update` against `wp-content/wdx/composer.json`. Use it when:
+
+- The autoloader is missing after a server migration
+- The lockfile has drifted from `composer.json`
+- A previous install left the dependencies in an inconsistent state
+
+The autoload error banner at the top of the page appears automatically when WDX detects a missing or broken autoloader and prompts you to run Repair.
+
+## Notes
+
+- All write operations (install, remove, repair) are blocked on production environments.
+- Composer is executed in-process (via the `composer/composer` library). Long-running installs extend the PHP execution time limit to 5 minutes automatically.
+- Only stable versions are shown in the version picker (no `dev-*` releases).
