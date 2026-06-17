@@ -1,6 +1,7 @@
 packages:
   - "assets"
   - "documentation"
+  - "eslint-config"
   - "website"
 allowBuilds:
   esbuild: true
