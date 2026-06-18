@@ -50,3 +50,17 @@ if (!class_exists('WP_REST_Response')) {
 if (!class_exists('WP_REST_Server')) {
     class WP_REST_Server {}
 }
+
+if (!function_exists('wp_mkdir_p')) {
+    function wp_mkdir_p(string $path): bool
+    {
+        return mkdir($path, 0755, true);
+    }
+}
+
+if (!function_exists('esc_html')) {
+    function esc_html(string $text): string
+    {
+        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    }
+}
