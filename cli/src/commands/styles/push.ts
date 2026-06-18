@@ -1,18 +1,14 @@
-import {Args, Flags} from '@oclif/core'
+import {Flags} from '@oclif/core'
 import {glob} from 'glob'
 import got from 'got'
 
 import {LoopressCommand} from '../base.js'
 
 export default class Push extends LoopressCommand {
-  static args = {
-    path: Args.string({default: './styles.json', description: 'Path to styles file'}),
-  }
   static description = 'Push Global Styles to WordPress'
   static examples = [
     '$ lps styles push',
     '$ lps styles push --url http://example.com',
-    '$ lps styles push --path ./my-styles.json',
   ]
   static flags = {
     ...LoopressCommand.baseFlags,
@@ -20,18 +16,19 @@ export default class Push extends LoopressCommand {
   }
 
   async run(): Promise<void> {
-    const {args, flags} = await this.parse(Push)
+    const {flags} = await this.parse(Push)
     const {dryRun} = flags as {dryRun: boolean}
     const {url} = this.siteConfig
-    const {path} = args
+    const stylesDir = this.resolveStylesPath()
+    const jsonPath = `${stylesDir}/global-styles.json`
 
     this.log(`📤 Pushing Global Styles to ${url}`)
-    this.log(`📂 From file: ${path}`)
+    this.log(`📂 From directory: ${stylesDir}`)
     this.log(`🔄 Dry run: ${dryRun ? 'yes' : 'no'}`)
 
     try {
       const fs = await import('node:fs/promises')
-      const content = await fs.readFile(path, 'utf8')
+      const content = await fs.readFile(jsonPath, 'utf8')
       const data = JSON.parse(content)
 
       if (!data.id) {
@@ -39,7 +36,7 @@ export default class Push extends LoopressCommand {
       }
 
       this.log('🎨 Bundling CSS files in memory...')
-      const cssFiles = await glob('./styles/**/*.css')
+      const cssFiles = await glob(`${stylesDir}/**/*.css`)
 
       let bundledCss = ''
       if (cssFiles.length > 0) {
@@ -47,7 +44,7 @@ export default class Push extends LoopressCommand {
         bundledCss = cssContents.join('\n').trim()
         this.log(`✨ Bundled ${cssFiles.length} CSS files`)
       } else {
-        this.log('⚠️ No CSS files found in ./styles/**/*.css')
+        this.log(`⚠️ No CSS files found in ${stylesDir}/**/*.css`)
       }
 
       const endpoint = `${url}/wp-json/wp/v2/global-styles/${data.id}`

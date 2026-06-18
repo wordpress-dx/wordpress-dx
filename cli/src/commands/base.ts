@@ -33,6 +33,14 @@ export abstract class LoopressCommand extends Command {
     this.error('No environment configured. Run `lps project config` first.')
   }
 
+  protected resolveSnippetsPath(override?: string): string {
+    return override ?? configManager.getCurrentProject()?.paths?.snippets ?? './snippets'
+  }
+
+  protected resolveStylesPath(override?: string): string {
+    return override ?? configManager.getCurrentProject()?.paths?.styles ?? './styles'
+  }
+
   async buildAuthHeaders(): Promise<Record<string, string>> {
     const {token, url} = this.siteConfig
 

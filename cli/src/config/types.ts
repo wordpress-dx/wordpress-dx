@@ -5,10 +5,16 @@ export interface EnvironmentConfig {
   addedAt: string
 }
 
+export interface ProjectPaths {
+  snippets?: string
+  styles?: string
+}
+
 export interface ProjectConfig {
   name: string
   currentEnv: string | null
   environments: Record<string, EnvironmentConfig>
+  paths?: ProjectPaths
   addedAt: string
 }
 
