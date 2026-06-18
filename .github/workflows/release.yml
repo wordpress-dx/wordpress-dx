@@ -24,10 +24,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
+          node-version: "24"
           cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build CLI
+        run: pnpm --dir cli build
+
+      - name: Verify CLI build
+        run: ls cli/dist/commands/
 
       - name: Create release PR or publish to npm
         uses: changesets/action@v1

@@ -73,7 +73,6 @@
     "watch": "tsc -b --watch",
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint",
-    "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "pnpm run lint",
     "prepack": "oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\" --reporter spec --full-trace --verbose",

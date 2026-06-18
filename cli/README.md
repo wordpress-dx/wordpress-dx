@@ -17,49 +17,49 @@ A new CLI generated with oclif
 <!-- usage -->
 ```sh-session
 $ npm install -g @loopress/cli
-$ lps COMMAND
+$ @loopress/cli COMMAND
 running command...
-$ lps (--version)
+$ @loopress/cli (--version)
 @loopress/cli/0.1.0 darwin-arm64 node-v24.11.0
-$ lps --help [COMMAND]
+$ @loopress/cli --help [COMMAND]
 USAGE
-  $ lps COMMAND
+  $ @loopress/cli COMMAND
 ...
 ```
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`lps base`](#lps-base)
-* [`lps help [COMMAND]`](#lps-help-command)
-* [`lps login`](#lps-login)
-* [`lps logout`](#lps-logout)
-* [`lps plugins`](#lps-plugins)
-* [`lps plugins add PLUGIN`](#lps-plugins-add-plugin)
-* [`lps plugins:inspect PLUGIN...`](#lps-pluginsinspect-plugin)
-* [`lps plugins install PLUGIN`](#lps-plugins-install-plugin)
-* [`lps plugins link PATH`](#lps-plugins-link-path)
-* [`lps plugins remove [PLUGIN]`](#lps-plugins-remove-plugin)
-* [`lps plugins reset`](#lps-plugins-reset)
-* [`lps plugins uninstall [PLUGIN]`](#lps-plugins-uninstall-plugin)
-* [`lps plugins unlink [PLUGIN]`](#lps-plugins-unlink-plugin)
-* [`lps plugins update`](#lps-plugins-update)
-* [`lps project config`](#lps-project-config)
-* [`lps project list`](#lps-project-list)
-* [`lps project remove`](#lps-project-remove)
-* [`lps project remove-env`](#lps-project-remove-env)
-* [`lps project switch`](#lps-project-switch)
-* [`lps project switch-env`](#lps-project-switch-env)
-* [`lps snippets list`](#lps-snippets-list)
-* [`lps snippets pull [PATH]`](#lps-snippets-pull-path)
-* [`lps snippets push [PATH]`](#lps-snippets-push-path)
-* [`lps styles pull`](#lps-styles-pull)
-* [`lps styles push`](#lps-styles-push)
+* [`@loopress/cli base`](#loopresscli-base)
+* [`@loopress/cli help [COMMAND]`](#loopresscli-help-command)
+* [`@loopress/cli login`](#loopresscli-login)
+* [`@loopress/cli logout`](#loopresscli-logout)
+* [`@loopress/cli plugins`](#loopresscli-plugins)
+* [`@loopress/cli plugins add PLUGIN`](#loopresscli-plugins-add-plugin)
+* [`@loopress/cli plugins:inspect PLUGIN...`](#loopresscli-pluginsinspect-plugin)
+* [`@loopress/cli plugins install PLUGIN`](#loopresscli-plugins-install-plugin)
+* [`@loopress/cli plugins link PATH`](#loopresscli-plugins-link-path)
+* [`@loopress/cli plugins remove [PLUGIN]`](#loopresscli-plugins-remove-plugin)
+* [`@loopress/cli plugins reset`](#loopresscli-plugins-reset)
+* [`@loopress/cli plugins uninstall [PLUGIN]`](#loopresscli-plugins-uninstall-plugin)
+* [`@loopress/cli plugins unlink [PLUGIN]`](#loopresscli-plugins-unlink-plugin)
+* [`@loopress/cli plugins update`](#loopresscli-plugins-update)
+* [`@loopress/cli project config`](#loopresscli-project-config)
+* [`@loopress/cli project list`](#loopresscli-project-list)
+* [`@loopress/cli project remove`](#loopresscli-project-remove)
+* [`@loopress/cli project remove-env`](#loopresscli-project-remove-env)
+* [`@loopress/cli project switch`](#loopresscli-project-switch)
+* [`@loopress/cli project switch-env`](#loopresscli-project-switch-env)
+* [`@loopress/cli snippets list`](#loopresscli-snippets-list)
+* [`@loopress/cli snippets pull [PATH]`](#loopresscli-snippets-pull-path)
+* [`@loopress/cli snippets push [PATH]`](#loopresscli-snippets-push-path)
+* [`@loopress/cli styles pull`](#loopresscli-styles-pull)
+* [`@loopress/cli styles push`](#loopresscli-styles-push)
 
-## `lps base`
+## `@loopress/cli base`
 
 ```
 USAGE
-  $ lps base [--password <value>] [--url <value>] [--user <value>]
+  $ @loopress/cli base [--password <value>] [--url <value>] [--user <value>]
 
 GLOBAL FLAGS
   --password=<value>  WordPress application password (fallback; prefer `lps project config`)
@@ -69,13 +69,13 @@ GLOBAL FLAGS
 
 _See code: [src/commands/base.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/base.ts)_
 
-## `lps help [COMMAND]`
+## `@loopress/cli help [COMMAND]`
 
-Display help for lps.
+Display help for @loopress/cli.
 
 ```
 USAGE
-  $ lps help [COMMAND...] [-n]
+  $ @loopress/cli help [COMMAND...] [-n]
 
 ARGUMENTS
   [COMMAND...]  Command to show help for.
@@ -84,18 +84,18 @@ FLAGS
   -n, --nested-commands  Include all nested commands in the output.
 
 DESCRIPTION
-  Display help for lps.
+  Display help for @loopress/cli.
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/6.2.50/src/commands/help.ts)_
 
-## `lps login`
+## `@loopress/cli login`
 
 Log in to Loopress via the console
 
 ```
 USAGE
-  $ lps login
+  $ @loopress/cli login
 
 DESCRIPTION
   Log in to Loopress via the console
@@ -106,13 +106,13 @@ EXAMPLES
 
 _See code: [src/commands/login.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/login.ts)_
 
-## `lps logout`
+## `@loopress/cli logout`
 
 Log out from Loopress console
 
 ```
 USAGE
-  $ lps logout
+  $ @loopress/cli logout
 
 DESCRIPTION
   Log out from Loopress console
@@ -123,13 +123,13 @@ EXAMPLES
 
 _See code: [src/commands/logout.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/logout.ts)_
 
-## `lps plugins`
+## `@loopress/cli plugins`
 
 List installed plugins.
 
 ```
 USAGE
-  $ lps plugins [--json] [--core]
+  $ @loopress/cli plugins [--json] [--core]
 
 FLAGS
   --core  Show core plugins.
@@ -141,18 +141,18 @@ DESCRIPTION
   List installed plugins.
 
 EXAMPLES
-  $ lps plugins
+  $ @loopress/cli plugins
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/index.ts)_
 
-## `lps plugins add PLUGIN`
+## `@loopress/cli plugins add PLUGIN`
 
-Installs a plugin into lps.
+Installs a plugin into @loopress/cli.
 
 ```
 USAGE
-  $ lps plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
+  $ @loopress/cli plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
 
 ARGUMENTS
   PLUGIN...  Plugin to install.
@@ -167,39 +167,39 @@ GLOBAL FLAGS
   --json  Format output as json.
 
 DESCRIPTION
-  Installs a plugin into lps.
+  Installs a plugin into @loopress/cli.
 
   Uses npm to install plugins.
 
   Installation of a user-installed plugin will override a core plugin.
 
-  Use the LPS_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the LPS_NPM_REGISTRY environment variable to set the npm registry.
+  Use the LOOPRESS_CLI_NPM_LOG_LEVEL environment variable to set the npm loglevel.
+  Use the LOOPRESS_CLI_NPM_REGISTRY environment variable to set the npm registry.
 
 ALIASES
-  $ lps plugins add
+  $ @loopress/cli plugins add
 
 EXAMPLES
   Install a plugin from npm registry.
 
-    $ lps plugins add myplugin
+    $ @loopress/cli plugins add myplugin
 
   Install a plugin from a github url.
 
-    $ lps plugins add https://github.com/someuser/someplugin
+    $ @loopress/cli plugins add https://github.com/someuser/someplugin
 
   Install a plugin from a github slug.
 
-    $ lps plugins add someuser/someplugin
+    $ @loopress/cli plugins add someuser/someplugin
 ```
 
-## `lps plugins:inspect PLUGIN...`
+## `@loopress/cli plugins:inspect PLUGIN...`
 
 Displays installation properties of a plugin.
 
 ```
 USAGE
-  $ lps plugins inspect PLUGIN...
+  $ @loopress/cli plugins inspect PLUGIN...
 
 ARGUMENTS
   PLUGIN...  [default: .] Plugin to inspect.
@@ -215,18 +215,18 @@ DESCRIPTION
   Displays installation properties of a plugin.
 
 EXAMPLES
-  $ lps plugins inspect myplugin
+  $ @loopress/cli plugins inspect myplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/inspect.ts)_
 
-## `lps plugins install PLUGIN`
+## `@loopress/cli plugins install PLUGIN`
 
-Installs a plugin into lps.
+Installs a plugin into @loopress/cli.
 
 ```
 USAGE
-  $ lps plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
+  $ @loopress/cli plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
 
 ARGUMENTS
   PLUGIN...  Plugin to install.
@@ -241,41 +241,41 @@ GLOBAL FLAGS
   --json  Format output as json.
 
 DESCRIPTION
-  Installs a plugin into lps.
+  Installs a plugin into @loopress/cli.
 
   Uses npm to install plugins.
 
   Installation of a user-installed plugin will override a core plugin.
 
-  Use the LPS_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the LPS_NPM_REGISTRY environment variable to set the npm registry.
+  Use the LOOPRESS_CLI_NPM_LOG_LEVEL environment variable to set the npm loglevel.
+  Use the LOOPRESS_CLI_NPM_REGISTRY environment variable to set the npm registry.
 
 ALIASES
-  $ lps plugins add
+  $ @loopress/cli plugins add
 
 EXAMPLES
   Install a plugin from npm registry.
 
-    $ lps plugins install myplugin
+    $ @loopress/cli plugins install myplugin
 
   Install a plugin from a github url.
 
-    $ lps plugins install https://github.com/someuser/someplugin
+    $ @loopress/cli plugins install https://github.com/someuser/someplugin
 
   Install a plugin from a github slug.
 
-    $ lps plugins install someuser/someplugin
+    $ @loopress/cli plugins install someuser/someplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/install.ts)_
 
-## `lps plugins link PATH`
+## `@loopress/cli plugins link PATH`
 
 Links a plugin into the CLI for development.
 
 ```
 USAGE
-  $ lps plugins link PATH [-h] [--install] [-v]
+  $ @loopress/cli plugins link PATH [-h] [--install] [-v]
 
 ARGUMENTS
   PATH  [default: .] path to plugin
@@ -295,18 +295,18 @@ DESCRIPTION
 
 
 EXAMPLES
-  $ lps plugins link myplugin
+  $ @loopress/cli plugins link myplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/link.ts)_
 
-## `lps plugins remove [PLUGIN]`
+## `@loopress/cli plugins remove [PLUGIN]`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ lps plugins remove [PLUGIN...] [-h] [-v]
+  $ @loopress/cli plugins remove [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
   [PLUGIN...]  plugin to uninstall
@@ -319,20 +319,20 @@ DESCRIPTION
   Removes a plugin from the CLI.
 
 ALIASES
-  $ lps plugins unlink
-  $ lps plugins remove
+  $ @loopress/cli plugins unlink
+  $ @loopress/cli plugins remove
 
 EXAMPLES
-  $ lps plugins remove myplugin
+  $ @loopress/cli plugins remove myplugin
 ```
 
-## `lps plugins reset`
+## `@loopress/cli plugins reset`
 
 Remove all user-installed and linked plugins.
 
 ```
 USAGE
-  $ lps plugins reset [--hard] [--reinstall]
+  $ @loopress/cli plugins reset [--hard] [--reinstall]
 
 FLAGS
   --hard       Delete node_modules and package manager related files in addition to uninstalling plugins.
@@ -341,13 +341,13 @@ FLAGS
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/reset.ts)_
 
-## `lps plugins uninstall [PLUGIN]`
+## `@loopress/cli plugins uninstall [PLUGIN]`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ lps plugins uninstall [PLUGIN...] [-h] [-v]
+  $ @loopress/cli plugins uninstall [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
   [PLUGIN...]  plugin to uninstall
@@ -360,22 +360,22 @@ DESCRIPTION
   Removes a plugin from the CLI.
 
 ALIASES
-  $ lps plugins unlink
-  $ lps plugins remove
+  $ @loopress/cli plugins unlink
+  $ @loopress/cli plugins remove
 
 EXAMPLES
-  $ lps plugins uninstall myplugin
+  $ @loopress/cli plugins uninstall myplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/uninstall.ts)_
 
-## `lps plugins unlink [PLUGIN]`
+## `@loopress/cli plugins unlink [PLUGIN]`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ lps plugins unlink [PLUGIN...] [-h] [-v]
+  $ @loopress/cli plugins unlink [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
   [PLUGIN...]  plugin to uninstall
@@ -388,20 +388,20 @@ DESCRIPTION
   Removes a plugin from the CLI.
 
 ALIASES
-  $ lps plugins unlink
-  $ lps plugins remove
+  $ @loopress/cli plugins unlink
+  $ @loopress/cli plugins remove
 
 EXAMPLES
-  $ lps plugins unlink myplugin
+  $ @loopress/cli plugins unlink myplugin
 ```
 
-## `lps plugins update`
+## `@loopress/cli plugins update`
 
 Update installed plugins.
 
 ```
 USAGE
-  $ lps plugins update [-h] [-v]
+  $ @loopress/cli plugins update [-h] [-v]
 
 FLAGS
   -h, --help     Show CLI help.
@@ -413,13 +413,13 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/5.4.74/src/commands/plugins/update.ts)_
 
-## `lps project config`
+## `@loopress/cli project config`
 
 Add or update a WordPress project environment
 
 ```
 USAGE
-  $ lps project config
+  $ @loopress/cli project config
 
 DESCRIPTION
   Add or update a WordPress project environment
@@ -430,13 +430,13 @@ EXAMPLES
 
 _See code: [src/commands/project/config.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/project/config.ts)_
 
-## `lps project list`
+## `@loopress/cli project list`
 
 List configured WordPress projects
 
 ```
 USAGE
-  $ lps project list
+  $ @loopress/cli project list
 
 DESCRIPTION
   List configured WordPress projects
@@ -447,13 +447,13 @@ EXAMPLES
 
 _See code: [src/commands/project/list.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/project/list.ts)_
 
-## `lps project remove`
+## `@loopress/cli project remove`
 
 Remove one or more WordPress project configurations
 
 ```
 USAGE
-  $ lps project remove
+  $ @loopress/cli project remove
 
 DESCRIPTION
   Remove one or more WordPress project configurations
@@ -464,13 +464,13 @@ EXAMPLES
 
 _See code: [src/commands/project/remove.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/project/remove.ts)_
 
-## `lps project remove-env`
+## `@loopress/cli project remove-env`
 
 Remove one or more environments from the current project
 
 ```
 USAGE
-  $ lps project remove-env
+  $ @loopress/cli project remove-env
 
 DESCRIPTION
   Remove one or more environments from the current project
@@ -481,13 +481,13 @@ EXAMPLES
 
 _See code: [src/commands/project/remove-env.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/project/remove-env.ts)_
 
-## `lps project switch`
+## `@loopress/cli project switch`
 
 Switch the active project
 
 ```
 USAGE
-  $ lps project switch
+  $ @loopress/cli project switch
 
 DESCRIPTION
   Switch the active project
@@ -498,13 +498,13 @@ EXAMPLES
 
 _See code: [src/commands/project/switch.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/project/switch.ts)_
 
-## `lps project switch-env`
+## `@loopress/cli project switch-env`
 
 Switch the active environment within the current project
 
 ```
 USAGE
-  $ lps project switch-env
+  $ @loopress/cli project switch-env
 
 DESCRIPTION
   Switch the active environment within the current project
@@ -515,13 +515,13 @@ EXAMPLES
 
 _See code: [src/commands/project/switch-env.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/project/switch-env.ts)_
 
-## `lps snippets list`
+## `@loopress/cli snippets list`
 
 List snippets from WordPress
 
 ```
 USAGE
-  $ lps snippets list [--password <value>] [--url <value>] [--user <value>] [-j] [-p code-snippets|wpcode]
+  $ @loopress/cli snippets list [--password <value>] [--url <value>] [--user <value>] [-j] [-p code-snippets|wpcode]
 
 FLAGS
   -j, --json             Output in JSON format
@@ -546,13 +546,14 @@ EXAMPLES
 
 _See code: [src/commands/snippets/list.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/snippets/list.ts)_
 
-## `lps snippets pull [PATH]`
+## `@loopress/cli snippets pull [PATH]`
 
 Pull snippets from WordPress
 
 ```
 USAGE
-  $ lps snippets pull [PATH] [--password <value>] [--url <value>] [--user <value>] [-d] [-p code-snippets|wpcode]
+  $ @loopress/cli snippets pull [PATH] [--password <value>] [--url <value>] [--user <value>] [-d] [-p
+    code-snippets|wpcode]
 
 ARGUMENTS
   [PATH]  Path to snippets directory (overrides project config)
@@ -582,13 +583,14 @@ EXAMPLES
 
 _See code: [src/commands/snippets/pull.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/snippets/pull.ts)_
 
-## `lps snippets push [PATH]`
+## `@loopress/cli snippets push [PATH]`
 
 Push snippets to WordPress
 
 ```
 USAGE
-  $ lps snippets push [PATH] [--password <value>] [--url <value>] [--user <value>] [-d] [-p code-snippets|wpcode]
+  $ @loopress/cli snippets push [PATH] [--password <value>] [--url <value>] [--user <value>] [-d] [-p
+    code-snippets|wpcode]
 
 ARGUMENTS
   [PATH]  Path to snippets directory (overrides project config)
@@ -618,13 +620,13 @@ EXAMPLES
 
 _See code: [src/commands/snippets/push.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/snippets/push.ts)_
 
-## `lps styles pull`
+## `@loopress/cli styles pull`
 
 Pull Global Styles from WordPress
 
 ```
 USAGE
-  $ lps styles pull [--password <value>] [--url <value>] [--user <value>] [-d]
+  $ @loopress/cli styles pull [--password <value>] [--url <value>] [--user <value>] [-d]
 
 FLAGS
   -d, --dryRun  Dry run - show what would happen without making changes
@@ -645,13 +647,13 @@ EXAMPLES
 
 _See code: [src/commands/styles/pull.ts](https://github.com/loopress/loopress/blob/v0.1.0/src/commands/styles/pull.ts)_
 
-## `lps styles push`
+## `@loopress/cli styles push`
 
 Push Global Styles to WordPress
 
 ```
 USAGE
-  $ lps styles push [--password <value>] [--url <value>] [--user <value>] [-d]
+  $ @loopress/cli styles push [--password <value>] [--url <value>] [--user <value>] [-d]
 
 FLAGS
   -d, --dryRun  Dry run - show what would happen without making changes
