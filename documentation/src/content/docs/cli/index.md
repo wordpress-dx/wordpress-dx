@@ -1,26 +1,36 @@
 ---
 title: Loopress CLI
-description: Version-control your WordPress code snippets in Git.
+description: Version-control your WordPress code snippets, styles, and menus in Git.
 ---
 
-The Loopress CLI (`lps`) is a Node.js command-line tool that connects to the WordPress REST API to sync code snippets between your local machine and any WordPress instance.
+The Loopress CLI (`lps`) is a Node.js command-line tool that connects to the WordPress REST API to sync code snippets, Global Styles, and navigation menus between your local machine and any WordPress instance.
 
 ## Command overview
 
 | Group | Command | Description |
 |-------|---------|-------------|
+| **Auth** | `lps login` | Log in to Loopress via the console |
+| | `lps logout` | Remove the stored authentication token |
 | **Snippets** | `lps snippets pull` | Download snippets from WordPress |
 | | `lps snippets push` | Upload local `.php` files to WordPress |
 | | `lps snippets list` | List all snippets on the site |
-| **Site** | `lps site config` | Add or update a site credential |
-| | `lps site switch` | Switch the active site |
-| | `lps site remove` | Remove a saved site |
+| **Styles** | `lps styles pull` | Download Global Styles from WordPress |
+| | `lps styles push` | Upload Global Styles (with optional CSS bundle) |
+| **Menu** | `lps menu pull` | Download navigation menus from WordPress |
+| | `lps menu push` | Upload menus from a local JSON file |
+| **Export / Import** | `lps export` | One-shot export of all snippets to a file |
+| | `lps import` | One-shot import of snippets from a file |
+| **Project** | `lps project config` | Add or update a project/environment credential |
+| | `lps project switch` | Switch the active project |
+| | `lps project switch-env` | Switch the active environment |
+| | `lps project remove` | Remove a saved project |
+| | `lps project remove-env` | Remove a saved environment |
 
 ## Quick start
 
 ```bash
-# 1. Configure your first site
-lps site config
+# 1. Configure your first project
+lps project config
 
 # 2. Pull your snippets
 lps snippets pull
@@ -34,6 +44,6 @@ lps snippets push
 
 ## Authentication
 
-All commands authenticate using a WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/). These are generated in **Users → Profile → Application Passwords**.
+All commands authenticate against WordPress using an [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/). These are generated in **Users → Profile → Application Passwords**.
 
-The CLI supports managing multiple sites (`lps site config`) and switching between them (`lps site switch`). For CI environments, credentials can be passed as environment variables (`WP_URL`, `WP_USERNAME`, `WP_APP_PASSWORD`).
+The CLI supports managing multiple projects (`lps project config`) and switching between them (`lps project switch`). For CI environments, credentials can be passed as environment variables (`WP_URL`, `WP_USERNAME`, `WP_APP_PASSWORD`).

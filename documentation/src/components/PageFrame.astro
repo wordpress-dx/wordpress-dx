@@ -1,27 +1,27 @@
 ---
-import Default from '@astrojs/starlight/components/PageFrame.astro';
+import Default from "@astrojs/starlight/components/PageFrame.astro";
 ---
 
-<div class="wip-banner" role="alert">
-  🚧 This documentation is a work in progress — Loopress is not yet ready for production use.
-</div>
 <Default {...Astro.props}>
+  <div class="wip-banner" role="alert">
+    🚧 This documentation is a work in progress — Loopress is not yet ready for
+    production use.
+  </div>
   <slot name="header" slot="header" />
   <slot name="sidebar" slot="sidebar" />
   <slot />
 </Default>
 
 <style is:global>
-  :root {
-    --wip-banner-height: 2.5rem;
-  }
-
   .wip-banner {
     position: fixed;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    width: 100%;
-    height: var(--wip-banner-height);
+    /* inset-block-start: 0;
+    inset-inline-start: 0; */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* width: 100%; */
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,7 +31,7 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
     font-weight: 500;
     z-index: calc(var(--sl-z-index-navbar) + 1);
   }
-
+  /* 
   .header {
     inset-block-start: var(--wip-banner-height) !important;
   }
@@ -41,6 +41,9 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
   }
 
   .main-frame {
-    padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height) + var(--wip-banner-height)) !important;
-  }
+    padding-top: calc(
+      var(--sl-nav-height) + var(--sl-mobile-toc-height) +
+        var(--wip-banner-height)
+    ) !important;
+  } */
 </style>

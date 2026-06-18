@@ -85,7 +85,7 @@ function ComposerBlock() {
         <Line c="success">✓ tecnickcom/tcpdf found on Packagist</Line>
         <Line c="muted">&gt; Install</Line>
         <Line c="success">✓ Installing tecnickcom/tcpdf ^6.7</Line>
-        <Line c="success">✓ Autoloader updated in wp-content/lps/</Line>
+        <Line c="success">✓ Autoloader updated in wp-content/loopress/</Line>
       </pre>
     </div>
   );

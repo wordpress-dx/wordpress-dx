@@ -34,26 +34,28 @@ The "canonical" state of each site's configuration lives nowhere in particular. 
 
 ## Loopress's multi-site model
 
-Loopress stores site configurations locally, keyed by name:
+Loopress stores project configurations locally, keyed by name:
 
 ```bash
-lps site config
-# Prompts for: site name, WordPress URL, application password
+lps project config
+# Prompts for: project name, environment, WordPress URL, application password
 ```
 
-You can add as many sites as you need:
+You can add as many projects and environments as you need:
 
 ```bash
-lps site config  # add client-a production
-lps site config  # add client-a staging
-lps site config  # add client-b production
+lps project config  # add client-a production
+lps project config  # add client-a staging
+lps project config  # add client-b production
 ```
 
 Switch between them:
 
 ```bash
-lps site switch
-# Presents a list of configured sites
+lps project switch
+# Presents a list of configured projects
+lps project switch-env
+# Presents a list of environments for the current project
 ```
 
 From that point, every Loopress command runs against the active site, or you can target one explicitly with `--site`.
@@ -108,7 +110,7 @@ With Loopress:
 vim shared/snippets/security-headers.php
 
 # Push to all clients
-for site in $(lps site list); do
+for site in $(lps project list); do
   lps snippets push --site $site --path shared/snippets/
 done
 ```
@@ -125,4 +127,4 @@ If you're already using WP-CLI in your agency workflow, Loopress fills the gap i
 
 ---
 
-The multi-site setup is covered in the [CLI documentation](/cli/getting-started/). The site management commands are under [`lps site`](/cli/).
+The multi-project setup is covered in the [CLI documentation](/cli/getting-started/). The project management commands are under [`lps project`](/cli/).

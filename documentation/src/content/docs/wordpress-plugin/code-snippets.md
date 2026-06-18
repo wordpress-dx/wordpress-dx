@@ -7,10 +7,10 @@ Once you have installed a package through the Loopress plugin, it is available a
 
 ## Loading the autoloader
 
-Loopress stores its packages under `wp-content/lps/vendor/`. You need to require the Composer autoloader once before using any installed package:
+Loopress stores its packages under `wp-content/loopress/vendor/`. You need to require the Composer autoloader once before using any installed package:
 
 ```php
-require_once WP_CONTENT_DIR . '/lps/vendor/autoload.php';
+require_once WP_CONTENT_DIR . '/loopress/vendor/autoload.php';
 ```
 
 Place this at the top of your snippet, before any `use` statements.
@@ -26,7 +26,7 @@ In the Loopress admin page, search for `guzzlehttp/guzzle` and install it.
 **2. Use it in a snippet**
 
 ```php
-require_once WP_CONTENT_DIR . '/lps/vendor/autoload.php';
+require_once WP_CONTENT_DIR . '/loopress/vendor/autoload.php';
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -54,6 +54,6 @@ add_action('wp_footer', function () {
 
 ## Tips
 
-- The autoloader path (`WP_CONTENT_DIR . '/lps/vendor/autoload.php'`) is the same regardless of which package you install.
+- The autoloader path (`WP_CONTENT_DIR . '/loopress/vendor/autoload.php'`) is the same regardless of which package you install.
 - If the autoloader is missing (e.g. after a fresh WordPress install), run **Repair** from the Loopress admin page to regenerate it.
 - Always escape output with `esc_html()` or `esc_url()` before echoing data from external sources.

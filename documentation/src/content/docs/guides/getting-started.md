@@ -44,7 +44,7 @@ After activation, a **Loopress** entry appears in the admin sidebar. From there 
 
 ```bash
 npm install -g @loopress/cli
-lps site config
+lps project config
 ```
 
 Enter your WordPress URL, username and application password when prompted.

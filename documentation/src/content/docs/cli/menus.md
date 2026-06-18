@@ -63,14 +63,14 @@ lps menu push --config ./theme/menus.json
 
 ```bash
 # 1. Pull menus from staging
-lps site switch   # select staging
+lps project switch   # select staging
 lps menu pull --config menus.json
 
 # 2. Commit to Git
 git add menus.json && git commit -m "sync: menus from staging"
 
 # 3. Push to production
-lps site switch   # select production
+lps project switch   # select production
 lps menu push --config menus.json
 ```
 

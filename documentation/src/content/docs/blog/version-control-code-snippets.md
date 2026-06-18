@@ -46,10 +46,10 @@ Install the Loopress CLI:
 npm install -g @loopress/cli
 ```
 
-Configure your site:
+Configure your project:
 
 ```bash
-lps site config
+lps project config
 # Enter your WordPress URL, username, and application password
 ```
 

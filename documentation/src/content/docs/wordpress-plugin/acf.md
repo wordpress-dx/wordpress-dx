@@ -65,7 +65,7 @@ Import a field group. The request body must be a valid ACF field group object wi
 
 ## CLI usage
 
-→ See [ACF Field Groups (CLI)](/cli/acf/) for the `lps acf pull` and `lps acf push` commands.
+→ See [ACF Field Groups (CLI)](/cli/acf/) for the planned `lps acf pull` and `lps acf push` commands (coming soon).
 
 ## Error responses
 

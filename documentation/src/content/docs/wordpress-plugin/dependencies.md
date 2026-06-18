@@ -7,7 +7,7 @@ The **Dependency Management** card lets you browse [Packagist](https://packagist
 
 ## Where packages are stored
 
-Loopress maintains its own `composer.json` under `wp-content/lps/`. Installed packages land in `wp-content/lps/vendor/`. This location is separate from the plugin itself so packages survive plugin updates and can be used anywhere on the site via the Composer autoloader.
+Loopress maintains its own `composer.json` under `wp-content/loopress/`. Installed packages land in `wp-content/loopress/vendor/`. This location is separate from the plugin itself so packages survive plugin updates and can be used anywhere on the site via the Composer autoloader.
 
 ```
 wp-content/
@@ -40,7 +40,7 @@ In the **Installed Packages** card, click **Remove** next to the package you wan
 
 ## Repair
 
-The **Repair** action runs `composer update` against `wp-content/lps/composer.json`. Use it when:
+The **Repair** action runs `composer update` against `wp-content/loopress/composer.json`. Use it when:
 
 - The autoloader is missing after a server migration
 - The lockfile has drifted from `composer.json`

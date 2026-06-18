@@ -29,38 +29,55 @@ lps --version
 - A WordPress installation with the [Code Snippets](https://wordpress.org/plugins/code-snippets/) plugin active (for snippet commands)
 - A WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) for authentication
 
-## Configure a site
+## Log in to Loopress
 
-Before running any command, register your WordPress site:
+Authenticate with your Loopress account to unlock cloud features:
 
 ```bash
-lps site config
+lps login
+```
+
+This opens `console.loopress.dev` in your browser. After you approve, the CLI stores a token in `~/.lps/auth.json` and returns you to the terminal.
+
+```bash
+lps logout   # Remove the stored token
+```
+
+## Configure a project
+
+Before running any command, register your WordPress site as a project:
+
+```bash
+lps project config
 ```
 
 You will be prompted for:
 
 | Prompt | Description |
 |--------|-------------|
-| Site name | A local identifier (e.g. `production`, `staging`) |
+| Project name | A local identifier, lowercase, no spaces (e.g. `my-site`) |
+| Environment | `production`, `staging`, `development`, or a custom name |
 | WordPress URL | Full URL including scheme (`https://example.com`) |
 | Username | Your WordPress administrator username |
 | Application password | Generated in **Users → Profile → Application Passwords** |
 
-### Manage multiple sites
+### Manage multiple projects and environments
 
-Loopress stores site configurations in `~/.config/loopress/sites.json` and keeps track of the currently active site.
+Loopress stores configurations in `~/.lps/config.json` and tracks the currently active project and environment.
 
 ```bash
-lps site config          # Add or update a site
-lps site switch          # Interactively pick the active site
-lps site remove <name>   # Remove a saved site
+lps project config          # Add or update a project/environment
+lps project switch          # Interactively pick the active project
+lps project switch-env      # Interactively pick the active environment
+lps project remove          # Remove a saved project
+lps project remove-env      # Remove a saved environment
 ```
 
-All commands operate against the **active site** unless overridden via environment variables.
+All commands operate against the **active project/environment** unless overridden via environment variables.
 
 ## Environment variable fallback
 
-For CI/CD pipelines where interactive prompts are not available, you can bypass the site configuration entirely using environment variables:
+For CI/CD pipelines where interactive prompts are not available, you can bypass the project configuration entirely using environment variables:
 
 ```bash
 export WP_URL=https://example.com
@@ -77,5 +94,5 @@ Most commands accept a `--dryRun` (`-d`) flag that shows what would happen witho
 ```bash
 lps snippets push --dryRun
 lps snippets pull --dryRun
-lps acf pull --dryRun
+lps styles push --dryRun
 ```

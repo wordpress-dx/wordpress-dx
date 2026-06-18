@@ -15,7 +15,7 @@ Composer uses the `config.platform.php` value in `composer.json` to decide which
 
 ### `config.platform.php` mismatch
 
-The platform PHP version in `wp-content/lps/composer.json` does not match the PHP version the server is actually running. This can happen after a PHP upgrade.
+The platform PHP version in `wp-content/loopress/composer.json` does not match the PHP version the server is actually running. This can happen after a PHP upgrade.
 
 **Detected issue code:** `platform_php_mismatch`
 
@@ -25,7 +25,7 @@ The platform PHP version in `wp-content/lps/composer.json` does not match the PH
 
 ## Fixing a detected issue
 
-Click the **Set to PHP x.x.x** button in the banner. This updates `config.platform.php` in `wp-content/lps/composer.json` to match the currently running PHP version.
+Click the **Set to PHP x.x.x** button in the banner. This updates `config.platform.php` in `wp-content/loopress/composer.json` to match the currently running PHP version.
 
 This action is blocked when the [Production Lock](/wordpress-plugin/environment/) is active.
 

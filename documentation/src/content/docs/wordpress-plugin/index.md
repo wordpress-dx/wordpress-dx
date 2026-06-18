@@ -11,7 +11,7 @@ The Loopress WordPress Plugin adds a dedicated admin page to your WordPress inst
 
 ## How it works
 
-The plugin registers a **Loopress** entry in the WordPress admin sidebar. It stores your project's Composer dependencies in `wp-content/lps/`, separate from the plugin itself, so they survive plugin updates.
+The plugin registers a **Loopress** entry in the WordPress admin sidebar. It stores your project's Composer dependencies in `wp-content/loopress/`, separate from the plugin itself, so they survive plugin updates.
 
 A REST API under `lps/v1` powers the React admin UI. All endpoints require the `manage_options` capability (administrator role).
 
@@ -33,3 +33,5 @@ A REST API under `lps/v1` powers the React admin UI. All endpoints require the `
 
 - [Dependency Management](/wordpress-plugin/dependencies/)
 - [Using packages in code snippets](/wordpress-plugin/code-snippets/)
+- [Security Audit](/wordpress-plugin/audit/)
+- [Platform Diagnostics](/wordpress-plugin/diagnostics/)

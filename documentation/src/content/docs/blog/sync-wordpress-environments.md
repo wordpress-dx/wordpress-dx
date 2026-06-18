@@ -94,7 +94,7 @@ You could wrap this in a shell script or a CI step. The point is that configurat
 
 Agencies managing multiple client sites hit this problem constantly. Client A wants the menu changed on three environments. Client B needs a style tweak applied everywhere. Without tooling, this is manual work multiplied by the number of environments.
 
-Loopress's multi-site support (`lps site config`, `lps site switch`) lets you maintain named configurations per site and per environment. Push the same menu to ten sites:
+Loopress's multi-project support (`lps project config`, `lps project switch`) lets you maintain named configurations per site and per environment. Push the same menu to ten sites:
 
 ```bash
 for site in client-a client-b client-c; do
