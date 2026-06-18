@@ -7,17 +7,17 @@ import {ProjectConfigManager} from '../../src/config/project-config.manager.js'
 import {EnvironmentConfig, ProjectConfig} from '../../src/config/types.js'
 
 const makeEnv = (name: string, url = 'https://example.com'): EnvironmentConfig => ({
-  name,
-  url,
-  token: `user:secret`,
   addedAt: '2024-01-01T00:00:00.000Z',
+  name,
+  token: `user:secret`,
+  url,
 })
 
 const makeProject = (name: string, envName = 'production'): ProjectConfig => ({
-  name,
+  addedAt: '2024-01-01T00:00:00.000Z',
   currentEnv: envName,
   environments: {[envName]: makeEnv(envName)},
-  addedAt: '2024-01-01T00:00:00.000Z',
+  name,
 })
 
 describe('ProjectConfigManager', () => {
@@ -30,7 +30,7 @@ describe('ProjectConfigManager', () => {
   })
 
   afterEach(() => {
-    rmSync(tmpDir, {recursive: true, force: true})
+    rmSync(tmpDir, {force: true, recursive: true})
   })
 
   describe('readConfig', () => {
@@ -131,10 +131,10 @@ describe('ProjectConfigManager', () => {
 
     it('sets the first environment as currentEnv automatically on a fresh project', () => {
       const project: ProjectConfig = {
-        name: 'acme',
+        addedAt: '2024-01-01T00:00:00.000Z',
         currentEnv: null,
         environments: {},
-        addedAt: '2024-01-01T00:00:00.000Z',
+        name: 'acme',
       }
       manager.setProject('acme', project)
       manager.setEnvironment('acme', 'production', makeEnv('production'))

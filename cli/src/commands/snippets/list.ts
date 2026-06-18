@@ -1,7 +1,7 @@
 import {Flags} from '@oclif/core'
 import got from 'got'
 
-import {PluginName, getSnippetPlugin} from '../../utils/snippet-plugin.js'
+import {getSnippetPlugin, PluginName} from '../../utils/snippet-plugin.js'
 import {LoopressCommand} from '../base.js'
 
 export default class List extends LoopressCommand {

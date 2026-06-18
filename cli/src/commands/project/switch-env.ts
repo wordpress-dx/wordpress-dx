@@ -1,5 +1,5 @@
-import {Command} from '@oclif/core'
 import {select} from '@inquirer/prompts'
+import {Command} from '@oclif/core'
 
 import {configManager} from '../../config/project-config.manager.js'
 
@@ -29,12 +29,12 @@ export default class SwitchEnv extends Command {
     }
 
     const chosen = await select({
-      message: `Select environment for "${project.name}"`,
       choices: envs.map((env) => ({
         name: `${env.isCurrent ? '●' : '○'} ${env.name.padEnd(20)} ${env.url}${env.isCurrent ? ' [current]' : ''}`,
         value: env.name,
       })),
       default: envs.find((e) => e.isCurrent)?.name,
+      message: `Select environment for "${project.name}"`,
     })
 
     configManager.setCurrentEnv(project.name, chosen)

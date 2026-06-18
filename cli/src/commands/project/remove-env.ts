@@ -1,5 +1,5 @@
-import {Command} from '@oclif/core'
 import {checkbox} from '@inquirer/prompts'
+import {Command} from '@oclif/core'
 
 import {configManager} from '../../config/project-config.manager.js'
 
@@ -23,11 +23,11 @@ export default class RemoveEnv extends Command {
     }
 
     const chosen = await checkbox({
-      message: 'Select environments to remove',
       choices: envs.map((env) => ({
         name: `${env.isCurrent ? '●' : '○'} ${env.name.padEnd(20)} ${env.url}${env.isCurrent ? ' [current]' : ''}`,
         value: env.name,
       })),
+      message: 'Select environments to remove',
     })
 
     if (chosen.length === 0) {

@@ -70,10 +70,13 @@ class WPCodePlugin implements SnippetPlugin {
 
 export function getSnippetPlugin(name: PluginName): SnippetPlugin {
   switch (name) {
-    case 'wpcode':
+    case 'wpcode': {
       return new WPCodePlugin()
+    }
+
     case 'code-snippets':
-    default:
+    default: {
       return new CodeSnippetsPlugin()
+    }
   }
 }

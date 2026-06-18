@@ -17,10 +17,6 @@ export class ProjectConfigManager {
     return ProjectConfigManager.instance
   }
 
-  getConfigFilePath(): string {
-    return join(this.homeDir, '.lps', 'config.json')
-  }
-
   ensureConfigDir(): void {
     const dir = join(this.homeDir, '.lps')
     if (!existsSync(dir)) {
@@ -28,27 +24,8 @@ export class ProjectConfigManager {
     }
   }
 
-  readConfig(): LoopressConfig {
-    const filePath = this.getConfigFilePath()
-    if (!existsSync(filePath)) {
-      return {currentProject: null, projects: {}}
-    }
-
-    return JSON.parse(readFileSync(filePath, 'utf8')) as LoopressConfig
-  }
-
-  writeConfig(config: LoopressConfig): void {
-    this.ensureConfigDir()
-    const filePath = this.getConfigFilePath()
-    const tmpPath = `${filePath}.tmp`
-    writeFileSync(tmpPath, JSON.stringify(config, null, 2))
-    renameSync(tmpPath, filePath)
-  }
-
-  getCurrentProject(): ProjectConfig | null {
-    const config = this.readConfig()
-    if (!config.currentProject || !config.projects[config.currentProject]) return null
-    return config.projects[config.currentProject]
+  getConfigFilePath(): string {
+    return join(this.homeDir, '.lps', 'config.json')
   }
 
   getCurrentEnv(): EnvironmentConfig | null {
@@ -57,34 +34,30 @@ export class ProjectConfigManager {
     return project.environments[project.currentEnv] ?? null
   }
 
-  getProject(name: string): ProjectConfig | null {
+  getCurrentProject(): null | ProjectConfig {
+    const config = this.readConfig()
+    if (!config.currentProject || !config.projects[config.currentProject]) return null
+    return config.projects[config.currentProject]
+  }
+
+  getEnvironment(projectName: string, envName: string): EnvironmentConfig | null {
+    const project = this.getProject(projectName)
+    if (!project) return null
+    return project.environments[envName] ?? null
+  }
+
+  getProject(name: string): null | ProjectConfig {
     const config = this.readConfig()
     return config.projects[name] ?? null
   }
 
-  setProject(name: string, project: ProjectConfig): void {
-    const config = this.readConfig()
-    const isFirst = Object.keys(config.projects).length === 0
-    config.projects[name] = project
-    if (isFirst) config.currentProject = name
-    this.writeConfig(config)
-  }
-
-  setCurrentProject(name: string): void {
-    const config = this.readConfig()
-    config.currentProject = name
-    this.writeConfig(config)
-  }
-
-  removeProject(name: string): void {
-    const config = this.readConfig()
-    delete config.projects[name]
-    if (config.currentProject === name) {
-      const remaining = Object.keys(config.projects)
-      config.currentProject = remaining.length > 0 ? remaining[0] : null
-    }
-
-    this.writeConfig(config)
+  listEnvironments(projectName: string): Array<EnvironmentConfig & {isCurrent: boolean}> {
+    const project = this.getProject(projectName)
+    if (!project) return []
+    return Object.values(project.environments).map((env) => ({
+      ...env,
+      isCurrent: env.name === project.currentEnv,
+    }))
   }
 
   listProjects(): Array<ProjectConfig & {isCurrent: boolean}> {
@@ -95,27 +68,13 @@ export class ProjectConfigManager {
     }))
   }
 
-  getEnvironment(projectName: string, envName: string): EnvironmentConfig | null {
-    const project = this.getProject(projectName)
-    if (!project) return null
-    return project.environments[envName] ?? null
-  }
+  readConfig(): LoopressConfig {
+    const filePath = this.getConfigFilePath()
+    if (!existsSync(filePath)) {
+      return {currentProject: null, projects: {}}
+    }
 
-  setEnvironment(projectName: string, envName: string, env: EnvironmentConfig): void {
-    const config = this.readConfig()
-    if (!config.projects[projectName]) return
-    const project = config.projects[projectName]
-    const isFirst = Object.keys(project.environments).length === 0
-    project.environments[envName] = env
-    if (isFirst) project.currentEnv = envName
-    this.writeConfig(config)
-  }
-
-  setCurrentEnv(projectName: string, envName: string): void {
-    const config = this.readConfig()
-    if (!config.projects[projectName]) return
-    config.projects[projectName].currentEnv = envName
-    this.writeConfig(config)
+    return JSON.parse(readFileSync(filePath, 'utf8')) as LoopressConfig
   }
 
   removeEnvironment(projectName: string, envName: string): void {
@@ -131,13 +90,54 @@ export class ProjectConfigManager {
     this.writeConfig(config)
   }
 
-  listEnvironments(projectName: string): Array<EnvironmentConfig & {isCurrent: boolean}> {
-    const project = this.getProject(projectName)
-    if (!project) return []
-    return Object.values(project.environments).map((env) => ({
-      ...env,
-      isCurrent: env.name === project.currentEnv,
-    }))
+  removeProject(name: string): void {
+    const config = this.readConfig()
+    delete config.projects[name]
+    if (config.currentProject === name) {
+      const remaining = Object.keys(config.projects)
+      config.currentProject = remaining.length > 0 ? remaining[0] : null
+    }
+
+    this.writeConfig(config)
+  }
+
+  setCurrentEnv(projectName: string, envName: string): void {
+    const config = this.readConfig()
+    if (!config.projects[projectName]) return
+    config.projects[projectName].currentEnv = envName
+    this.writeConfig(config)
+  }
+
+  setCurrentProject(name: string): void {
+    const config = this.readConfig()
+    config.currentProject = name
+    this.writeConfig(config)
+  }
+
+  setEnvironment(projectName: string, envName: string, env: EnvironmentConfig): void {
+    const config = this.readConfig()
+    if (!config.projects[projectName]) return
+    const project = config.projects[projectName]
+    const isFirst = Object.keys(project.environments).length === 0
+    project.environments[envName] = env
+    if (isFirst) project.currentEnv = envName
+    this.writeConfig(config)
+  }
+
+  setProject(name: string, project: ProjectConfig): void {
+    const config = this.readConfig()
+    const isFirst = Object.keys(config.projects).length === 0
+    config.projects[name] = project
+    if (isFirst) config.currentProject = name
+    this.writeConfig(config)
+  }
+
+  writeConfig(config: LoopressConfig): void {
+    this.ensureConfigDir()
+    const filePath = this.getConfigFilePath()
+    const tmpPath = `${filePath}.tmp`
+    writeFileSync(tmpPath, JSON.stringify(config, null, 2))
+    renameSync(tmpPath, filePath)
   }
 }
 
