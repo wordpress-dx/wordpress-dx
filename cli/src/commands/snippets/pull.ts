@@ -18,7 +18,6 @@ export default class Pull extends LoopressCommand {
   static flags = {
     ...LoopressCommand.baseFlags,
     dryRun: Flags.boolean({char: 'd', description: 'Dry run - show what would happen without making changes'}),
-    force: Flags.boolean({char: 'f', description: 'Force overwrite existing snippets'}),
     plugin: Flags.string({
       char: 'p',
       default: 'code-snippets',
@@ -29,7 +28,7 @@ export default class Pull extends LoopressCommand {
 
   async run(): Promise<void> {
     const {args, flags} = await this.parse(Pull)
-    const {dryRun, plugin} = flags as {dryRun: boolean; force: boolean; plugin: PluginName}
+    const {dryRun, plugin} = flags as {dryRun: boolean; plugin: PluginName}
     const {url} = this.siteConfig
     const {path} = args
 
