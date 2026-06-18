@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^8.5.2",
-    "@oclif/core": "^4.11.4",
+    "@oclif/core": "^4.11.7",
     "@oclif/plugin-help": "^6.2.50",
     "@oclif/plugin-plugins": "^5.4.72",
     "glob": "13.0.6",
@@ -22,20 +22,20 @@
     "@eslint/compat": "2.1.0",
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
-    "@types/chai": "^4",
+    "@types/chai": "^5.2.3",
     "@types/mocha": "^10",
-    "@types/node": "25.9.1",
-    "chai": "^4",
+    "@types/node": "25.9.3",
+    "chai": "^6.2.2",
     "eslint": "^9",
     "eslint-config-oclif": "^6",
     "eslint-config-prettier": "^10",
-    "mocha": "^10",
+    "mocha": "^11.7.6",
     "oclif": "^4",
-    "prettier": "3.8.3",
-    "shx": "^0.3.3",
+    "prettier": "3.8.4",
+    "shx": "^0.4.0",
     "ts-node": "^10",
     "tsx": "4.22.4",
-    "typescript": "^5"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18.0.0"
