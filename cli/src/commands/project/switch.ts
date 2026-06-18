@@ -1,5 +1,5 @@
-import {Command} from '@oclif/core'
 import {select} from '@inquirer/prompts'
+import {Command} from '@oclif/core'
 
 import {configManager} from '../../config/project-config.manager.js'
 
@@ -23,7 +23,6 @@ export default class Switch extends Command {
     }
 
     const chosen = await select({
-      message: 'Select active project',
       choices: projects.map((project) => {
         const envCount = Object.keys(project.environments).length
         const envLabel = `${envCount} env${envCount > 1 ? 's' : ''}`
@@ -34,6 +33,7 @@ export default class Switch extends Command {
         }
       }),
       default: projects.find((p) => p.isCurrent)?.name,
+      message: 'Select active project',
     })
 
     configManager.setCurrentProject(chosen)

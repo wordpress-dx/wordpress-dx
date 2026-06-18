@@ -16,10 +16,7 @@ interface GlobalStylesData {
 
 export default class Push extends LoopressCommand {
   static description = 'Push Global Styles to WordPress'
-  static examples = [
-    '$ lps styles push',
-    '$ lps styles push --url http://example.com',
-  ]
+  static examples = ['$ lps styles push', '$ lps styles push --url http://example.com']
   static flags = {
     ...LoopressCommand.baseFlags,
     dryRun: Flags.boolean({char: 'd', description: 'Dry run - show what would happen without making changes'}),

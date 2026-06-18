@@ -20,10 +20,7 @@ interface GlobalStyles {
 
 export default class Pull extends LoopressCommand {
   static description = 'Pull Global Styles from WordPress'
-  static examples = [
-    '$ lps styles pull',
-    '$ lps styles pull --url http://example.com',
-  ]
+  static examples = ['$ lps styles pull', '$ lps styles pull --url http://example.com']
   static flags = {
     ...LoopressCommand.baseFlags,
     dryRun: Flags.boolean({char: 'd', description: 'Dry run - show what would happen without making changes'}),

@@ -21,8 +21,9 @@ export class AuthManager {
     return AuthManager.instance
   }
 
-  getAuthFilePath(): string {
-    return join(this.homeDir, '.lps', 'auth.json')
+  clearAuth(): void {
+    const filePath = this.getAuthFilePath()
+    if (existsSync(filePath)) unlinkSync(filePath)
   }
 
   getAuth(): ConsoleAuth | null {
@@ -36,6 +37,10 @@ export class AuthManager {
     }
   }
 
+  getAuthFilePath(): string {
+    return join(this.homeDir, '.lps', 'auth.json')
+  }
+
   setAuth(auth: ConsoleAuth): void {
     const dir = join(this.homeDir, '.lps')
     if (!existsSync(dir)) mkdirSync(dir, {recursive: true})
@@ -44,11 +49,6 @@ export class AuthManager {
     const tmpPath = `${filePath}.tmp`
     writeFileSync(tmpPath, JSON.stringify(auth, null, 2))
     renameSync(tmpPath, filePath)
-  }
-
-  clearAuth(): void {
-    const filePath = this.getAuthFilePath()
-    if (existsSync(filePath)) unlinkSync(filePath)
   }
 }
 

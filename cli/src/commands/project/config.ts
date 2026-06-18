@@ -1,5 +1,5 @@
-import {Command} from '@oclif/core'
 import {confirm, input, password as passwordPrompt, select} from '@inquirer/prompts'
+import {Command} from '@oclif/core'
 
 import {configManager} from '../../config/project-config.manager.js'
 import {EnvironmentConfig, ProjectConfig} from '../../config/types.js'
@@ -13,7 +13,7 @@ export default class Config extends Command {
 
     const projectName = await input({
       message: 'Project name (identifier, no spaces)',
-      validate: (value) => {
+      validate(value) {
         if (!/^[a-z0-9_-]+$/.test(value)) {
           return 'Name must be lowercase with only letters, numbers, - and _'
         }
@@ -23,13 +23,13 @@ export default class Config extends Command {
     })
 
     const envChoice = await select({
-      message: 'Environment',
       choices: [
-        {value: 'production', name: 'production'},
-        {value: 'staging', name: 'staging'},
-        {value: 'development', name: 'development'},
-        {value: '__custom__', name: 'Custom…'},
+        {name: 'production', value: 'production'},
+        {name: 'staging', value: 'staging'},
+        {name: 'development', value: 'development'},
+        {name: 'Custom…', value: '__custom__'},
       ],
+      message: 'Environment',
     })
 
     const envName =
@@ -45,8 +45,8 @@ export default class Config extends Command {
 
     if (existingEnv) {
       const overwrite = await confirm({
-        message: `"${projectName}/${envName}" already exists. Overwrite?`,
         default: false,
+        message: `"${projectName}/${envName}" already exists. Overwrite?`,
       })
       if (!overwrite) {
         this.log('Aborted.')
@@ -56,7 +56,7 @@ export default class Config extends Command {
 
     const url = await input({
       message: 'WordPress URL',
-      validate: (value) => {
+      validate(value) {
         try {
           const parsed = new URL(value)
           if (!['http:', 'https:'].includes(parsed.protocol)) {
@@ -76,30 +76,30 @@ export default class Config extends Command {
     })
 
     const appPassword = await passwordPrompt({
-      message: 'Application password',
       mask: '*',
+      message: 'Application password',
       validate: (value) => (value.trim().length > 0 ? true : 'Application password cannot be empty'),
     })
 
     const token = `${user}:${appPassword}`
 
     const env: EnvironmentConfig = {
-      name: envName,
-      url,
-      token,
       addedAt: new Date().toISOString(),
+      name: envName,
+      token,
+      url,
     }
 
-    if (!existingProject) {
+    if (existingProject) {
+      configManager.setEnvironment(projectName, envName, env)
+    } else {
       const project: ProjectConfig = {
-        name: projectName,
+        addedAt: new Date().toISOString(),
         currentEnv: envName,
         environments: {[envName]: env},
-        addedAt: new Date().toISOString(),
+        name: projectName,
       }
       configManager.setProject(projectName, project)
-    } else {
-      configManager.setEnvironment(projectName, envName, env)
     }
 
     this.log(`✓ "${projectName}/${envName}" configured`)

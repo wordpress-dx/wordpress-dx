@@ -1,18 +1,18 @@
 export interface EnvironmentConfig {
-  name: string
-  url: string
-  token?: string
   addedAt: string
+  name: string
+  token?: string
+  url: string
 }
 
 export interface ProjectConfig {
-  name: string
-  currentEnv: string | null
-  environments: Record<string, EnvironmentConfig>
   addedAt: string
+  currentEnv: null | string
+  environments: Record<string, EnvironmentConfig>
+  name: string
 }
 
 export interface LoopressConfig {
-  currentProject: string | null
+  currentProject: null | string
   projects: Record<string, ProjectConfig>
 }

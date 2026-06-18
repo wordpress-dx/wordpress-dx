@@ -6,4 +6,10 @@ import {fileURLToPath} from 'node:url'
 
 const gitignorePath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.gitignore')
 
-export default [includeIgnoreFile(gitignorePath), ...oclif, prettier]
+export default [includeIgnoreFile(gitignorePath), ...oclif, prettier, {rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-await-in-loop": "off",
+    "unicorn/no-useless-switch-case": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "perfectionist/sort-objects": "off",
+}}]

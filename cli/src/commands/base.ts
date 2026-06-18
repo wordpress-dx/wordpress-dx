@@ -1,14 +1,11 @@
-import {join} from 'node:path'
-
 import {Command, Flags} from '@oclif/core'
+import {join} from 'node:path'
 
 import {configManager} from '../config/project-config.manager.js'
 import {EnvironmentConfig} from '../config/types.js'
 import {readLocalConfig} from '../utils/loopress-config.js'
 
 export abstract class LoopressCommand extends Command {
-  protected siteConfig!: EnvironmentConfig
-
   static baseFlags = {
     password: Flags.string({
       description: 'WordPress application password (fallback; prefer `lps project config`)',
@@ -22,6 +19,17 @@ export abstract class LoopressCommand extends Command {
       description: 'WordPress username (fallback; prefer `lps project config`)',
       helpGroup: 'GLOBAL',
     }),
+  }
+protected siteConfig!: EnvironmentConfig
+
+  async buildAuthHeaders(): Promise<Record<string, string>> {
+    const {token, url} = this.siteConfig
+
+    if (token) {
+      return {Authorization: `Basic ${Buffer.from(token).toString('base64')}`}
+    }
+
+    this.error(`No credentials configured for ${url}. Run \`lps project config\` to add them.`)
   }
 
   async init(): Promise<void> {
@@ -46,15 +54,5 @@ export abstract class LoopressCommand extends Command {
     if (override) return override
     const config = await readLocalConfig()
     return join(config.rootDir ?? '.', config.styles ?? 'styles')
-  }
-
-  async buildAuthHeaders(): Promise<Record<string, string>> {
-    const {token, url} = this.siteConfig
-
-    if (token) {
-      return {Authorization: `Basic ${Buffer.from(token).toString('base64')}`}
-    }
-
-    this.error(`No credentials configured for ${url}. Run \`lps project config\` to add them.`)
   }
 }

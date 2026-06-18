@@ -2,7 +2,7 @@ import {Args, Flags} from '@oclif/core'
 import got from 'got'
 
 import {Snippet} from '../../types/snippet.js'
-import {NormalizedSnippet, PluginName, getSnippetPlugin} from '../../utils/snippet-plugin.js'
+import {getSnippetPlugin, NormalizedSnippet, PluginName} from '../../utils/snippet-plugin.js'
 import {LoopressCommand} from '../base.js'
 
 export default class Push extends LoopressCommand {
@@ -93,7 +93,9 @@ export default class Push extends LoopressCommand {
     try {
       const endpoint = adapter.endpoint(url)
       const remoteList: Record<string, unknown>[] = await got.get(endpoint, {headers}).json()
-      const existing = remoteList.map((r) => adapter.fromRemote(r)).find((s: NormalizedSnippet) => s.name === snippet.name)
+      const existing = remoteList
+        .map((r) => adapter.fromRemote(r))
+        .find((s: NormalizedSnippet) => s.name === snippet.name)
 
       const payload = adapter.toPayload(snippet.name, snippet.code, snippet.path)
 

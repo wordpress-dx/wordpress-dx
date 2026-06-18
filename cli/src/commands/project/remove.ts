@@ -1,5 +1,5 @@
-import {Command} from '@oclif/core'
 import {checkbox} from '@inquirer/prompts'
+import {Command} from '@oclif/core'
 
 import {configManager} from '../../config/project-config.manager.js'
 
@@ -17,7 +17,6 @@ export default class Remove extends Command {
     }
 
     const chosen = await checkbox({
-      message: 'Select projects to remove',
       choices: projects.map((project) => {
         const envCount = Object.keys(project.environments).length
         const envLabel = `${envCount} env${envCount > 1 ? 's' : ''}`
@@ -27,6 +26,7 @@ export default class Remove extends Command {
           value: project.name,
         }
       }),
+      message: 'Select projects to remove',
     })
 
     if (chosen.length === 0) {
