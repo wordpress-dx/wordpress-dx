@@ -43,7 +43,7 @@ class AcfController
 
         $data = $request->get_json_params();
 
-        if (empty($data) || !is_array($data)) {
+        if (empty($data)) {
             return new WP_REST_Response(['error' => 'Invalid field group data: expected an object'], 400);
         }
 
