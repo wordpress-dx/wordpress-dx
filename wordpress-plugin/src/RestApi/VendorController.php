@@ -2,6 +2,7 @@
 
 namespace Loopress\RestApi;
 
+use Loopress\Exception\ProductionLockException;
 use Loopress\Service\VendorService;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -103,6 +104,8 @@ class VendorController
         try {
             $output = $this->vendorService->requirePackage($package, $version);
             return new WP_REST_Response(['message' => "{$package}:{$version} installed successfully.", 'output' => $output], 200);
+        } catch (ProductionLockException $e) {
+            return new WP_REST_Response(['error' => $e->getMessage()], 403);
         } catch (\RuntimeException $e) {
             return new WP_REST_Response(['error' => "Failed to install {$package}:{$version}.", 'output' => $e->getMessage()], 500);
         }
@@ -119,6 +122,8 @@ class VendorController
         try {
             $output = $this->vendorService->removePackage($package);
             return new WP_REST_Response(['message' => "{$package} removed successfully.", 'output' => $output], 200);
+        } catch (ProductionLockException $e) {
+            return new WP_REST_Response(['error' => $e->getMessage()], 403);
         } catch (\RuntimeException $e) {
             return new WP_REST_Response(['error' => "Failed to remove {$package}.", 'output' => $e->getMessage()], 500);
         }
@@ -129,6 +134,8 @@ class VendorController
         try {
             $output = $this->vendorService->repair();
             return new WP_REST_Response(['message' => 'Dependencies repaired successfully.', 'output' => $output], 200);
+        } catch (ProductionLockException $e) {
+            return new WP_REST_Response(['error' => $e->getMessage()], 403);
         } catch (\RuntimeException $e) {
             return new WP_REST_Response(['error' => 'Repair failed.', 'output' => $e->getMessage()], 500);
         }
@@ -157,6 +164,8 @@ class VendorController
                 'php_version'  => PHP_VERSION,
                 'platform_php' => PHP_VERSION,
             ], 200);
+        } catch (ProductionLockException $e) {
+            return new WP_REST_Response(['error' => $e->getMessage()], 403);
         } catch (\RuntimeException $e) {
             return new WP_REST_Response(['error' => $e->getMessage()], 500);
         }

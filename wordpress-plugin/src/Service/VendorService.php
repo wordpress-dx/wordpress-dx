@@ -2,6 +2,7 @@
 
 namespace Loopress\Service;
 
+use Loopress\Exception\ProductionLockException;
 use Loopress\Infrastructure\ComposerRunner;
 use Loopress\Infrastructure\LoopressEnvironment;
 use Loopress\Infrastructure\PackagistClient;
@@ -12,6 +13,7 @@ class VendorService
         private LoopressEnvironment $dxEnv,
         private ComposerRunner $composerRunner,
         private PackagistClient $packagistClient,
+        private SettingsService $settings,
     ) {}
 
     public function getVersions(string $package): ?array
@@ -36,10 +38,14 @@ class VendorService
 
     public function requirePackage(string $package, string $version): string
     {
+        if ($this->settings->isLocked()) {
+            throw new ProductionLockException('Cannot install packages: production lock is enabled.');
+        }
+
         $result = $this->composerRunner->run(['require', "{$package}:{$version}"]);
 
         if ($result['exit_code'] !== 0) {
-            throw new \RuntimeException(esc_html($result['output']));
+            throw new \RuntimeException($result['output']);
         }
 
         return $result['output'];
@@ -47,10 +53,14 @@ class VendorService
 
     public function removePackage(string $package): string
     {
+        if ($this->settings->isLocked()) {
+            throw new ProductionLockException('Cannot remove packages: production lock is enabled.');
+        }
+
         $result = $this->composerRunner->run(['remove', $package]);
 
         if ($result['exit_code'] !== 0) {
-            throw new \RuntimeException(esc_html($result['output']));
+            throw new \RuntimeException($result['output']);
         }
 
         return $result['output'];
@@ -58,10 +68,14 @@ class VendorService
 
     public function repair(): string
     {
+        if ($this->settings->isLocked()) {
+            throw new ProductionLockException('Cannot repair dependencies: production lock is enabled.');
+        }
+
         $result = $this->composerRunner->run(['update']);
 
         if ($result['exit_code'] !== 0) {
-            throw new \RuntimeException(esc_html($result['output']));
+            throw new \RuntimeException($result['output']);
         }
 
         return $result['output'];
@@ -99,7 +113,7 @@ class VendorService
 
         // Exit code 1 means advisories found; not an error, just a non-empty report.
         if ($result['exit_code'] > 1) {
-            throw new \RuntimeException(esc_html($result['output']));
+            throw new \RuntimeException($result['output']);
         }
 
         // Strip any non-JSON preamble Composer may emit before the object.
@@ -122,10 +136,12 @@ class VendorService
 
     public function fixPlatform(): void
     {
+        if ($this->settings->isLocked()) {
+            throw new ProductionLockException('Cannot fix platform: production lock is enabled.');
+        }
+
         $json = $this->dxEnv->readComposerJson();
         $json['config']['platform']['php'] = PHP_VERSION;
         $this->dxEnv->writeComposerJson($json);
     }
-
-
 }

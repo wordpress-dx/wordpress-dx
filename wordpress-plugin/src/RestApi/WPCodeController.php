@@ -90,7 +90,7 @@ class WPCodeController
 
         $snippet = $this->wpCodeService->updateSnippet(
             (int) $request->get_param('id'),
-            $request->get_json_params() ?? [],
+            $request->get_json_params(),
         );
 
         if ($snippet === null) {

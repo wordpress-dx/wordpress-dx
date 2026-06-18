@@ -34,6 +34,7 @@ class Plugin
             $this->dxEnv,
             new ComposerRunner($this->dxEnv),
             new PackagistClient(),
+            $this->settingsService,
         );
 
         $this->cptService    = new CustomPostTypeService();
