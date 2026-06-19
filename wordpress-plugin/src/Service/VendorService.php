@@ -72,7 +72,7 @@ class VendorService
             throw new ProductionLockException('Cannot repair dependencies: production lock is enabled.');
         }
 
-        $result = $this->composerRunner->run(['update']);
+        $result = $this->composerRunner->run(['install']);
 
         if ($result['exit_code'] !== 0) {
             throw new \RuntimeException($result['output']);

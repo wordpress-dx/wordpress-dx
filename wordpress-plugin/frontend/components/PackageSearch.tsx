@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 import { useQuery } from '@tanstack/react-query';
-import { Button, ComboboxControl, Spinner } from '@wordpress/components';
+import { Button, ComboboxControl, SelectControl, Spinner } from '@wordpress/components';
 import { apiFetch } from '../api';
 import type { PackagistPackage, PackageVersion } from '../types';
 
@@ -20,7 +20,7 @@ export function PackageSearch({ onInstall, disabled }: Props) {
     const [debouncedQuery]            = useDebounce(query, 500);
     const [selected, setSelected]     = useState<PackagistPackage | null>(null);
 
-    const { register, handleSubmit, setValue, watch, formState: { isSubmitting } } = useForm<VersionForm>({
+    const { handleSubmit, setValue, watch, formState: { isSubmitting } } = useForm<VersionForm>({
         defaultValues: { version: '' },
     });
 
@@ -119,29 +119,23 @@ export function PackageSearch({ onInstall, disabled }: Props) {
 
             {!versionsLoading && versions.length > 0 && (
                 <div>
-                    <label style={{ display: 'block', fontWeight: 600, fontSize: 12, marginBottom: 6 }}>
-                        Version
-                    </label>
-                    <select
-                        {...register('version')}
-                        style={{
-                            width: '100%', padding: '6px 8px',
-                            border: '1px solid #8c8f94', borderRadius: 4,
-                            fontSize: 13, background: '#fff',
-                        }}
-                    >
-                        {versions.map((v, idx) => (
-                            <option key={v.version} value={v.version}>
-                                {v.php_compatible === true ? '🟢' : v.php_compatible === false ? '🔴' : '❓'} {v.version}{idx === 0 ? '  (latest)' : ''}
-                            </option>
-                        ))}
-                    </select>
+                    <SelectControl
+                        label="Version"
+                        value={version}
+                        options={versions.map((v, idx) => ({
+                            value: v.version,
+                            label: `${v.php_compatible === true ? '🟢' : v.php_compatible === false ? '🔴' : '❓'} ${v.version}${idx === 0 ? '  (latest)' : ''}`,
+                        }))}
+                        onChange={(val) => setValue('version', val)}
+                        __next40pxDefaultSize
+                        __nextHasNoMarginBottom
+                    />
                     {version && (() => {
-                        const selected = versions.find(v => v.version === version);
-                        if (!selected || selected.php_compatible) return null;
+                        const sel = versions.find(v => v.version === version);
+                        if (!sel || sel.php_compatible) return null;
                         return (
                             <p style={{ margin: '6px 0 0', fontSize: 12, color: '#cc1818' }}>
-                                ⚠️ This version requires PHP {selected.php_constraint} (your server: PHP {window.loopressData?.phpVersion ?? '?'})
+                                ⚠️ This version requires PHP {sel.php_constraint} (your server: PHP {window.loopressData?.phpVersion ?? '?'})
                             </p>
                         );
                     })()}
@@ -157,7 +151,7 @@ export function PackageSearch({ onInstall, disabled }: Props) {
                 type="submit"
                 disabled={disabled || versionsLoading || !version || isSubmitting}
             >
-                {isSubmitting ? 'Installing…' : `Install${version ? ` v${version}` : ''}`}
+                {isSubmitting ? 'Installing…' : `Install${version ? ` ${version}` : ''}`}
             </Button>
         </form>
     );
