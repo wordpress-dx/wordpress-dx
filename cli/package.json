@@ -16,7 +16,8 @@
     "@oclif/plugin-help": "^6.2.50",
     "@oclif/plugin-plugins": "^5.4.72",
     "glob": "13.0.6",
-    "got": "^15.0.5"
+    "got": "^15.0.5",
+    "slugify": "^1.6.9"
   },
   "devDependencies": {
     "@eslint/compat": "2.1.0",

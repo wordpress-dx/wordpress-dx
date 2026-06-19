@@ -1,4 +1,5 @@
 export type PluginName = 'code-snippets' | 'wpcode'
+export type SnippetType = 'css' | 'html' | 'js' | 'php' | 'text'
 
 export interface NormalizedSnippet {
   active: boolean
@@ -7,6 +8,24 @@ export interface NormalizedSnippet {
   id: number
   name: string
   tags: string[]
+  type: SnippetType
+}
+
+function parseType(raw: unknown): SnippetType | null {
+  const valid: SnippetType[] = ['css', 'html', 'js', 'php', 'text']
+  const value = String(raw ?? '').toLowerCase()
+  return valid.includes(value as SnippetType) ? (value as SnippetType) : null
+}
+
+function inferTypeFromCode(code: string): SnippetType {
+  const firstLine = code.trimStart().split('\n')[0].trimStart()
+  if (firstLine.startsWith('<?')) return 'php'
+  if (firstLine.startsWith('<')) return 'html'
+  return 'php'
+}
+
+function resolveType(raw: unknown, code: string): SnippetType {
+  return parseType(raw) ?? inferTypeFromCode(code)
 }
 
 export interface SnippetPlugin {
@@ -28,6 +47,7 @@ class CodeSnippetsPlugin implements SnippetPlugin {
       id: Number(data.id),
       name: String(data.name ?? ''),
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
+      type: resolveType(data.type, String(data.code ?? '')),
     }
   }
 
@@ -54,6 +74,7 @@ class WPCodePlugin implements SnippetPlugin {
       id: Number(data.id),
       name: String(data.title ?? ''),
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
+      type: resolveType(data.type, String(data.code ?? '')),
     }
   }
 

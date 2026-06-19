@@ -1,8 +1,57 @@
 import {Args, Flags} from '@oclif/core'
 import got from 'got'
+import slugify from 'slugify'
 
-import {getSnippetPlugin, PluginName} from '../../utils/snippet-plugin.js'
+import {getSnippetPlugin, NormalizedSnippet, PluginName, SnippetType} from '../../utils/snippet-plugin.js'
 import {LoopressCommand} from '../../lib/base.js'
+
+const EXTENSIONS: Record<SnippetType, string> = {
+  css: 'css',
+  html: 'html',
+  js: 'js',
+  php: 'php',
+  text: 'txt',
+}
+
+const sanitize = (value: string) => value.replaceAll(/\s*\n\s*/g, ' ').trim()
+
+function buildMetaLines(snippet: NormalizedSnippet): string[] {
+  return [
+    `name: ${sanitize(snippet.name)}`,
+    ...(snippet.description ? [`description: ${sanitize(snippet.description)}`] : []),
+    `type: ${snippet.type}`,
+    ...(snippet.tags.length > 0 ? [`tags: ${snippet.tags.map((t) => sanitize(t)).join(', ')}`] : []),
+    `active: ${snippet.active}`,
+  ]
+}
+
+function buildSnippetFile(snippet: NormalizedSnippet): string {
+  const meta = buildMetaLines(snippet)
+
+  switch (snippet.type) {
+    case 'css':
+    case 'js': {
+      const header = ['/**', ...meta.map((l) => ` * ${l}`), ' */'].join('\n')
+      return `${header}\n\n${snippet.code}`
+    }
+
+    case 'html': {
+      const header = ['<!--', ...meta.map((l) => `  ${l}`), '-->'].join('\n')
+      return `${header}\n\n${snippet.code}`
+    }
+
+    case 'text': {
+      return snippet.code
+    }
+
+    case 'php':
+    default: {
+      const header = ['<?php', '/**', ...meta.map((l) => ` * ${l}`), ' */'].join('\n')
+      const body = snippet.code.replace(/^<\?php\s*/i, '')
+      return `${header}\n\n${body}`
+    }
+  }
+}
 
 export default class Pull extends LoopressCommand {
   static args = {
@@ -45,21 +94,33 @@ export default class Pull extends LoopressCommand {
       const snippets = remoteList.map((r) => adapter.fromRemote(r))
 
       const fs = await import('node:fs/promises')
+      await fs.mkdir(path, {recursive: true})
 
       if (dryRun) {
         this.log(`📝 [DRY RUN] Would pull ${snippets.length} snippets`)
+        this.log(`🔍 Raw API sample:\n${JSON.stringify(remoteList[0], null, 2)}`)
         return
       }
 
       let count = 0
+      let skipped = 0
       for (const snippet of snippets) {
-        const filePath = `${path}/${snippet.name}.php`
-        await fs.writeFile(filePath, snippet.code)
+        if (!snippet.name.trim()) {
+          skipped++
+          continue
+        }
+
+        const ext = EXTENSIONS[snippet.type]
+        const filePath = `${path}/${slugify(snippet.name, {lower: true, strict: true})}.${ext}`
+        await fs.writeFile(filePath, buildSnippetFile(snippet))
         count++
         this.log(`✅ Pulled: ${snippet.name}`)
       }
 
       this.log(`🎉 Successfully pulled ${count} snippet${count === 1 ? '' : 's'} to ${path}`)
+      if (skipped > 0) {
+        this.warn(`${skipped} snippet${skipped === 1 ? '' : 's'} skipped because they have no name`)
+      }
     } catch (error) {
       this.error(`❌ Error pulling snippets: ${(error as Error).message}`)
     }
