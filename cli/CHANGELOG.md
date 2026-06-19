@@ -1,5 +1,15 @@
 # @loopress/cli
 
+## 0.2.0
+
+### Minor Changes
+
+- 7a3642f: Add full snippet pull with various files
+
+### Patch Changes
+
+- 7b8b35d: Add ascii art of the logo
+
 ## 0.1.1
 
 ### Patch Changes
