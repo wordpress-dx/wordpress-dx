@@ -17,6 +17,7 @@ const sanitize = (value: string) => value.replaceAll(/\s*\n\s*/g, ' ').trim()
 
 function buildMetaLines(snippet: NormalizedSnippet): string[] {
   return [
+    `id: ${snippet.id}`,
     `name: ${sanitize(snippet.name)}`,
     ...(snippet.description ? [`description: ${sanitize(snippet.description)}`] : []),
     `type: ${snippet.type}`,

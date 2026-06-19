@@ -3,7 +3,7 @@ import got from 'got'
 
 import {LoopressCommand} from '../../lib/base.js'
 import {Snippet} from '../../types/snippet.js'
-import {getSnippetPlugin, NormalizedSnippet, PluginName} from '../../utils/snippet-plugin.js'
+import {getSnippetPlugin, PluginName} from '../../utils/snippet-plugin.js'
 
 export default class Push extends LoopressCommand {
   static args = {
@@ -53,6 +53,21 @@ export default class Push extends LoopressCommand {
     }
   }
 
+  private async injectIdIntoFile(filePath: string, content: string, id: number): Promise<void> {
+    const fs = await import('node:fs/promises')
+    let updated: string
+
+    if (content.includes('/**')) {
+      updated = content.replace('/**', `/**\n * id: ${id}`)
+    } else if (content.includes('<!--')) {
+      updated = content.replace('<!--', `<!--\n  id: ${id}`)
+    } else {
+      return
+    }
+
+    await fs.writeFile(filePath, updated)
+  }
+
   private async loadSnippets(path: string): Promise<Snippet[]> {
     const fs = await import('node:fs/promises')
     const snippets: Snippet[] = []
@@ -63,9 +78,11 @@ export default class Push extends LoopressCommand {
         if (file.endsWith('.php')) {
           const filePath = `${path}/${file}`
           const content = await fs.readFile(filePath, 'utf8')
+          const meta = this.parseMetaFromContent(content)
           snippets.push({
             code: content,
-            name: file.replace('.php', ''),
+            id: meta.id,
+            name: meta.name ?? file.replace('.php', ''),
             path: filePath,
           })
         }
@@ -75,6 +92,15 @@ export default class Push extends LoopressCommand {
     }
 
     return snippets
+  }
+
+  private parseMetaFromContent(content: string): {id?: number; name?: string} {
+    const idMatch = content.match(/[\s*]*id:\s*(\d+)/)
+    const nameMatch = content.match(/[\s*]*name:\s*(.+)/)
+    return {
+      id: idMatch ? Number(idMatch[1]) : undefined,
+      name: nameMatch ? nameMatch[1].trim() : undefined,
+    }
   }
 
   private async pushSnippet(
@@ -92,22 +118,20 @@ export default class Push extends LoopressCommand {
 
     try {
       const endpoint = adapter.endpoint(url)
-      const remoteList: Record<string, unknown>[] = await got.get(endpoint, {headers}).json()
-      const existing = remoteList
-        .map((r) => adapter.fromRemote(r))
-        .find((s: NormalizedSnippet) => s.name === snippet.name)
-
       const payload = adapter.toPayload(snippet.name, snippet.code, snippet.path)
 
-      if (existing) {
-        this.log(`🔄 Updating existing snippet: ${snippet.name}`)
-        await got.put(`${endpoint}/${existing.id}`, {headers, json: payload})
-      } else {
-        this.log(`➕ Creating new snippet: ${snippet.name}`)
-        await got.post(endpoint, {headers, json: payload})
+      if (snippet.id) {
+        this.log(`🔄 Updating snippet by id (${snippet.id}): ${snippet.name}`)
+        await got.put(`${endpoint}/${snippet.id}`, {headers, json: payload})
+        this.log(`✅ Updated: ${snippet.name}`)
+        return
       }
 
-      this.log(`✅ ${existing ? 'Updated' : 'Created'}: ${snippet.name}`)
+      this.log(`➕ Creating new snippet: ${snippet.name}`)
+      const response: Record<string, unknown> = await got.post(endpoint, {headers, json: payload}).json()
+      const created = adapter.fromRemote(response)
+      await this.injectIdIntoFile(snippet.path, snippet.code, created.id)
+      this.log(`✅ Created: ${snippet.name} (id: ${created.id})`)
     } catch (error) {
       this.error(`❌ Error pushing snippet ${snippet.name}: ${(error as Error).message}`)
     }

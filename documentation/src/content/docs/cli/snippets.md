@@ -51,7 +51,10 @@ lps snippets pull --plugin wpcode
 
 ### `lps snippets push`
 
-Upload `.php` files from a local directory to WordPress. If a snippet with the same name already exists it is updated; otherwise a new snippet is created.
+Upload `.php` files from a local directory to WordPress.
+
+- If the file has an `id` in its header comment, the snippet with that id is updated directly.
+- Otherwise, a new snippet is created.
 
 ```bash
 lps snippets push [path]
@@ -104,14 +107,75 @@ Found 3 snippets:
 
 ## File format
 
-Each snippet is stored as a plain `.php` file named after the snippet. The filename (without extension) becomes the snippet name in WordPress.
+Each snippet is stored as a plain file in the snippets directory. The file extension reflects the snippet type (`.php`, `.css`, `.js`, `.html`, `.txt`).
 
 ```
 snippets/
   price-formatter.php
   redirect-homepage.php
-  custom-login-logo.php
+  custom-login-logo.css
 ```
+
+### Header comments
+
+`lps snippets pull` automatically writes a header comment at the top of each file containing the snippet's metadata. This header is read back by `lps snippets push` to identify and configure the snippet on WordPress.
+
+**PHP:**
+
+```php
+<?php
+/**
+ * id: 42
+ * name: Price Formatter
+ * description: Formats WooCommerce prices
+ * type: php
+ * tags: woocommerce, formatting
+ * active: true
+ */
+
+// snippet code here...
+```
+
+**CSS / JS:**
+
+```css
+/**
+ * id: 17
+ * name: Custom Admin Styles
+ * type: css
+ * active: true
+ */
+
+body { ... }
+```
+
+**HTML:**
+
+```html
+<!--
+  id: 11
+  name: Cookie Banner
+  type: html
+  active: false
+-->
+
+<div class="cookie-banner">...</div>
+```
+
+### Supported fields
+
+| Field | Description |
+|-------|-------------|
+| `id` | WordPress snippet ID. Used by `push` to update the correct snippet without fetching the full remote list. |
+| `name` | Snippet title in WordPress. Takes precedence over the filename. |
+| `description` | Optional description shown in the WordPress admin. |
+| `type` | Snippet type: `php`, `css`, `js`, `html`, or `text`. |
+| `tags` | Comma-separated list of tags. |
+| `active` | Whether the snippet is active (`true` / `false`). |
+
+:::tip
+Always run `lps snippets pull` before editing locally so that your files have the `id` header. This ensures `push` updates the right snippet even if you rename the file.
+:::
 
 ## WPCode support
 
