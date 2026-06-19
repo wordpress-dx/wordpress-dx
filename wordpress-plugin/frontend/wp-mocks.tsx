@@ -34,6 +34,16 @@ mock.module('@wordpress/components', () => ({
             {help && <span>{help}</span>}
         </label>
     ),
+    SelectControl: ({ label, value, options, onChange }: any) => (
+        <div>
+            <label htmlFor="select-control">{label}</label>
+            <select id="select-control" aria-label={label} value={value} onChange={(e) => onChange(e.target.value)}>
+                {options?.map((opt: any) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+            </select>
+        </div>
+    ),
     ComboboxControl: ({ label, value, options, onChange, onFilterValueChange, placeholder, isLoading }: any) => (
         <div>
             <label htmlFor="combo-input">
