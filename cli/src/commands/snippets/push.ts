@@ -63,9 +63,11 @@ export default class Push extends LoopressCommand {
         if (file.endsWith('.php')) {
           const filePath = `${path}/${file}`
           const content = await fs.readFile(filePath, 'utf8')
+          const meta = this.parseMetaFromContent(content)
           snippets.push({
             code: content,
-            name: file.replace('.php', ''),
+            id: meta.id,
+            name: meta.name ?? file.replace('.php', ''),
             path: filePath,
           })
         }
@@ -75,6 +77,15 @@ export default class Push extends LoopressCommand {
     }
 
     return snippets
+  }
+
+  private parseMetaFromContent(content: string): {id?: number; name?: string} {
+    const idMatch = content.match(/[\s*]*id:\s*(\d+)/)
+    const nameMatch = content.match(/[\s*]*name:\s*(.+)/)
+    return {
+      id: idMatch ? Number(idMatch[1]) : undefined,
+      name: nameMatch ? nameMatch[1].trim() : undefined,
+    }
   }
 
   private async pushSnippet(
@@ -92,15 +103,22 @@ export default class Push extends LoopressCommand {
 
     try {
       const endpoint = adapter.endpoint(url)
+      const payload = adapter.toPayload(snippet.name, snippet.code, snippet.path)
+
+      if (snippet.id) {
+        this.log(`🔄 Updating snippet by id (${snippet.id}): ${snippet.name}`)
+        await got.put(`${endpoint}/${snippet.id}`, {headers, json: payload})
+        this.log(`✅ Updated: ${snippet.name}`)
+        return
+      }
+
       const remoteList: Record<string, unknown>[] = await got.get(endpoint, {headers}).json()
       const existing = remoteList
         .map((r) => adapter.fromRemote(r))
         .find((s: NormalizedSnippet) => s.name === snippet.name)
 
-      const payload = adapter.toPayload(snippet.name, snippet.code, snippet.path)
-
       if (existing) {
-        this.log(`🔄 Updating existing snippet: ${snippet.name}`)
+        this.log(`🔄 Updating existing snippet by name: ${snippet.name}`)
         await got.put(`${endpoint}/${existing.id}`, {headers, json: payload})
       } else {
         this.log(`➕ Creating new snippet: ${snippet.name}`)
