@@ -18,6 +18,9 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Loopress - Make WordPress reproducible" },
       { property: "og:description", content: "Loopress brings Git, Composer and reproducible environments to WordPress." },
     ],
+    links: [
+      { rel: "canonical", href: "https://loopress.dev/" },
+    ],
     scripts: [
       {
         type: "application/ld+json",

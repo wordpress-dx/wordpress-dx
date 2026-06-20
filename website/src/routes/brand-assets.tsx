@@ -6,8 +6,11 @@ import { Footer } from "@/components/landing/Footer";
 export const Route = createFileRoute("/brand-assets")({
   head: () => ({
     meta: [
-      { title: "Brand Assets - Loopress" },
-      { name: "description", content: "Loopress trademark and brand asset usage policy." },
+      { title: "Loopress Brand Assets and Trademark Usage Policy" },
+      { name: "description", content: "Trademark and brand asset usage policy for the Loopress name and logos. Learn how to properly reference Loopress in your projects and content." },
+    ],
+    links: [
+      { rel: "canonical", href: "https://loopress.dev/brand-assets" },
     ],
   }),
   component: BrandAssetsPage,
@@ -24,6 +27,7 @@ function BrandAssetsPage() {
             Trademark and usage policy for the Loopress name and logos.
           </p>
         </div>
+        <h2 className="mb-4 text-lg font-medium tracking-tight">Trademark License</h2>
         <pre className="whitespace-pre-wrap rounded-lg border border-border bg-card/40 px-6 py-6 font-mono text-sm leading-relaxed text-foreground/80">
           {licenseText}
         </pre>
