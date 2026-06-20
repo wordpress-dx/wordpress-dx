@@ -3,7 +3,15 @@ import got from 'got'
 
 import {LoopressCommand} from '../../lib/base.js'
 import {Snippet} from '../../types/snippet.js'
-import {getSnippetPlugin, PluginName} from '../../utils/snippet-plugin.js'
+import {getSnippetPlugin, PluginName, SnippetType} from '../../utils/snippet-plugin.js'
+
+const EXT_TO_TYPE: Record<string, SnippetType> = {
+  '.css': 'css',
+  '.html': 'html',
+  '.js': 'js',
+  '.php': 'php',
+  '.txt': 'text',
+}
 
 export default class Push extends LoopressCommand {
   static args = {
@@ -62,7 +70,13 @@ export default class Push extends LoopressCommand {
     } else if (content.includes('<!--')) {
       updated = content.replace('<!--', `<!--\n  id: ${id}`)
     } else {
-      return
+      const trimmed = content.trimStart()
+      if (trimmed.startsWith('<?php')) {
+        const rest = trimmed.slice('<?php'.length)
+        updated = `<?php\n/**\n * id: ${id}\n */\n${rest}`
+      } else {
+        updated = `/**\n * id: ${id}\n */\n\n${content}`
+      }
     }
 
     await fs.writeFile(filePath, updated)
@@ -71,21 +85,24 @@ export default class Push extends LoopressCommand {
   private async loadSnippets(path: string): Promise<Snippet[]> {
     const fs = await import('node:fs/promises')
     const snippets: Snippet[] = []
+    const SUPPORTED_EXTENSIONS = ['.php', '.css', '.js', '.html', '.txt']
 
     try {
       const files = await fs.readdir(path)
       for (const file of files) {
-        if (file.endsWith('.php')) {
-          const filePath = `${path}/${file}`
-          const content = await fs.readFile(filePath, 'utf8')
-          const meta = this.parseMetaFromContent(content)
-          snippets.push({
-            code: content,
-            id: meta.id,
-            name: meta.name ?? file.replace('.php', ''),
-            path: filePath,
-          })
-        }
+        const ext = SUPPORTED_EXTENSIONS.find((e) => file.endsWith(e))
+        if (!ext) continue
+
+        const filePath = `${path}/${file}`
+        const content = await fs.readFile(filePath, 'utf8')
+        const meta = this.parseMetaFromContent(content)
+        snippets.push({
+          code: content,
+          id: meta.id,
+          name: meta.name ?? file.slice(0, -ext.length),
+          path: filePath,
+          type: meta.type ?? EXT_TO_TYPE[ext],
+        })
       }
     } catch (error) {
       this.error(`❌ Error loading snippets: ${(error as Error).message}`)
@@ -94,12 +111,16 @@ export default class Push extends LoopressCommand {
     return snippets
   }
 
-  private parseMetaFromContent(content: string): {id?: number; name?: string} {
+  private parseMetaFromContent(content: string): {id?: number; name?: string; type?: SnippetType} {
     const idMatch = content.match(/[\s*]*id:\s*(\d+)/)
     const nameMatch = content.match(/[\s*]*name:\s*(.+)/)
+    const typeMatch = content.match(/[\s*]*type:\s*(\w+)/)
+    const rawType = typeMatch?.[1].trim()
+    const validTypes: SnippetType[] = ['css', 'html', 'js', 'php', 'text']
     return {
       id: idMatch ? Number(idMatch[1]) : undefined,
       name: nameMatch ? nameMatch[1].trim() : undefined,
+      type: validTypes.includes(rawType as SnippetType) ? (rawType as SnippetType) : undefined,
     }
   }
 
@@ -118,7 +139,7 @@ export default class Push extends LoopressCommand {
 
     try {
       const endpoint = adapter.endpoint(url)
-      const payload = adapter.toPayload(snippet.name, snippet.code, snippet.path)
+      const payload = adapter.toPayload(snippet.name, snippet.code, snippet.path, snippet.type)
 
       if (snippet.id) {
         this.log(`🔄 Updating snippet by id (${snippet.id}): ${snippet.name}`)

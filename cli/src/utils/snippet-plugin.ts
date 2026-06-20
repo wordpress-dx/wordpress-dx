@@ -31,7 +31,7 @@ function resolveType(raw: unknown, code: string): SnippetType {
 export interface SnippetPlugin {
   endpoint(siteUrl: string): string
   fromRemote(data: Record<string, unknown>): NormalizedSnippet
-  toPayload(name: string, code: string, path: string): Record<string, unknown>
+  toPayload(name: string, code: string, path: string, type: SnippetType): Record<string, unknown>
 }
 
 class CodeSnippetsPlugin implements SnippetPlugin {
@@ -51,12 +51,13 @@ class CodeSnippetsPlugin implements SnippetPlugin {
     }
   }
 
-  toPayload(name: string, code: string, path: string): Record<string, unknown> {
+  toPayload(name: string, code: string, path: string, type: SnippetType): Record<string, unknown> {
     return {
       code,
       desc: `Imported from ${path}`,
       name,
       tags: ['cli-import'],
+      type,
     }
   }
 }
@@ -78,13 +79,13 @@ class WPCodePlugin implements SnippetPlugin {
     }
   }
 
-  toPayload(name: string, code: string, path: string): Record<string, unknown> {
+  toPayload(name: string, code: string, path: string, type: SnippetType): Record<string, unknown> {
     return {
       code,
       note: `Imported from ${path}`,
       tags: ['cli-import'],
       title: name,
-      type: 'php',
+      type,
     }
   }
 }
