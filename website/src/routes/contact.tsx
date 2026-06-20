@@ -22,8 +22,11 @@ import { contactSchema, sendContactEmail } from "@/lib/contact";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact - Loopress" },
-      { name: "description", content: "Get in touch with the Loopress team." },
+      { title: "Contact the Loopress Team - Partnerships and Support" },
+      { name: "description", content: "Get in touch with the Loopress team for partnership requests, trademark inquiries, or general support. We'll get back to you as soon as possible." },
+    ],
+    links: [
+      { rel: "canonical", href: "https://loopress.dev/contact" },
     ],
   }),
   component: ContactPage,
@@ -61,6 +64,8 @@ function ContactPage() {
             get back to you.
           </p>
         </div>
+
+        <h2 className="sr-only">Contact form</h2>
 
         {status === "success" ? (
           <div className="rounded-md border border-border bg-card/60 px-6 py-8 text-center">
