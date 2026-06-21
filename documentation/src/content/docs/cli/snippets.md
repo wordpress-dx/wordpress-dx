@@ -37,7 +37,6 @@ lps snippets pull [path]
 | Flag | Description |
 |------|-------------|
 | `--dryRun` / `-d` | Show what would be written without touching the filesystem |
-| `--force` / `-f` | Overwrite existing local files |
 | `--plugin` / `-p` | Target plugin: `code-snippets` (default) or `wpcode` |
 
 **Example:**

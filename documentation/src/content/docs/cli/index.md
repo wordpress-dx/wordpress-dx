@@ -12,15 +12,12 @@ The Loopress CLI (`lps`) is a Node.js command-line tool that connects to the Wor
 | **Auth** | `lps login` | Log in to Loopress via the console |
 | | `lps logout` | Remove the stored authentication token |
 | **Snippets** | `lps snippets pull` | Download snippets from WordPress |
-| | `lps snippets push` | Upload local `.php` files to WordPress |
+| | `lps snippets push` | Upload local snippet files to WordPress |
 | | `lps snippets list` | List all snippets on the site |
 | **Styles** | `lps styles pull` | Download Global Styles from WordPress |
 | | `lps styles push` | Upload Global Styles (with optional CSS bundle) |
-| **Menu** | `lps menu pull` | Download navigation menus from WordPress |
-| | `lps menu push` | Upload menus from a local JSON file |
-| **Export / Import** | `lps export` | One-shot export of all snippets to a file |
-| | `lps import` | One-shot import of snippets from a file |
 | **Project** | `lps project config` | Add or update a project/environment credential |
+| | `lps project list` | List all configured projects |
 | | `lps project switch` | Switch the active project |
 | | `lps project switch-env` | Switch the active environment |
 | | `lps project remove` | Remove a saved project |
@@ -46,4 +43,4 @@ lps snippets push
 
 All commands authenticate against WordPress using an [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/). These are generated in **Users → Profile → Application Passwords**.
 
-The CLI supports managing multiple projects (`lps project config`) and switching between them (`lps project switch`). For CI environments, credentials can be passed as environment variables (`WP_URL`, `WP_USERNAME`, `WP_APP_PASSWORD`).
+The CLI supports managing multiple projects (`lps project config`) and switching between them (`lps project switch`).

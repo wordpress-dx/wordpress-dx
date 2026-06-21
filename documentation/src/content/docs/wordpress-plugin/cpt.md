@@ -21,7 +21,7 @@ The Loopress plugin registers read-only REST endpoints for any registered custom
 
 ## REST API
 
-### `GET /wp-json/lps/v1/cpt/{post_type}`
+### `GET /wp-json/loopress/v1/cpt/{post_type}`
 
 List all posts of a given post type. `{post_type}` must be a registered post type slug.
 
@@ -29,7 +29,7 @@ List all posts of a given post type. `{post_type}` must be a registered post typ
 
 ```bash
 curl -H "X-WP-Nonce: <nonce>" \
-  https://example.com/wp-json/lps/v1/cpt/product
+  https://example.com/wp-json/loopress/v1/cpt/product
 ```
 
 **Response:**
@@ -51,7 +51,7 @@ curl -H "X-WP-Nonce: <nonce>" \
 ]
 ```
 
-### `GET /wp-json/lps/v1/cpt/{post_type}/{id}`
+### `GET /wp-json/loopress/v1/cpt/{post_type}/{id}`
 
 Retrieve a single post by ID. Returns `404` if the post does not exist or belongs to a different post type.
 
@@ -59,7 +59,7 @@ Retrieve a single post by ID. Returns `404` if the post does not exist or belong
 
 ```bash
 curl -H "X-WP-Nonce: <nonce>" \
-  https://example.com/wp-json/lps/v1/cpt/product/42
+  https://example.com/wp-json/loopress/v1/cpt/product/42
 ```
 
 ## Error responses

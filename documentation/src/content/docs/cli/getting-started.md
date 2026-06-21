@@ -67,24 +67,26 @@ Loopress stores configurations in `~/.lps/config.json` and tracks the currently 
 
 ```bash
 lps project config          # Add or update a project/environment
+lps project list            # Show all configured projects and their environments
 lps project switch          # Interactively pick the active project
 lps project switch-env      # Interactively pick the active environment
 lps project remove          # Remove a saved project
 lps project remove-env      # Remove a saved environment
 ```
 
-All commands operate against the **active project/environment** unless overridden via environment variables.
+All commands operate against the **active project/environment**.
 
-## Environment variable fallback
+## Project-level configuration
 
-For CI/CD pipelines where interactive prompts are not available, you can bypass the project configuration entirely using environment variables:
+Place a `loopress.config.js` file in your project root to customise the default paths for snippets and styles:
 
-```bash
-export WP_URL=https://example.com
-export WP_USERNAME=admin
-export WP_APP_PASSWORD="xxxx xxxx xxxx xxxx xxxx xxxx"
-
-lps snippets push
+```js
+// loopress.config.js
+export default {
+  rootDir: './wp-content',   // base directory (optional)
+  snippets: 'snippets',      // relative to rootDir (default: 'snippets')
+  styles: 'styles',          // relative to rootDir (default: 'styles')
+}
 ```
 
 ## Dry run

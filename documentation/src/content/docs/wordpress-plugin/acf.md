@@ -22,7 +22,7 @@ The Loopress plugin exposes a REST API that the Loopress CLI uses to pull and pu
 
 ## REST API
 
-### `GET /wp-json/lps/v1/acf/field-groups`
+### `GET /wp-json/loopress/v1/acf/field-groups`
 
 Returns all ACF field groups with their nested fields.
 
@@ -46,7 +46,7 @@ Returns all ACF field groups with their nested fields.
 ]
 ```
 
-### `POST /wp-json/lps/v1/acf/field-groups`
+### `POST /wp-json/loopress/v1/acf/field-groups`
 
 Import a field group. The request body must be a valid ACF field group object with a `key` property. Equivalent to ACF's own **Tools → Import** feature.
 

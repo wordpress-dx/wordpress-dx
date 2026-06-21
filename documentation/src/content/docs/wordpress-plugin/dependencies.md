@@ -11,7 +11,7 @@ Loopress maintains its own `composer.json` under `wp-content/loopress/`. Install
 
 ```
 wp-content/
-  lps/
+  loopress/
     composer.json        ← managed by Loopress
     vendor/
       autoload.php       ← require this in your snippets

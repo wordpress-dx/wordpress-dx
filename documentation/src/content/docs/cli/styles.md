@@ -9,40 +9,36 @@ The `styles` command group syncs the [Global Styles](https://developer.wordpress
 
 WordPress stores Global Styles as a custom post. The CLI fetches that post (including its ID) on `pull` and writes it back on `push`. Because the ID is embedded in the saved JSON file, you must always **pull before push** on a fresh checkout.
 
+The CLI reads the styles directory from `loopress.config.js` (`styles` key, default `./styles`). All files are read from and written to that directory.
+
 ## Commands
 
 ### `lps styles pull`
 
-Download the current Global Styles from WordPress and save them to a JSON file.
+Download the current Global Styles from WordPress and save them to `global-styles.json` inside the styles directory.
 
 ```bash
-lps styles pull [path]
+lps styles pull
 ```
 
-| Argument | Default | Description |
-|----------|---------|-------------|
-| `path` | `./styles.json` | Output file (includes the style ID required for push) |
+The output file defaults to `./styles/global-styles.json` and contains the style ID required for push.
 
 **Example:**
 
 ```bash
 lps styles pull
-lps styles pull ./theme/styles.json
+lps styles pull --dryRun
 ```
 
 ---
 
 ### `lps styles push`
 
-Upload Global Styles back to WordPress. The command also bundles any `*.css` files found in `./styles/**/*.css` and injects them as the custom CSS property.
+Upload Global Styles back to WordPress. The command reads `global-styles.json` from the styles directory and also bundles any `*.css` files found there, injecting them as the custom CSS property.
 
 ```bash
-lps styles push [path]
+lps styles push
 ```
-
-| Argument | Default | Description |
-|----------|---------|-------------|
-| `path` | `./styles.json` | JSON file previously created by `pull` |
 
 | Flag | Description |
 |------|-------------|
@@ -51,26 +47,33 @@ lps styles push [path]
 **Example:**
 
 ```bash
-# Edit styles.json, then:
+# Pull first, then edit, then push:
+lps styles pull
+# ... edit ./styles/global-styles.json or add CSS files ...
 lps styles push
-
-# With extra CSS files:
-# ./styles/typography.css and ./styles/components.css are bundled automatically
 ```
 
 ## Recommended directory layout
 
 ```
-styles.json          ← pulled from WordPress (commit this)
 styles/
+  global-styles.json   ← pulled from WordPress (commit this)
   typography.css
   components.css
   overrides.css
 ```
 
-The JSON file is committed to Git. CSS files are bundled on the fly during `push` so you can split your custom CSS across multiple files without touching `styles.json` manually.
+The JSON file is committed to Git. CSS files are bundled on the fly during `push` so you can split your custom CSS across multiple files without touching `global-styles.json` manually.
+
+You can change the styles directory via `loopress.config.js`:
+
+```js
+export default {
+  styles: 'theme/styles',
+}
+```
 
 ## Notes
 
-- The `path` argument must point to a JSON file that contains an `id` field. If the file is missing an `id`, the push will fail with an error.
+- `global-styles.json` must contain an `id` field. If the file is missing (i.e. you have never pulled), the push will fail — always pull first on a fresh checkout.
 - Global Styles are theme-specific. Switching themes resets them; always re-pull after a theme change.
