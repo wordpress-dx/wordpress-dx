@@ -1,0 +1,36 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Nav } from "@/components/landing/Nav";
+import { Footer } from "@/components/landing/Footer";
+import licenseText from "@loopress/assets/LICENSE?raw";
+---
+
+<Layout
+  title="Loopress Brand Assets and Trademark Usage Policy"
+  description="Trademark and brand asset usage policy for the Loopress name and logos. Learn how to properly reference Loopress in your projects and content."
+  canonical="https://loopress.dev/brand-assets"
+>
+  <div class="min-h-screen bg-background text-foreground">
+    <Nav client:load />
+    <main class="mx-auto max-w-3xl px-6 py-24">
+      <div class="mb-10">
+        <h1 class="text-2xl font-semibold tracking-tight">Brand Assets</h1>
+        <p class="mt-2 text-sm text-muted-foreground">
+          Trademark and usage policy for the Loopress name and logos.
+        </p>
+      </div>
+      <h2 class="mb-4 text-lg font-medium tracking-tight">Trademark License</h2>
+      <pre
+        class="whitespace-pre-wrap rounded-lg border border-border bg-card/40 px-6 py-6 font-mono text-sm leading-relaxed text-foreground/80"
+        >{licenseText}</pre
+      >
+      <p class="mt-8 text-sm text-muted-foreground">
+        To request permission for uses not listed above, use the{" "}
+        <a href="/contact" class="underline underline-offset-2 hover:text-foreground">
+          contact form
+        </a>.
+      </p>
+    </main>
+    <Footer />
+  </div>
+</Layout>

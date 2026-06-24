@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import logoBlack from "@loopress/assets/loopress-logo-black.svg?url";
@@ -10,7 +9,7 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center">
+        <a href="/" className="flex items-center">
           <img
             src={theme === "dark" ? logoWhite : logoBlack}
             alt="Loopress"
@@ -18,7 +17,7 @@ export function Nav() {
             height="40"
             className="h-10 w-auto"
           />
-        </Link>
+        </a>
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
           <a href="/#problem" className="transition-colors hover:text-foreground">Problem</a>
           <a href="/#solution" className="transition-colors hover:text-foreground">Solution</a>
