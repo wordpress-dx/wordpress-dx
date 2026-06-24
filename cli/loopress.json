@@ -1,3 +1,4 @@
 {
+  "$schema": "./loopress.schema.json",
   "rootDir": "./demo"
 }
