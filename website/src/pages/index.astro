@@ -1,0 +1,55 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Nav } from "@/components/landing/Nav";
+import { Hero } from "@/components/landing/Hero";
+import { Problem } from "@/components/landing/Problem";
+import { Solution } from "@/components/landing/Solution";
+import { Features } from "@/components/landing/Features";
+import { Integrations } from "@/components/landing/Integrations";
+import { Vision } from "@/components/landing/Vision";
+import { Pricing } from "@/components/landing/Pricing";
+import { FinalCTA } from "@/components/landing/FinalCTA";
+import { Footer } from "@/components/landing/Footer";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Loopress",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Web",
+  description:
+    "Modern development workflows for WordPress. Configuration as code, version control, reproducible environments.",
+  url: "https://loopress.dev",
+  author: { "@id": "https://loopress.dev/#organization" },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    description: "Free during beta",
+  },
+};
+---
+
+<Layout
+  title="Loopress - Make WordPress reproducible"
+  description="Modern development workflows for WordPress. Configuration as code, version control, reproducible environments. Join the beta."
+  canonical="https://loopress.dev/"
+  ogTitle="Loopress - Make WordPress reproducible"
+  ogDescription="Loopress brings Git, Composer and reproducible environments to WordPress."
+  structuredData={structuredData}
+>
+  <div class="min-h-screen bg-background text-foreground">
+    <Nav client:load />
+    <main>
+      <Hero />
+      <Problem />
+      <Solution />
+      <Features />
+      <Integrations />
+      <Vision />
+      <Pricing />
+      <FinalCTA client:load />
+    </main>
+    <Footer />
+  </div>
+</Layout>

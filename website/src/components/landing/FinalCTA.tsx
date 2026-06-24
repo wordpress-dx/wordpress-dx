@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { subscribe } from "@/lib/subscribe";
 
 export function FinalCTA() {
   const [email, setEmail] = useState("");
@@ -11,7 +10,12 @@ export function FinalCTA() {
 
     setStatus("loading");
     try {
-      await subscribe({ data: { email } });
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error("Request failed");
       setStatus("success");
     } catch {
       setStatus("error");

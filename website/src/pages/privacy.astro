@@ -1,0 +1,20 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Nav } from "@/components/landing/Nav";
+import { Footer } from "@/components/landing/Footer";
+---
+
+<Layout
+  title="Privacy Policy - Loopress WordPress Developer Tools"
+  description="Read the Loopress privacy policy to understand how we collect, use, and protect your personal data as a user of our WordPress developer tools."
+  canonical="https://loopress.dev/privacy"
+>
+  <div class="min-h-screen bg-background text-foreground">
+    <Nav client:load />
+    <main class="mx-auto max-w-3xl px-6 py-24">
+      <h1 class="text-2xl font-semibold tracking-tight">Privacy Policy</h1>
+      <p class="mt-4 text-sm text-muted-foreground">Coming soon.</p>
+    </main>
+    <Footer />
+  </div>
+</Layout>
