@@ -7,7 +7,7 @@ import {readLocalConfig, writeLocalConfig} from '../../utils/loopress-config.js'
 import {mergePluginManifest} from '../../utils/plugins.js'
 
 export default class Pull extends LoopressCommand {
-  static description = 'Pull installed plugins from WordPress into loopress.config.js'
+  static description = 'Pull installed plugins from WordPress into loopress.json'
   static examples = [
     '$ lps plugins pull',
     '$ lps plugins pull --dry-run',
@@ -37,7 +37,7 @@ export default class Pull extends LoopressCommand {
     const {added, merged, updated} = mergePluginManifest(localConfig.plugins ?? {}, incoming)
 
     if (dryRun) {
-      this.log(`[dry-run] Would write ${Object.keys(merged).length} plugins to loopress.config.js`)
+      this.log(`[dry-run] Would write ${Object.keys(merged).length} plugins to loopress.json`)
       if (added.length > 0) this.log(`  + ${added.join(', ')}`)
       if (updated.length > 0) {
         for (const u of updated) this.log(`  ~ ${u.slug} (${u.from} → ${u.to})`)
@@ -48,7 +48,7 @@ export default class Pull extends LoopressCommand {
 
     await writeLocalConfig({...localConfig, plugins: merged})
 
-    this.log(`Wrote ${Object.keys(merged).length} plugins to loopress.config.js`)
+    this.log(`Wrote ${Object.keys(merged).length} plugins to loopress.json`)
     if (added.length > 0) this.log(`  + Added: ${added.join(', ')}`)
     for (const u of updated) this.log(`  ~ Updated: ${u.slug} ${u.from} → ${u.to}`)
 

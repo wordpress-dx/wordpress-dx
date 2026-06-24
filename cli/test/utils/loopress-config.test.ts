@@ -23,7 +23,7 @@ describe('loopress-config', () => {
   })
 
   describe('readLocalConfig', () => {
-    it('returns an empty object when loopress.config.js does not exist', async () => {
+    it('returns an empty object when loopress.json does not exist', async () => {
       const config = await readLocalConfig()
       expect(config).to.deep.equal({})
     })
@@ -58,14 +58,13 @@ describe('loopress-config', () => {
       expect(config.plugins).to.deep.equal({'woocommerce': '9.0.0', 'acf': '6.3.2'})
     })
 
-    it('writes a valid ES module that can be re-imported', async () => {
+    it('writes valid JSON', async () => {
       await writeLocalConfig({plugins: {'hello': '1.0.0'}})
 
       const {readFile} = await import('node:fs/promises')
-      const content = await readFile(join(tmpDir, 'loopress.config.js'), 'utf8')
-      expect(content).to.match(/^export default /)
-      expect(content).to.include('"hello"')
-      expect(content).to.include('"1.0.0"')
+      const content = await readFile(join(tmpDir, 'loopress.json'), 'utf8')
+      const parsed = JSON.parse(content)
+      expect(parsed.plugins).to.deep.equal({'hello': '1.0.0'})
     })
   })
 })

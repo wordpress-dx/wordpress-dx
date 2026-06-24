@@ -8,7 +8,7 @@ import {readLocalConfig} from '../../utils/loopress-config.js'
 import {diffPlugins} from '../../utils/plugins.js'
 
 export default class Push extends LoopressCommand {
-  static description = 'Sync plugins on WordPress to match loopress.config.js'
+  static description = 'Sync plugins on WordPress to match loopress.json'
   static examples = [
     '$ lps plugins push',
     '$ lps plugins push --dry-run',
@@ -27,7 +27,7 @@ export default class Push extends LoopressCommand {
     const manifest = localConfig.plugins
 
     if (!manifest || Object.keys(manifest).length === 0) {
-      this.error('No plugins found in loopress.config.js. Run `lps plugins pull` first.')
+      this.error('No plugins found in loopress.json. Run `lps plugins pull` first.')
     }
 
     this.log(`Pushing plugins to ${url}`)

@@ -39,7 +39,7 @@ export default class Add extends LoopressCommand {
     slug: Args.string({description: 'Plugin slug (WordPress.org)', required: true}),
     version: Args.string({description: 'Version to pin (default: latest)'}),
   }
-  static description = 'Add a plugin to loopress.config.js, resolving its latest version from WordPress.org'
+  static description = 'Add a plugin to loopress.json, resolving its latest version from WordPress.org'
   static examples = [
     '$ lps plugins add woocommerce',
     '$ lps plugins add woocommerce 8.9.1',
@@ -71,7 +71,7 @@ export default class Add extends LoopressCommand {
     const existing = localConfig.plugins ?? {}
 
     if (existing[slug] === resolvedVersion) {
-      this.log(`${slug}@${resolvedVersion} is already in loopress.config.js — nothing to do.`)
+      this.log(`${slug}@${resolvedVersion} is already in loopress.json — nothing to do.`)
       return
     }
 
