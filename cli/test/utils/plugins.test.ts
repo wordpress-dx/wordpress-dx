@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 
-import {resolvePluginVersion} from '../../src/commands/plugins/add.js'
+import {resolvePluginVersion} from '../../src/commands/plugins/require.js'
 import {InstalledPlugin} from '../../src/types/plugin.js'
 import {diffPlugins, mergePluginManifest} from '../../src/utils/plugins.js'
 
