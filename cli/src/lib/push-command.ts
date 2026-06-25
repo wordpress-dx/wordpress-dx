@@ -5,6 +5,21 @@ import {LoopressCommand} from './base.js'
 
 const API_URL = process.env.LPS_API_URL ?? 'https://api.loopress.dev'
 
+async function recordDeployment(data: {status: 'failure' | 'success'; url: string}): Promise<void> {
+  const token = process.env.LPS_TOKEN ?? authManager.getAuth()?.token ?? null
+  if (!token) return
+
+  try {
+    await got.post(`${API_URL}/deployments`, {
+      headers: {Authorization: `Bearer ${token}`},
+      json: data,
+      timeout: {request: 3000},
+    })
+  } catch {
+    // non-blocking: recording must never interrupt the push flow
+  }
+}
+
 export abstract class PushCommand extends LoopressCommand {
   protected dryRun = false
 
@@ -32,6 +47,6 @@ export abstract class PushCommand extends LoopressCommand {
   }
 
   protected async recordSuccess(): Promise<void> {
-    if (!this.dryRun) await this.recordDeployment('success')
+    if (!this.dryRun) await recordDeployment({url: this.siteConfig.url, status: 'success'})
   }
 }
