@@ -3,6 +3,7 @@ import got from 'got'
 
 import {LoopressCommand} from '../../lib/base.js'
 import {Snippet} from '../../types/snippet.js'
+import {recordDeployment} from '../../utils/api.js'
 import {getSnippetPlugin, PluginName} from '../../utils/snippet-plugin.js'
 
 export default class Push extends LoopressCommand {
@@ -37,8 +38,9 @@ export default class Push extends LoopressCommand {
     this.log(`📂 From snippet path: ${path}`)
     this.log(`🔄 Dry run: ${dryRun ? 'yes' : 'no'}`)
 
+    let snippets: Snippet[] = []
     try {
-      const snippets = await this.loadSnippets(path)
+      snippets = await this.loadSnippets(path)
       this.log(`✅ Found ${snippets.length} snippets to push`)
 
       const headers = await this.buildAuthHeaders()
@@ -47,8 +49,10 @@ export default class Push extends LoopressCommand {
         await this.pushSnippet(snippet, url, headers, dryRun, adapter)
       }
 
+      if (!dryRun) await recordDeployment({url, snippetCount: snippets.length, status: 'success'})
       this.log('🎉 All snippets pushed successfully!')
     } catch (error) {
+      if (!dryRun) await recordDeployment({url, snippetCount: snippets.length, status: 'failure'})
       this.error((error as Error).message)
     }
   }

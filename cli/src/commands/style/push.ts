@@ -3,6 +3,7 @@ import {glob} from 'glob'
 import got from 'got'
 
 import {LoopressCommand} from '../../lib/base.js'
+import {recordDeployment} from '../../utils/api.js'
 
 interface Theme {
   _links: {'wp:user-global-styles': Array<{href: string}>}
@@ -67,8 +68,10 @@ export default class Push extends LoopressCommand {
       }
 
       await got.post(endpoint, {headers, json: payload})
+      await recordDeployment({url, snippetCount: 1, status: 'success'})
       this.log(`✅ Successfully pushed global styles to ID: ${data.id}`)
     } catch (error) {
+      await recordDeployment({url, snippetCount: 0, status: 'failure'})
       this.error(`❌ Error pushing global styles: ${(error as Error).message}`)
     }
   }
@@ -86,7 +89,7 @@ export default class Push extends LoopressCommand {
       if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
     }
 
-    this.log('ℹ️  No local cache found — fetching global styles from WordPress...')
+    this.log('ℹ️  No local cache found, fetching global styles from WordPress...')
     const themes: Theme[] = await got.get(`${url}/wp-json/wp/v2/themes?status=active`, {headers}).json()
 
     if (!themes || themes.length === 0) {
