@@ -4,6 +4,7 @@ import {join} from 'node:path'
 
 export interface LoopressLocalConfig {
   plugins?: Record<string, string>
+  projectId?: string
   rootDir?: string
   snippets?: string
   styles?: string
