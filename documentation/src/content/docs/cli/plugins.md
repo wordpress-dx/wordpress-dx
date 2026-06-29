@@ -65,7 +65,7 @@ Loopress merges the remote state into the existing manifest (new plugins are add
 
 **Example output:**
 
-```
+```console
 Pulling plugins from https://example.com
 Wrote 4 plugins to loopress.json
   + Added: contact-form-7, yoast-seo
@@ -96,7 +96,7 @@ Missing plugins are installed and activated automatically. For each version mism
 
 **Example output:**
 
-```
+```console
 Pushing plugins to https://example.com
 
 To install (1):
