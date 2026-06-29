@@ -95,16 +95,16 @@ Place a `loopress.json` file in your project root to customise paths and track m
 |-------|---------|-------------|
 | `rootDir` | `.` | Base directory — all other paths are resolved relative to it |
 | `snippets` | `snippets` | Directory for snippet files |
-| `plugins` | — | Pinned plugin versions (slug → version). Managed by `lps plugins pull/push/require`. |
+| `plugins` | — | Pinned plugin versions (slug → version). Managed by `lps plugin pull/push/require`. |
 
-The `plugins` field is populated automatically by `lps plugins pull` and `lps plugins require`. Commit `loopress.json` to Git so every environment can be synced with `lps plugins push`.
+The `plugins` field is populated automatically by `lps plugin pull` and `lps plugin require`. Commit `loopress.json` to Git so every environment can be synced with `lps plugin push`.
 
 ## Dry run
 
 Most commands accept a `--dry-run` (`-d`) flag that shows what would happen without making any changes:
 
 ```bash
-lps snippets push --dry-run
-lps snippets pull --dry-run
-lps plugins push --dry-run
+lps snippet push --dry-run
+lps snippet pull --dry-run
+lps plugin push --dry-run
 ```

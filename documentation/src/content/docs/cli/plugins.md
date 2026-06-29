@@ -18,16 +18,16 @@ Loopress stores plugin versions under the `plugins` key in `loopress.json`:
 }
 ```
 
-The keys are [WordPress.org](https://wordpress.org/plugins/) plugin slugs; the values are pinned versions. When you run `lps plugins pull`, Loopress also disables auto-updates for every managed plugin so version drift cannot happen silently.
+The keys are [WordPress.org](https://wordpress.org/plugins/) plugin slugs; the values are pinned versions. When you run `lps plugin pull`, Loopress also disables auto-updates for every managed plugin so version drift cannot happen silently.
 
 ## Commands
 
-### `lps plugins require`
+### `lps plugin require`
 
 Add a plugin to `loopress.json`, resolving its current version from WordPress.org.
 
 ```bash
-lps plugins require <slug> [version]
+lps plugin require <slug> [version]
 ```
 
 | Argument | Description |
@@ -42,19 +42,19 @@ lps plugins require <slug> [version]
 **Examples:**
 
 ```bash
-lps plugins require woocommerce          # pins latest stable version
-lps plugins require woocommerce 9.0.2   # pins a specific version
-lps plugins require contact-form-7 --dry-run
+lps plugin require woocommerce          # pins latest stable version
+lps plugin require woocommerce 9.0.2   # pins a specific version
+lps plugin require contact-form-7 --dry-run
 ```
 
 ---
 
-### `lps plugins pull`
+### `lps plugin pull`
 
 Snapshot the plugins currently installed on WordPress into `loopress.json`.
 
 ```bash
-lps plugins pull
+lps plugin pull
 ```
 
 | Flag | Description |
@@ -74,12 +74,12 @@ Wrote 4 plugins to loopress.json
 
 ---
 
-### `lps plugins push`
+### `lps plugin push`
 
 Sync the plugins on WordPress to match `loopress.json`.
 
 ```bash
-lps plugins push
+lps plugin push
 ```
 
 | Flag | Description |
@@ -114,14 +114,14 @@ Installing contact-form-7 @ 5.9.8...
 ```bash
 # 1. Capture the current state from your reference environment
 lps project switch   # select production
-lps plugins pull
+lps plugin pull
 
 # 2. Commit the manifest
 git add loopress.json && git commit -m "chore: pin plugin versions"
 
 # 3. Apply to another environment
 lps project switch   # select staging
-lps plugins push
+lps plugin push
 ```
 
 ## Dry run
@@ -129,7 +129,7 @@ lps plugins push
 All three commands accept `--dry-run` (`-d`). Use it to preview changes before committing:
 
 ```bash
-lps plugins pull --dry-run
-lps plugins push --dry-run
-lps plugins require yoast-seo --dry-run
+lps plugin pull --dry-run
+lps plugin push --dry-run
+lps plugin require yoast-seo --dry-run
 ```

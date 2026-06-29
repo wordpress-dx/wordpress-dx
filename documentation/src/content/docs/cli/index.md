@@ -11,12 +11,12 @@ The Loopress CLI (`lps`) is a Node.js command-line tool that connects to the Wor
 |-------|---------|-------------|
 | **Auth** | `lps login` | Log in to Loopress via the console |
 | | `lps logout` | Remove the stored authentication token |
-| **Snippets** | `lps snippets pull` | Download snippets from WordPress |
-| | `lps snippets push` | Upload local snippet files to WordPress |
-| | `lps snippets list` | List all snippets on the site |
-| **Plugins** | `lps plugins pull` | Snapshot installed plugin versions into `loopress.json` |
-| | `lps plugins push` | Sync WordPress plugins to match `loopress.json` |
-| | `lps plugins require` | Add a plugin to `loopress.json` (resolves version from WordPress.org) |
+| **Snippets** | `lps snippet pull` | Download snippets from WordPress |
+| | `lps snippet push` | Upload local snippet files to WordPress |
+| | `lps snippet list` | List all snippets on the site |
+| **Plugins** | `lps plugin pull` | Snapshot installed plugin versions into `loopress.json` |
+| | `lps plugin push` | Sync WordPress plugins to match `loopress.json` |
+| | `lps plugin require` | Add a plugin to `loopress.json` (resolves version from WordPress.org) |
 | **Project** | `lps project config` | Add or update a project/environment credential |
 | | `lps project list` | List all configured projects |
 | | `lps project switch` | Switch the active project |
@@ -31,11 +31,11 @@ The Loopress CLI (`lps`) is a Node.js command-line tool that connects to the Wor
 lps project config
 
 # 2. Pull your snippets
-lps snippets pull
+lps snippet pull
 
 # 3. Edit, commit, push
 git add snippets/ && git commit -m "update snippet"
-lps snippets push
+lps snippet push
 ```
 
 → [Full setup guide](/cli/getting-started/)
