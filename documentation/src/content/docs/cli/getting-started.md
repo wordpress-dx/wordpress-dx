@@ -84,7 +84,6 @@ Place a `loopress.json` file in your project root to customise paths and track m
 {
   "rootDir": "./wp-content",
   "snippets": "snippets",
-  "styles": "styles",
   "plugins": {
     "woocommerce": "9.0.2",
     "contact-form-7": "5.9.8"
@@ -96,17 +95,16 @@ Place a `loopress.json` file in your project root to customise paths and track m
 |-------|---------|-------------|
 | `rootDir` | `.` | Base directory — all other paths are resolved relative to it |
 | `snippets` | `snippets` | Directory for snippet files |
-| `styles` | `styles` | Directory for Global Styles files |
 | `plugins` | — | Pinned plugin versions (slug → version). Managed by `lps plugins pull/push/require`. |
 
 The `plugins` field is populated automatically by `lps plugins pull` and `lps plugins require`. Commit `loopress.json` to Git so every environment can be synced with `lps plugins push`.
 
 ## Dry run
 
-Most commands accept a `--dryRun` (`-d`) flag that shows what would happen without making any changes:
+Most commands accept a `--dry-run` (`-d`) flag that shows what would happen without making any changes:
 
 ```bash
-lps snippets push --dryRun
-lps snippets pull --dryRun
-lps styles push --dryRun
+lps snippets push --dry-run
+lps snippets pull --dry-run
+lps plugins push --dry-run
 ```

@@ -36,13 +36,13 @@ lps snippets pull [path]
 
 | Flag | Description |
 |------|-------------|
-| `--dryRun` / `-d` | Show what would be written without touching the filesystem |
+| `--dry-run` / `-d` | Show what would be written without touching the filesystem |
 | `--plugin` / `-p` | Target plugin: `code-snippets` (default) or `wpcode` |
 
 **Example:**
 
 ```bash
-lps snippets pull ./wp-snippets --dryRun
+lps snippets pull ./wp-snippets --dry-run
 lps snippets pull --plugin wpcode
 ```
 
@@ -65,7 +65,7 @@ lps snippets push [path]
 
 | Flag | Description |
 |------|-------------|
-| `--dryRun` / `-d` | Show what would be pushed without making any changes |
+| `--dry-run` / `-d` | Show what would be pushed without making any changes |
 | `--plugin` / `-p` | Target plugin: `code-snippets` (default) or `wpcode` |
 
 **Example:**
