@@ -3,7 +3,6 @@ import { SectionLabel } from "./Problem";
 const PILLARS = [
   { t: "Snippets in Git", d: "Pull snippets as .php files, edit them locally, commit, push back." },
   { t: "Plugin Lockfile", d: "Declare plugin versions in loopress.json and sync any environment with one command." },
-  { t: "Global Styles in Git", d: "Pull your theme's Global Styles as JSON and CSS. Edit locally, push back when ready." },
   { t: "Composer without SSH", d: "Search and install Packagist packages from the WordPress admin panel." },
 ];
 

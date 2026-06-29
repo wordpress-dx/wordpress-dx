@@ -28,14 +28,6 @@ export function Features() {
 
           <FeatureCard
             tag="03"
-            title="Global Styles in Git"
-            body="Pull your active theme's Global Styles as JSON and CSS files. Tweak locally, commit, push back. No more editor-only changes."
-          >
-            <StylesBlock />
-          </FeatureCard>
-
-          <FeatureCard
-            tag="04"
             title="Composer without SSH"
             body="Search and install any Packagist package from the WordPress admin panel, without opening a terminal."
           >
@@ -112,28 +104,6 @@ function PluginsBlock() {
   );
 }
 
-function StylesBlock() {
-  return (
-    <div className="overflow-hidden rounded-lg border border-border/80 bg-background/60 font-mono text-[12px] leading-relaxed">
-      <div className="flex items-center justify-between border-b border-border/80 px-3 py-1.5 text-[10px] text-muted-foreground">
-        <span>styles/global-styles.json</span>
-        <span>+ 2 / − 1</span>
-      </div>
-      <pre className="px-3 py-3">
-{`  "settings": {
--   "color": { "palette": [] }
-+   "color": { "palette": [
-+     { "slug": "primary", "color": "#1a1a2e" }
-+   ]}
-  }`}
-      </pre>
-      <div className="border-t border-border/80 px-3 py-2 text-[10px] text-muted-foreground">
-        <Line c="muted">$ lps styles push</Line>
-        <Line c="success">✓ Global Styles updated</Line>
-      </div>
-    </div>
-  );
-}
 
 function ComposerBlock() {
   return (
