@@ -69,9 +69,9 @@ export function WorkflowDiagram() {
         </div>
         <div>
           <div className="text-muted-foreground">$ git diff --stat</div>
-          <div className="text-foreground/80">2 files changed, 18 insertions(+), 4 deletions(-)</div>
+          <div className="text-foreground/80">3 files changed, 18 insertions(+), 4 deletions(-)</div>
           <div className="mt-1 text-muted-foreground">$ lps snippets push</div>
-          <div className="text-success">✓ Updated · 2 snippets synced</div>
+          <div className="text-success">✓ Updated · 3 snippets synced</div>
         </div>
       </div>
     </div>

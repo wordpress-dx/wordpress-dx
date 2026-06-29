@@ -91,7 +91,7 @@ function PluginsBlock() {
       <pre className="px-3 py-3">
 {`  "plugins": {
     "woocommerce": "9.4.2",
-    "contact-form-7": "latest",
+    "contact-form-7": "6.0.5",
     "fluent-crm": "3.1.6"
   }`}
       </pre>
