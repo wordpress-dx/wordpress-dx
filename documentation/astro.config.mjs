@@ -81,6 +81,7 @@ export default defineConfig({
                         { label: 'Getting Started', slug: 'cli/getting-started' },
                         { label: 'Snippets', slug: 'cli/snippets' },
                         { label: 'Global Styles', slug: 'cli/styles' },
+                        { label: 'Plugins', slug: 'cli/plugins' },
                         { label: 'Menus', slug: 'cli/menus' },
                         { label: 'Export & Import', slug: 'cli/export-import' },
                     ],
