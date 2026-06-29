@@ -1,4 +1,5 @@
 .DS_Store
+.claude/worktree/
 node_modules
 .npmrc
 .env

@@ -35,6 +35,22 @@ export abstract class LoopressCommand extends Command {
   async init(): Promise<void> {
     await super.init()
 
+    const localConfig = await readLocalConfig()
+
+    if (localConfig.projectId) {
+      const project = configManager.getProject(localConfig.projectId)
+      if (!project) {
+        this.error(`Project "${localConfig.projectId}" (from loopress.json) not found. Run \`lps project config\` to configure it.`)
+      }
+
+      if (!project.currentEnv || !project.environments[project.currentEnv]) {
+        this.error(`Project "${localConfig.projectId}" has no active environment. Run \`lps project config\` to configure one.`)
+      }
+
+      this.siteConfig = project.environments[project.currentEnv]
+      return
+    }
+
     const env = configManager.getCurrentEnv()
     if (env) {
       this.siteConfig = env
