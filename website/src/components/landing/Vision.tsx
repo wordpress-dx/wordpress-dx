@@ -12,16 +12,12 @@ export function Vision() {
             </h2>
           </div>
           <div className="space-y-5 text-lg leading-relaxed text-muted-foreground lg:col-span-6 lg:col-start-7">
-            <p>
-              We believe WordPress projects should be as reproducible as modern applications.
-            </p>
+            <p>We believe WordPress projects should be as reproducible as modern applications.</p>
             <p>
               Developers should not have to choose between WordPress flexibility and modern
               engineering practices.
             </p>
-            <p className="text-foreground">
-              Loopress brings both worlds together.
-            </p>
+            <p className="text-foreground">Loopress brings both worlds together.</p>
           </div>
         </div>
       </div>

@@ -43,11 +43,7 @@ const TIERS = [
     featured: false,
     cta: "Join the Beta",
     ctaHref: "https://console.loopress.dev",
-    features: [
-      "Everything in Pro",
-      "Team members",
-      "Collaborative features",
-    ],
+    features: ["Everything in Pro", "Team members", "Collaborative features"],
   },
 ];
 
@@ -60,7 +56,8 @@ export function Pricing() {
           Free to start. Built to scale.
         </h2>
         <p className="mt-4 max-w-xl text-muted-foreground">
-          The CLI and plugin are open source. The console will have paid tiers. Pricing to be announced.
+          The CLI and plugin are open source. The console will have paid tiers. Pricing to be
+          announced.
         </p>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
@@ -82,7 +79,9 @@ export function Pricing() {
                   {tier.name}
                 </div>
                 <div className="mt-3 flex items-baseline gap-2">
-                  <span className={`text-3xl font-semibold tracking-tight ${tier.featured ? "text-accent-cyan" : "text-foreground"}`}>
+                  <span
+                    className={`text-3xl font-semibold tracking-tight ${tier.featured ? "text-accent-cyan" : "text-foreground"}`}
+                  >
                     {tier.price}
                   </span>
                   {tier.sub && (
@@ -96,7 +95,11 @@ export function Pricing() {
                 {tier.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm">
                     <span className="mt-0.5 font-mono text-success">✓</span>
-                    <span className={f.startsWith("Everything") ? "text-muted-foreground" : "text-foreground/90"}>
+                    <span
+                      className={
+                        f.startsWith("Everything") ? "text-muted-foreground" : "text-foreground/90"
+                      }
+                    >
                       {f}
                     </span>
                   </li>

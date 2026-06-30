@@ -4,7 +4,10 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-border/60">
       <div className="absolute inset-0 grid-bg radial-fade opacity-70" aria-hidden />
-      <div className="absolute left-1/2 top-0 -z-0 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,oklch(0.78_0.13_200/0.15),transparent)]" aria-hidden />
+      <div
+        className="absolute left-1/2 top-0 -z-0 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,oklch(0.78_0.13_200/0.15),transparent)]"
+        aria-hidden
+      />
 
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-24 md:pt-28 md:pb-32">
         <div className="mx-auto max-w-3xl text-center">
@@ -21,11 +24,16 @@ export function Hero() {
           </a>
 
           <h1 className="mt-7 text-balance text-5xl font-semibold tracking-tight md:text-7xl">
-            <span className="text-gradient">WordPress development,<br />without the friction.</span>
+            <span className="text-gradient">
+              WordPress development,
+              <br />
+              without the friction.
+            </span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground md:text-xl">
-            Version-control your snippets, plugins, and theme styles in Git. Install Composer packages from the WordPress admin, no SSH needed.
+            Version-control your snippets, plugins, and theme styles in Git. Install Composer
+            packages from the WordPress admin, no SSH needed.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">

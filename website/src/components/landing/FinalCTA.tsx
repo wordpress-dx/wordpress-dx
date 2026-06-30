@@ -25,14 +25,18 @@ export function FinalCTA() {
   return (
     <section id="beta" className="relative overflow-hidden border-b border-border/60">
       <div className="absolute inset-0 grid-bg radial-fade opacity-50" aria-hidden />
-      <div className="absolute left-1/2 top-1/2 z-0 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,oklch(0.65_0.2_280/0.18),transparent)]" aria-hidden />
+      <div
+        className="absolute left-1/2 top-1/2 z-0 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,oklch(0.65_0.2_280/0.18),transparent)]"
+        aria-hidden
+      />
 
       <div className="relative mx-auto max-w-3xl px-6 py-28 text-center md:py-36">
         <h2 className="text-balance text-4xl font-semibold tracking-tight md:text-6xl">
           <span className="text-gradient">Built in the open. Shaped by the community.</span>
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-          The CLI and the plugin are open source. Leave your email to follow along and get notified when things move.
+          The CLI and the plugin are open source. Leave your email to follow along and get notified
+          when things move.
         </p>
 
         {status === "success" ? (

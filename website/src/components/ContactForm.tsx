@@ -47,12 +47,7 @@ export default function ContactForm() {
       <div className="rounded-md border border-border bg-card/60 px-6 py-8 text-center">
         <p className="text-sm font-medium text-foreground">Message sent.</p>
         <p className="mt-1 text-sm text-muted-foreground">We will reply as soon as possible.</p>
-        <Button
-          variant="outline"
-          size="sm"
-          className="mt-6"
-          onClick={() => setStatus("idle")}
-        >
+        <Button variant="outline" size="sm" className="mt-6" onClick={() => setStatus("idle")}>
           Send another message
         </Button>
       </div>

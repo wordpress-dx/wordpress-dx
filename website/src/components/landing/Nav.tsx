@@ -19,13 +19,27 @@ export function Nav() {
           />
         </a>
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
-          <a href="/#problem" className="transition-colors hover:text-foreground">Problem</a>
-          <a href="/#solution" className="transition-colors hover:text-foreground">Solution</a>
-          <a href="/#features" className="transition-colors hover:text-foreground">Features</a>
-          <a href="/#integrations" className="transition-colors hover:text-foreground">Integrations</a>
-          <a href="/#vision" className="transition-colors hover:text-foreground">Vision</a>
-          <a href="/#pricing" className="transition-colors hover:text-foreground">Pricing</a>
-          <a href="https://docs.loopress.dev" className="transition-colors hover:text-foreground">Docs</a>
+          <a href="/#problem" className="transition-colors hover:text-foreground">
+            Problem
+          </a>
+          <a href="/#solution" className="transition-colors hover:text-foreground">
+            Solution
+          </a>
+          <a href="/#features" className="transition-colors hover:text-foreground">
+            Features
+          </a>
+          <a href="/#integrations" className="transition-colors hover:text-foreground">
+            Integrations
+          </a>
+          <a href="/#vision" className="transition-colors hover:text-foreground">
+            Vision
+          </a>
+          <a href="/#pricing" className="transition-colors hover:text-foreground">
+            Pricing
+          </a>
+          <a href="https://docs.loopress.dev" className="transition-colors hover:text-foreground">
+            Docs
+          </a>
         </nav>
         <div className="flex items-center gap-2">
           <button

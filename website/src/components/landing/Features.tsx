@@ -68,7 +68,7 @@ function SnippetsBlock() {
         <span>+ 3 / − 1</span>
       </div>
       <pre className="px-3 py-3">
-{`  <?php
+        {`  <?php
 - // remove_action('wp_head', ...);
 + remove_action('wp_head', 'print_emoji_detection_script', 7);
 + remove_action('wp_print_styles', 'print_emoji_styles');
@@ -89,7 +89,7 @@ function PluginsBlock() {
         loopress.json · plugins
       </div>
       <pre className="px-3 py-3">
-{`  "plugins": {
+        {`  "plugins": {
     "woocommerce": "9.4.2",
     "contact-form-7": "6.0.5",
     "fluent-crm": "3.1.6"
@@ -103,7 +103,6 @@ function PluginsBlock() {
     </div>
   );
 }
-
 
 function ComposerBlock() {
   return (
@@ -123,5 +122,7 @@ function ComposerBlock() {
 }
 
 function Line({ c, children }: { c: "muted" | "success"; children: React.ReactNode }) {
-  return <div className={c === "success" ? "text-success" : "text-muted-foreground"}>{children}</div>;
+  return (
+    <div className={c === "success" ? "text-success" : "text-muted-foreground"}>{children}</div>
+  );
 }

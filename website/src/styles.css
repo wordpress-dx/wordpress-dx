@@ -176,24 +176,39 @@
 }
 
 @utility text-gradient {
-  background-image: linear-gradient(180deg, var(--gradient-text-from) 0%, var(--gradient-text-to) 100%);
+  background-image: linear-gradient(
+    180deg,
+    var(--gradient-text-from) 0%,
+    var(--gradient-text-to) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 @utility glow-cyan {
-  box-shadow: 0 0 0 1px oklch(0.78 0.13 200 / 0.3), 0 0 40px -8px oklch(0.78 0.13 200 / 0.4);
+  box-shadow:
+    0 0 0 1px oklch(0.78 0.13 200 / 0.3),
+    0 0 40px -8px oklch(0.78 0.13 200 / 0.4);
 }
 
 @keyframes flow {
-  0% { stroke-dashoffset: 24; }
-  100% { stroke-dashoffset: 0; }
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @utility animate-flow {

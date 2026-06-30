@@ -3,7 +3,10 @@ import { SectionLabel } from "./Problem";
 const AVAILABLE = [
   { name: "Code Snippets", desc: "Pull, push, and list snippets via the CLI." },
   { name: "WPCode", desc: "Same CLI commands, targets WPCode instead." },
-  { name: "Plugin Directory", desc: "Install and version any plugin from the WordPress.org directory." },
+  {
+    name: "Plugin Directory",
+    desc: "Install and version any plugin from the WordPress.org directory.",
+  },
   { name: "Packagist", desc: "Install any public Composer package from the admin." },
 ];
 
@@ -47,10 +50,15 @@ export function Integrations() {
 }
 
 function Header({ status, children }: { status: "available" | "soon"; children: React.ReactNode }) {
-  const color = status === "available" ? "text-success bg-success/10 border-success/30" : "text-warning bg-warning/10 border-warning/30";
+  const color =
+    status === "available"
+      ? "text-success bg-success/10 border-success/30"
+      : "text-warning bg-warning/10 border-warning/30";
   return (
     <div className="flex items-center gap-2">
-      <span className={`rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest ${color}`}>
+      <span
+        className={`rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest ${color}`}
+      >
         {status === "available" ? "Live" : "Planned"}
       </span>
       <span className="text-sm font-medium text-foreground">{children}</span>

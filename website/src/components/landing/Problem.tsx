@@ -13,7 +13,8 @@ export function Problem() {
           WordPress wasn't built for modern development workflows.
         </h2>
         <p className="mt-4 max-w-2xl text-muted-foreground">
-          Snippets edited in the admin. Plugin versions untracked. Theme styles overwritten. PHP packages requiring SSH. Problems solved everywhere else, still open in WordPress.
+          Snippets edited in the admin. Plugin versions untracked. Theme styles overwritten. PHP
+          packages requiring SSH. Problems solved everywhere else, still open in WordPress.
         </p>
 
         <div className="mt-14 grid gap-10 md:grid-cols-2">

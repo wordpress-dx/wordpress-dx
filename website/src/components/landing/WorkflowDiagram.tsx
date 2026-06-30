@@ -47,7 +47,15 @@ export function WorkflowDiagram() {
                 preserveAspectRatio="none"
                 aria-hidden
               >
-                <line x1="0" y1="0.5" x2="100" y2="0.5" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+                <line
+                  x1="0"
+                  y1="0.5"
+                  x2="100"
+                  y2="0.5"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                />
               </svg>
             )}
           </div>
@@ -69,7 +77,9 @@ export function WorkflowDiagram() {
         </div>
         <div>
           <div className="text-muted-foreground">$ git diff --stat</div>
-          <div className="text-foreground/80">3 files changed, 18 insertions(+), 4 deletions(-)</div>
+          <div className="text-foreground/80">
+            3 files changed, 18 insertions(+), 4 deletions(-)
+          </div>
           <div className="mt-1 text-muted-foreground">$ lps snippets push</div>
           <div className="text-success">✓ Updated · 3 snippets synced</div>
         </div>
