@@ -16,19 +16,19 @@ export default class List extends LoopressCommand {
     json: Flags.boolean({char: 'j', description: 'Output in JSON format'}),
     plugin: Flags.string({
       char: 'p',
-      default: 'code-snippets',
-      description: 'WordPress snippet plugin to target',
+      description: 'WordPress snippet plugin to target (overrides loopress.json)',
       options: ['code-snippets', 'wpcode'],
     }),
   }
 
   async run(): Promise<void> {
     const {flags} = await this.parse(List)
-    const {json, plugin} = flags as {json: boolean; plugin: PluginName}
+    const {json, plugin} = flags as {json: boolean; plugin: string | undefined}
     const {url} = this.siteConfig
+    const resolvedPlugin = await this.resolveSnippetPlugin(plugin)
 
     try {
-      const adapter = getSnippetPlugin(plugin)
+      const adapter = getSnippetPlugin(resolvedPlugin)
       const endpoint = adapter.endpoint(url)
       const headers = await this.buildAuthHeaders()
 

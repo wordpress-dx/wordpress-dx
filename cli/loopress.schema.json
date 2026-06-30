@@ -14,15 +14,10 @@
       "description": "Base directory for all Loopress paths. All other path options are resolved relative to this directory.",
       "default": "."
     },
-    "snippets": {
+    "snippetsDir": {
       "type": "string",
       "description": "Directory where code snippets are read from and written to, relative to rootDir.",
       "default": "snippets"
-    },
-    "styles": {
-      "type": "string",
-      "description": "Directory where Global Styles files are read from and written to, relative to rootDir.",
-      "default": "styles"
     },
     "projectId": {
       "type": "string",

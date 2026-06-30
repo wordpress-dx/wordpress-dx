@@ -6,6 +6,7 @@ export interface LoopressLocalConfig {
   plugins?: Record<string, string>
   projectId?: string
   rootDir?: string
+  snippetPlugin?: 'code-snippets' | 'wpcode'
   snippets?: string
   styles?: string
 }
