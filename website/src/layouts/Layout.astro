@@ -1,7 +1,7 @@
 ---
 import "../styles.css";
 import faviconUrl from "@loopress/assets/loopress-logo-black.svg?url";
-import { Analytics } from "@vercel/analytics/astro";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
   title?: string;
@@ -68,7 +68,11 @@ const orgSchema = {
     />
     <link rel="icon" type="image/svg+xml" href={faviconUrl} />
     <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
-    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+    {
+      structuredData && (
+        <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+      )
+    }
     <script is:inline>
       (function () {
         try {
