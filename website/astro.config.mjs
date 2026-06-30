@@ -3,9 +3,11 @@ import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  integrations: [react()],
+  site: "https://loopress.dev",
+  integrations: [react(), sitemap()],
   adapter: vercel(),
   output: "server",
   vite: {
