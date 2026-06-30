@@ -1,13 +1,13 @@
-import {expect} from 'chai'
 import {mkdtempSync, rmSync} from 'node:fs'
 import {tmpdir} from 'node:os'
 import {join} from 'node:path'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
+
+import {readLocalConfig, writeLocalConfig} from '../../src/utils/loopress-config.js'
 
 // readLocalConfig / writeLocalConfig resolve against process.cwd(), so we
 // temporarily switch the working directory for each test.
 const originalCwd = process.cwd()
-
-import {readLocalConfig, writeLocalConfig} from '../../src/utils/loopress-config.js'
 
 describe('loopress-config', () => {
   let tmpDir: string
@@ -25,7 +25,7 @@ describe('loopress-config', () => {
   describe('readLocalConfig', () => {
     it('returns an empty object when loopress.json does not exist', async () => {
       const config = await readLocalConfig()
-      expect(config).to.deep.equal({})
+      expect(config).toEqual({})
     })
   })
 
@@ -38,16 +38,16 @@ describe('loopress-config', () => {
       })
 
       const config = await readLocalConfig()
-      expect(config.plugins).to.deep.equal({woocommerce: '8.9.1', wpcode: '2.1.0'})
-      expect(config.rootDir).to.equal('./src')
-      expect(config.snippetsDir).to.equal('./snippets')
+      expect(config.plugins).toEqual({woocommerce: '8.9.1', wpcode: '2.1.0'})
+      expect(config.rootDir).toBe('./src')
+      expect(config.snippetsDir).toBe('./snippets')
     })
 
     it('persists a config with no plugins key', async () => {
       await writeLocalConfig({rootDir: '.', snippetsDir: './snips'})
       const config = await readLocalConfig()
-      expect(config.plugins).to.be.undefined
-      expect(config.rootDir).to.equal('.')
+      expect(config.plugins).toBeUndefined()
+      expect(config.rootDir).toBe('.')
     })
 
     it('overwrites an existing config file', async () => {
@@ -55,7 +55,7 @@ describe('loopress-config', () => {
       await writeLocalConfig({plugins: {woocommerce: '9.0.0', acf: '6.3.2'}})
 
       const config = await readLocalConfig()
-      expect(config.plugins).to.deep.equal({woocommerce: '9.0.0', acf: '6.3.2'})
+      expect(config.plugins).toEqual({woocommerce: '9.0.0', acf: '6.3.2'})
     })
 
     it('writes valid JSON', async () => {
@@ -64,7 +64,7 @@ describe('loopress-config', () => {
       const {readFile} = await import('node:fs/promises')
       const content = await readFile(join(tmpDir, 'loopress.json'), 'utf8')
       const parsed = JSON.parse(content)
-      expect(parsed.plugins).to.deep.equal({hello: '1.0.0'})
+      expect(parsed.plugins).toEqual({hello: '1.0.0'})
     })
   })
 })

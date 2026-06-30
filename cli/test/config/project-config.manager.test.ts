@@ -1,7 +1,7 @@
-import {expect} from 'chai'
 import {existsSync, mkdtempSync, rmSync} from 'node:fs'
 import {tmpdir} from 'node:os'
 import {join} from 'node:path'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 
 import {ProjectConfigManager} from '../../src/config/project-config.manager.js'
 import {EnvironmentConfig, ProjectConfig} from '../../src/config/types.js'
@@ -36,8 +36,8 @@ describe('ProjectConfigManager', () => {
   describe('readConfig', () => {
     it('returns empty config when file does not exist', () => {
       const config = manager.readConfig()
-      expect(config.currentProject).to.be.null
-      expect(config.projects).to.deep.equal({})
+      expect(config.currentProject).toBeNull()
+      expect(config.projects).toEqual({})
     })
   })
 
@@ -45,34 +45,34 @@ describe('ProjectConfigManager', () => {
     it('stores and retrieves a project', () => {
       const project = makeProject('acme')
       manager.setProject('acme', project)
-      expect(manager.getProject('acme')).to.deep.equal(project)
+      expect(manager.getProject('acme')).toEqual(project)
     })
 
     it('sets the first project as current automatically', () => {
       manager.setProject('acme', makeProject('acme'))
-      expect(manager.readConfig().currentProject).to.equal('acme')
+      expect(manager.readConfig().currentProject).toBe('acme')
     })
 
     it('does not change current when a second project is added', () => {
       manager.setProject('acme', makeProject('acme'))
       manager.setProject('beta', makeProject('beta'))
-      expect(manager.readConfig().currentProject).to.equal('acme')
+      expect(manager.readConfig().currentProject).toBe('acme')
     })
 
     it('returns null for an unknown project', () => {
-      expect(manager.getProject('unknown')).to.be.null
+      expect(manager.getProject('unknown')).toBeNull()
     })
   })
 
   describe('getCurrentProject', () => {
     it('returns null when no projects are configured', () => {
-      expect(manager.getCurrentProject()).to.be.null
+      expect(manager.getCurrentProject()).toBeNull()
     })
 
     it('returns the current project', () => {
       const project = makeProject('acme')
       manager.setProject('acme', project)
-      expect(manager.getCurrentProject()).to.deep.equal(project)
+      expect(manager.getCurrentProject()).toEqual(project)
     })
   })
 
@@ -81,7 +81,7 @@ describe('ProjectConfigManager', () => {
       manager.setProject('acme', makeProject('acme'))
       manager.setProject('beta', makeProject('beta'))
       manager.setCurrentProject('beta')
-      expect(manager.getCurrentProject()?.name).to.equal('beta')
+      expect(manager.getCurrentProject()?.name).toBe('beta')
     })
   })
 
@@ -91,28 +91,28 @@ describe('ProjectConfigManager', () => {
       manager.setProject('beta', makeProject('beta'))
       manager.setCurrentProject('acme')
       manager.removeProject('acme')
-      expect(manager.getProject('acme')).to.be.null
-      expect(manager.readConfig().currentProject).to.equal('beta')
+      expect(manager.getProject('acme')).toBeNull()
+      expect(manager.readConfig().currentProject).toBe('beta')
     })
 
     it('sets currentProject to null when last project is removed', () => {
       manager.setProject('acme', makeProject('acme'))
       manager.removeProject('acme')
-      expect(manager.readConfig().currentProject).to.be.null
+      expect(manager.readConfig().currentProject).toBeNull()
     })
   })
 
   describe('listProjects', () => {
     it('returns empty array when no projects configured', () => {
-      expect(manager.listProjects()).to.deep.equal([])
+      expect(manager.listProjects()).toEqual([])
     })
 
     it('marks the current project with isCurrent: true', () => {
       manager.setProject('acme', makeProject('acme'))
       manager.setProject('beta', makeProject('beta'))
       const list = manager.listProjects()
-      expect(list.find((p) => p.name === 'acme')?.isCurrent).to.be.true
-      expect(list.find((p) => p.name === 'beta')?.isCurrent).to.be.false
+      expect(list.find((p) => p.name === 'acme')?.isCurrent).toBe(true)
+      expect(list.find((p) => p.name === 'beta')?.isCurrent).toBe(false)
     })
   })
 
@@ -121,12 +121,12 @@ describe('ProjectConfigManager', () => {
       manager.setProject('acme', makeProject('acme'))
       const staging = makeEnv('staging', 'https://staging.acme.com')
       manager.setEnvironment('acme', 'staging', staging)
-      expect(manager.getEnvironment('acme', 'staging')).to.deep.equal(staging)
+      expect(manager.getEnvironment('acme', 'staging')).toEqual(staging)
     })
 
     it('does nothing when the project does not exist', () => {
       manager.setEnvironment('ghost', 'staging', makeEnv('staging'))
-      expect(manager.getProject('ghost')).to.be.null
+      expect(manager.getProject('ghost')).toBeNull()
     })
 
     it('sets the first environment as currentEnv automatically on a fresh project', () => {
@@ -138,20 +138,20 @@ describe('ProjectConfigManager', () => {
       }
       manager.setProject('acme', project)
       manager.setEnvironment('acme', 'production', makeEnv('production'))
-      expect(manager.getProject('acme')?.currentEnv).to.equal('production')
+      expect(manager.getProject('acme')?.currentEnv).toBe('production')
     })
   })
 
   describe('getCurrentEnv', () => {
     it('returns null when no project is configured', () => {
-      expect(manager.getCurrentEnv()).to.be.null
+      expect(manager.getCurrentEnv()).toBeNull()
     })
 
     it('returns the current environment of the current project', () => {
       const project = makeProject('acme', 'production')
       manager.setProject('acme', project)
       const env = manager.getCurrentEnv()
-      expect(env?.name).to.equal('production')
+      expect(env?.name).toBe('production')
     })
   })
 
@@ -160,7 +160,7 @@ describe('ProjectConfigManager', () => {
       manager.setProject('acme', makeProject('acme', 'production'))
       manager.setEnvironment('acme', 'staging', makeEnv('staging'))
       manager.setCurrentEnv('acme', 'staging')
-      expect(manager.getCurrentEnv()?.name).to.equal('staging')
+      expect(manager.getCurrentEnv()?.name).toBe('staging')
     })
   })
 
@@ -170,28 +170,28 @@ describe('ProjectConfigManager', () => {
       manager.setEnvironment('acme', 'staging', makeEnv('staging'))
       manager.setCurrentEnv('acme', 'production')
       manager.removeEnvironment('acme', 'production')
-      expect(manager.getEnvironment('acme', 'production')).to.be.null
-      expect(manager.getProject('acme')?.currentEnv).to.equal('staging')
+      expect(manager.getEnvironment('acme', 'production')).toBeNull()
+      expect(manager.getProject('acme')?.currentEnv).toBe('staging')
     })
 
     it('sets currentEnv to null when last environment is removed', () => {
       manager.setProject('acme', makeProject('acme', 'production'))
       manager.removeEnvironment('acme', 'production')
-      expect(manager.getProject('acme')?.currentEnv).to.be.null
+      expect(manager.getProject('acme')?.currentEnv).toBeNull()
     })
   })
 
   describe('listEnvironments', () => {
     it('returns empty array for unknown project', () => {
-      expect(manager.listEnvironments('ghost')).to.deep.equal([])
+      expect(manager.listEnvironments('ghost')).toEqual([])
     })
 
     it('marks the current environment with isCurrent: true', () => {
       manager.setProject('acme', makeProject('acme', 'production'))
       manager.setEnvironment('acme', 'staging', makeEnv('staging'))
       const list = manager.listEnvironments('acme')
-      expect(list.find((e) => e.name === 'production')?.isCurrent).to.be.true
-      expect(list.find((e) => e.name === 'staging')?.isCurrent).to.be.false
+      expect(list.find((e) => e.name === 'production')?.isCurrent).toBe(true)
+      expect(list.find((e) => e.name === 'staging')?.isCurrent).toBe(false)
     })
   })
 
@@ -201,14 +201,14 @@ describe('ProjectConfigManager', () => {
       manager.setProject('beta', makeProject('beta'))
       manager.setCurrentProject('beta')
       const config = manager.readConfig()
-      expect(config.currentProject).to.equal('beta')
-      expect(Object.keys(config.projects)).to.have.length(2)
+      expect(config.currentProject).toBe('beta')
+      expect(Object.keys(config.projects)).toHaveLength(2)
     })
 
     it('persists config.json at the expected path', () => {
       manager.setProject('acme', makeProject('acme'))
-      expect(manager.getConfigFilePath()).to.equal(join(tmpDir, '.lps', 'config.json'))
-      expect(existsSync(manager.getConfigFilePath())).to.be.true
+      expect(manager.getConfigFilePath()).toBe(join(tmpDir, '.lps', 'config.json'))
+      expect(existsSync(manager.getConfigFilePath())).toBe(true)
     })
   })
 })
