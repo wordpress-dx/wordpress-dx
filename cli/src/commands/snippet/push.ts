@@ -75,32 +75,35 @@ export default class Push extends PushCommand {
     const fs = await import('node:fs/promises')
     const snippets: Snippet[] = []
 
+    const SNIPPET_EXTENSIONS = new Set(['.php', '.css', '.js', '.html', '.txt'])
+
     try {
       const files = await fs.readdir(path)
       for (const file of files) {
-        if (file.endsWith('.php')) {
-          const filePath = `${path}/${file}`
-          const metaPath = filePath.replace('.php', '.json')
-          const content = await fs.readFile(filePath, 'utf8')
+        const ext = file.slice(file.lastIndexOf('.'))
+        if (!SNIPPET_EXTENSIONS.has(ext)) continue
 
-          let id: number | undefined
-          let name: string | undefined
-          try {
-            const metaContent = await fs.readFile(metaPath, 'utf8')
-            const meta = JSON.parse(metaContent) as Record<string, unknown>
-            id = meta.id ? Number(meta.id) : undefined
-            name = meta.name ? String(meta.name) : undefined
-          } catch {
-            // no sidecar, fallback to filename
-          }
+        const filePath = `${path}/${file}`
+        const metaPath = filePath.slice(0, filePath.lastIndexOf('.')) + '.json'
+        const content = await fs.readFile(filePath, 'utf8')
 
-          snippets.push({
-            code: content,
-            id,
-            name: name ?? file.replace('.php', ''),
-            path: filePath,
-          })
+        let id: number | undefined
+        let name: string | undefined
+        try {
+          const metaContent = await fs.readFile(metaPath, 'utf8')
+          const meta = JSON.parse(metaContent) as Record<string, unknown>
+          id = meta.id ? Number(meta.id) : undefined
+          name = meta.name ? String(meta.name) : undefined
+        } catch {
+          // no sidecar, fallback to filename
         }
+
+        snippets.push({
+          code: content,
+          id,
+          name: name ?? file.slice(0, file.lastIndexOf('.')),
+          path: filePath,
+        })
       }
     } catch (error) {
       this.error(`❌ Error loading snippets: ${(error as Error).message}`)
