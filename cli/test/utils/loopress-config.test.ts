@@ -34,17 +34,17 @@ describe('loopress-config', () => {
       await writeLocalConfig({
         plugins: {woocommerce: '8.9.1', wpcode: '2.1.0'},
         rootDir: './src',
-        snippets: './snippets',
+        snippetsDir: './snippets',
       })
 
       const config = await readLocalConfig()
       expect(config.plugins).to.deep.equal({woocommerce: '8.9.1', wpcode: '2.1.0'})
       expect(config.rootDir).to.equal('./src')
-      expect(config.snippets).to.equal('./snippets')
+      expect(config.snippetsDir).to.equal('./snippets')
     })
 
     it('persists a config with no plugins key', async () => {
-      await writeLocalConfig({rootDir: '.', snippets: './snips'})
+      await writeLocalConfig({rootDir: '.', snippetsDir: './snips'})
       const config = await readLocalConfig()
       expect(config.plugins).to.be.undefined
       expect(config.rootDir).to.equal('.')

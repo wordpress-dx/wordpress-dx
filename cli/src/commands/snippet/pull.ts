@@ -14,7 +14,7 @@ const EXTENSIONS: Record<SnippetType, string> = {
 }
 
 
-function buildSnippetFile(snippet: NormalizedSnippet): string {
+export function buildSnippetFile(snippet: NormalizedSnippet): string {
   if (snippet.type === 'php' && !snippet.code.trimStart().startsWith('<?')) {
     return `<?php\n\n${snippet.code}`
   }
@@ -22,7 +22,7 @@ function buildSnippetFile(snippet: NormalizedSnippet): string {
   return snippet.code
 }
 
-function buildMetaFile(snippet: NormalizedSnippet): string {
+export function buildMetaFile(snippet: NormalizedSnippet): string {
   const meta: Record<string, unknown> = {
     id: snippet.id,
     name: snippet.name,

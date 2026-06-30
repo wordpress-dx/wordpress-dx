@@ -46,7 +46,7 @@ export default class Push extends PushCommand {
       const headers = await this.buildAuthHeaders()
       const adapter = getSnippetPlugin(resolvedPlugin)
       for (const snippet of snippets) {
-        await this.pushSnippet(snippet, url, headers, dryRun, adapter)
+        await this.pushSnippet(snippet, {adapter, dryRun, headers, url})
       }
 
       await this.recordSuccess()
@@ -75,7 +75,7 @@ export default class Push extends PushCommand {
     const fs = await import('node:fs/promises')
     const snippets: Snippet[] = []
 
-    const SNIPPET_EXTENSIONS = new Set(['.php', '.css', '.js', '.html', '.txt'])
+    const SNIPPET_EXTENSIONS = new Set(['.css', '.html', '.js', '.php', '.txt'])
 
     try {
       const files = await fs.readdir(path)
@@ -114,11 +114,10 @@ export default class Push extends PushCommand {
 
   private async pushSnippet(
     snippet: Snippet,
-    url: string,
-    headers: Record<string, string>,
-    dryRun: boolean,
-    adapter: ReturnType<typeof getSnippetPlugin>,
+    ctx: {adapter: ReturnType<typeof getSnippetPlugin>; dryRun: boolean; headers: Record<string, string>; url: string},
   ) {
+    const {adapter, dryRun, headers, url} = ctx
+
     if (dryRun) {
       this.log(`📝 [DRY RUN] Would push snippet: ${snippet.name}`)
       this.log(`📄 Code preview: ${snippet.code.slice(0, 100)}...`)
