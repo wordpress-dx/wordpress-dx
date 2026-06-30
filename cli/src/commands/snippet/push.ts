@@ -21,20 +21,20 @@ export default class Push extends PushCommand {
     dryRun: Flags.boolean({char: 'd', description: 'Dry run - show what would happen without making changes'}),
     plugin: Flags.string({
       char: 'p',
-      default: 'code-snippets',
-      description: 'WordPress snippet plugin to target',
+      description: 'WordPress snippet plugin to target (overrides loopress.json)',
       options: ['code-snippets', 'wpcode'],
     }),
   }
 
   async run(): Promise<void> {
     const {args, flags} = await this.parse(Push)
-    const {dryRun, plugin} = flags as {dryRun: boolean; plugin: PluginName}
+    const {dryRun, plugin} = flags as {dryRun: boolean; plugin: string | undefined}
     this.dryRun = dryRun
     const {url} = this.siteConfig
     const path = await this.resolveSnippetsPath(args.path)
+    const resolvedPlugin = await this.resolveSnippetPlugin(plugin)
 
-    this.log(`🚀 Pushing snippets to ${url} via ${plugin}`)
+    this.log(`🚀 Pushing snippets to ${url} via ${resolvedPlugin}`)
     this.log(`📂 From snippet path: ${path}`)
     this.log(`🔄 Dry run: ${dryRun ? 'yes' : 'no'}`)
 
@@ -44,9 +44,9 @@ export default class Push extends PushCommand {
       this.log(`✅ Found ${snippets.length} snippets to push`)
 
       const headers = await this.buildAuthHeaders()
-      const adapter = getSnippetPlugin(plugin)
+      const adapter = getSnippetPlugin(resolvedPlugin)
       for (const snippet of snippets) {
-        await this.pushSnippet(snippet, url, headers, dryRun, adapter)
+        await this.pushSnippet(snippet, {adapter, dryRun, headers, url})
       }
 
       await this.recordSuccess()
@@ -56,39 +56,54 @@ export default class Push extends PushCommand {
     }
   }
 
-  private async injectIdIntoFile(filePath: string, content: string, id: number): Promise<void> {
+  private async injectIdIntoMeta(filePath: string, id: number): Promise<void> {
     const fs = await import('node:fs/promises')
-    let updated: string
-
-    if (content.includes('/**')) {
-      updated = content.replace('/**', `/**\n * id: ${id}`)
-    } else if (content.includes('<!--')) {
-      updated = content.replace('<!--', `<!--\n  id: ${id}`)
-    } else {
-      return
+    const metaPath = filePath.replace(/\.[^.]+$/, '.json')
+    let meta: Record<string, unknown> = {}
+    try {
+      const existing = await fs.readFile(metaPath, 'utf8')
+      meta = JSON.parse(existing) as Record<string, unknown>
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
     }
 
-    await fs.writeFile(filePath, updated)
+    meta.id = id
+    await fs.writeFile(metaPath, JSON.stringify(meta, null, 2) + '\n')
   }
 
   private async loadSnippets(path: string): Promise<Snippet[]> {
     const fs = await import('node:fs/promises')
     const snippets: Snippet[] = []
 
+    const SNIPPET_EXTENSIONS = new Set(['.css', '.html', '.js', '.php', '.txt'])
+
     try {
       const files = await fs.readdir(path)
       for (const file of files) {
-        if (file.endsWith('.php')) {
-          const filePath = `${path}/${file}`
-          const content = await fs.readFile(filePath, 'utf8')
-          const meta = this.parseMetaFromContent(content)
-          snippets.push({
-            code: content,
-            id: meta.id,
-            name: meta.name ?? file.replace('.php', ''),
-            path: filePath,
-          })
+        const ext = file.slice(file.lastIndexOf('.'))
+        if (!SNIPPET_EXTENSIONS.has(ext)) continue
+
+        const filePath = `${path}/${file}`
+        const metaPath = filePath.slice(0, filePath.lastIndexOf('.')) + '.json'
+        const content = await fs.readFile(filePath, 'utf8')
+
+        let id: number | undefined
+        let name: string | undefined
+        try {
+          const metaContent = await fs.readFile(metaPath, 'utf8')
+          const meta = JSON.parse(metaContent) as Record<string, unknown>
+          id = meta.id ? Number(meta.id) : undefined
+          name = meta.name ? String(meta.name) : undefined
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
         }
+
+        snippets.push({
+          code: content,
+          id,
+          name: name ?? file.slice(0, file.lastIndexOf('.')),
+          path: filePath,
+        })
       }
     } catch (error) {
       this.error(`❌ Error loading snippets: ${(error as Error).message}`)
@@ -97,22 +112,12 @@ export default class Push extends PushCommand {
     return snippets
   }
 
-  private parseMetaFromContent(content: string): {id?: number; name?: string} {
-    const idMatch = content.match(/[\s*]*id:\s*(\d+)/)
-    const nameMatch = content.match(/[\s*]*name:\s*(.+)/)
-    return {
-      id: idMatch ? Number(idMatch[1]) : undefined,
-      name: nameMatch ? nameMatch[1].trim() : undefined,
-    }
-  }
-
   private async pushSnippet(
     snippet: Snippet,
-    url: string,
-    headers: Record<string, string>,
-    dryRun: boolean,
-    adapter: ReturnType<typeof getSnippetPlugin>,
+    ctx: {adapter: ReturnType<typeof getSnippetPlugin>; dryRun: boolean; headers: Record<string, string>; url: string},
   ) {
+    const {adapter, dryRun, headers, url} = ctx
+
     if (dryRun) {
       this.log(`📝 [DRY RUN] Would push snippet: ${snippet.name}`)
       this.log(`📄 Code preview: ${snippet.code.slice(0, 100)}...`)
@@ -133,7 +138,7 @@ export default class Push extends PushCommand {
       this.log(`➕ Creating new snippet: ${snippet.name}`)
       const response: Record<string, unknown> = await got.post(endpoint, {headers, json: payload}).json()
       const created = adapter.fromRemote(response)
-      await this.injectIdIntoFile(snippet.path, snippet.code, created.id)
+      await this.injectIdIntoMeta(snippet.path, created.id)
       this.log(`✅ Created: ${snippet.name} (id: ${created.id})`)
     } catch (error) {
       this.error(`❌ Error pushing snippet ${snippet.name}: ${(error as Error).message}`)

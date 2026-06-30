@@ -13,45 +13,25 @@ const EXTENSIONS: Record<SnippetType, string> = {
   text: 'txt',
 }
 
-const sanitize = (value: string) => value.replaceAll(/\s*\n\s*/g, ' ').trim()
 
-function buildMetaLines(snippet: NormalizedSnippet): string[] {
-  return [
-    `id: ${snippet.id}`,
-    `name: ${sanitize(snippet.name)}`,
-    ...(snippet.description ? [`description: ${sanitize(snippet.description)}`] : []),
-    `type: ${snippet.type}`,
-    ...(snippet.tags.length > 0 ? [`tags: ${snippet.tags.map((t) => sanitize(t)).join(', ')}`] : []),
-    `active: ${snippet.active}`,
-  ]
+export function buildSnippetFile(snippet: NormalizedSnippet): string {
+  if (snippet.type === 'php' && !snippet.code.trimStart().startsWith('<?')) {
+    return `<?php\n\n${snippet.code}`
+  }
+
+  return snippet.code
 }
 
-function buildSnippetFile(snippet: NormalizedSnippet): string {
-  const meta = buildMetaLines(snippet)
-
-  switch (snippet.type) {
-    case 'css':
-    case 'js': {
-      const header = ['/**', ...meta.map((l) => ` * ${l}`), ' */'].join('\n')
-      return `${header}\n\n${snippet.code}`
-    }
-
-    case 'html': {
-      const header = ['<!--', ...meta.map((l) => `  ${l}`), '-->'].join('\n')
-      return `${header}\n\n${snippet.code}`
-    }
-
-    case 'text': {
-      return snippet.code
-    }
-
-    case 'php':
-    default: {
-      const header = ['<?php', '/**', ...meta.map((l) => ` * ${l}`), ' */'].join('\n')
-      const body = snippet.code.replace(/^<\?php\s*/i, '')
-      return `${header}\n\n${body}`
-    }
+export function buildMetaFile(snippet: NormalizedSnippet): string {
+  const meta: Record<string, unknown> = {
+    id: snippet.id,
+    name: snippet.name,
+    type: snippet.type,
+    active: snippet.active,
   }
+  if (snippet.description) meta.description = snippet.description
+  if (snippet.tags.length > 0) meta.tags = snippet.tags
+  return JSON.stringify(meta, null, 2) + '\n'
 }
 
 export default class Pull extends LoopressCommand {
@@ -70,24 +50,24 @@ export default class Pull extends LoopressCommand {
     dryRun: Flags.boolean({char: 'd', description: 'Dry run - show what would happen without making changes'}),
     plugin: Flags.string({
       char: 'p',
-      default: 'code-snippets',
-      description: 'WordPress snippet plugin to target',
+      description: 'WordPress snippet plugin to target (overrides loopress.json)',
       options: ['code-snippets', 'wpcode'],
     }),
   }
 
   async run(): Promise<void> {
     const {args, flags} = await this.parse(Pull)
-    const {dryRun, plugin} = flags as {dryRun: boolean; plugin: PluginName}
+    const {dryRun, plugin} = flags as {dryRun: boolean; plugin: string | undefined}
     const {url} = this.siteConfig
     const path = await this.resolveSnippetsPath(args.path)
+    const resolvedPlugin = await this.resolveSnippetPlugin(plugin)
 
-    this.log(`📥 Pulling snippets from ${url} via ${plugin}`)
+    this.log(`📥 Pulling snippets from ${url} via ${resolvedPlugin}`)
     this.log(`📂 From snippet path: ${path}`)
     this.log(`🔄 Dry run: ${dryRun ? 'yes' : 'no'}`)
 
     try {
-      const adapter = getSnippetPlugin(plugin)
+      const adapter = getSnippetPlugin(resolvedPlugin)
       const endpoint = adapter.endpoint(url)
       const headers = await this.buildAuthHeaders()
 
@@ -112,8 +92,12 @@ export default class Pull extends LoopressCommand {
         }
 
         const ext = EXTENSIONS[snippet.type]
-        const filePath = `${path}/${slugify(snippet.name, {lower: true, strict: true})}.${ext}`
+        const slug = slugify(snippet.name, {lower: true, strict: true})
+        const base = `${snippet.id}-${slug}`
+        const filePath = `${path}/${base}.${ext}`
+        const metaPath = `${path}/${base}.json`
         await fs.writeFile(filePath, buildSnippetFile(snippet))
+        await fs.writeFile(metaPath, buildMetaFile(snippet))
         count++
         this.log(`✅ Pulled: ${snippet.name}`)
       }

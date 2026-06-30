@@ -12,6 +12,28 @@ describe('snippet-plugin', () => {
       })
     })
 
+    describe('toPayload', () => {
+      it('strips <?php and trailing whitespace from code before sending', () => {
+        const payload = plugin.toPayload('My snippet', '<?php\n\nadd_filter("x", "y");', 'snippets/1-my-snippet.php')
+        expect(payload.code).to.equal('add_filter("x", "y");')
+      })
+
+      it('strips <?php case-insensitively', () => {
+        const payload = plugin.toPayload('My snippet', '<?PHP echo 1;', 'snippets/1-my-snippet.php')
+        expect(payload.code).to.equal('echo 1;')
+      })
+
+      it('leaves code unchanged when there is no <?php', () => {
+        const payload = plugin.toPayload('My snippet', 'add_filter("x", "y");', 'snippets/1-my-snippet.php')
+        expect(payload.code).to.equal('add_filter("x", "y");')
+      })
+
+      it('sets name from argument', () => {
+        const payload = plugin.toPayload('My snippet', '', 'snippets/1-my-snippet.php')
+        expect(payload.name).to.equal('My snippet')
+      })
+    })
+
     describe('fromRemote', () => {
       it('maps all fields from the API response', () => {
         const result = plugin.fromRemote({
@@ -78,6 +100,19 @@ describe('snippet-plugin', () => {
         expect(plugin.endpoint('https://example.com')).to.equal(
           'https://example.com/wp-json/loopress/v1/wpcode/snippets',
         )
+      })
+    })
+
+    describe('toPayload', () => {
+      it('sets title from name argument', () => {
+        const payload = plugin.toPayload('My snippet', '<?php echo 1;', 'snippets/1-my-snippet.php')
+        expect(payload.title).to.equal('My snippet')
+      })
+
+      it('passes code as-is without stripping <?php', () => {
+        const code = '<?php echo 1;'
+        const payload = plugin.toPayload('x', code, 'snippets/1-x.php')
+        expect(payload.code).to.equal(code)
       })
     })
 

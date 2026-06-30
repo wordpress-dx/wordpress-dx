@@ -60,15 +60,15 @@ export abstract class LoopressCommand extends Command {
     this.error('No environment configured. Run `lps project config` first.')
   }
 
+  protected async resolveSnippetPlugin(flag?: string): Promise<'code-snippets' | 'wpcode'> {
+    if (flag) return flag as 'code-snippets' | 'wpcode'
+    const config = await readLocalConfig()
+    return config.snippetPlugin ?? 'wpcode'
+  }
+
   protected async resolveSnippetsPath(override?: string): Promise<string> {
     if (override) return override
     const config = await readLocalConfig()
-    return join(config.rootDir ?? '.', config.snippets ?? 'snippets')
-  }
-
-  protected async resolveStylesPath(override?: string): Promise<string> {
-    if (override) return override
-    const config = await readLocalConfig()
-    return join(config.rootDir ?? '.', config.styles ?? 'styles')
+    return join(config.rootDir ?? '.', config.snippetsDir ?? 'snippets')
   }
 }

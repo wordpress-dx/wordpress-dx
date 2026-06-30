@@ -53,7 +53,7 @@ class CodeSnippetsPlugin implements SnippetPlugin {
 
   toPayload(name: string, code: string, path: string): Record<string, unknown> {
     return {
-      code,
+      code: code.replace(/^<\?php\s*/i, ''),
       desc: `Imported from ${path}`,
       name,
       tags: ['cli-import'],
