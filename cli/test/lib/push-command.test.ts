@@ -1,4 +1,4 @@
-import {expect} from 'chai'
+import {describe, expect, it} from 'vitest'
 
 import {EnvironmentConfig} from '../../src/config/types.js'
 import {PushCommand} from '../../src/lib/push-command.js'
@@ -42,13 +42,13 @@ describe('PushCommand', () => {
     it('records success when dryRun is false', async () => {
       const cmd = make(false, SITE)
       await cmd.testRecordSuccess()
-      expect(cmd.calls).to.deep.equal(['success'])
+      expect(cmd.calls).toEqual(['success'])
     })
 
     it('does not record when dryRun is true', async () => {
       const cmd = make(true, SITE)
       await cmd.testRecordSuccess()
-      expect(cmd.calls).to.be.empty
+      expect(cmd.calls).toHaveLength(0)
     })
   })
 
@@ -56,19 +56,19 @@ describe('PushCommand', () => {
     it('records failure when dryRun is false', async () => {
       const cmd = make(false, SITE)
       await cmd.testCatch(new Error('boom'))
-      expect(cmd.calls).to.deep.equal(['failure'])
+      expect(cmd.calls).toEqual(['failure'])
     })
 
     it('does not record when dryRun is true', async () => {
       const cmd = make(true, SITE)
       await cmd.testCatch(new Error('boom'))
-      expect(cmd.calls).to.be.empty
+      expect(cmd.calls).toHaveLength(0)
     })
 
     it('does not record when siteConfig is not set', async () => {
       const cmd = make(false)
       await cmd.testCatch(new Error('boom'))
-      expect(cmd.calls).to.be.empty
+      expect(cmd.calls).toHaveLength(0)
     })
   })
 })
