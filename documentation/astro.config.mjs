@@ -84,6 +84,15 @@ export default defineConfig({
                         { label: 'Plugins', slug: 'cli/plugins' },
                     ],
                 },
+                {
+                    label: 'CI/CD',
+                    items: [
+                        { label: 'Overview', slug: 'ci' },
+                        { label: 'GitHub Actions', slug: 'ci/github-actions' },
+                        { label: 'GitLab CI', slug: 'ci/gitlab' },
+                        { label: 'CircleCI', slug: 'ci/circleci' },
+                    ],
+                },
             ],
         }),
         sitemap(),
