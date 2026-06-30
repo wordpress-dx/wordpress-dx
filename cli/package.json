@@ -48,6 +48,10 @@
   ],
   "license": "MPL-2.0",
   "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./schema": "./loopress.schema.json"
+  },
   "type": "module",
   "oclif": {
     "bin": "lps",

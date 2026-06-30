@@ -15,6 +15,7 @@
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,
 
