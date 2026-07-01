@@ -66,6 +66,15 @@ export default defineConfig({
                     ],
                 },
                 {
+                    label: 'CLI',
+                    items: [
+                        { label: 'Overview', slug: 'cli' },
+                        { label: 'Getting Started', slug: 'cli/getting-started' },
+                        { label: 'Snippets', slug: 'cli/snippets' },
+                        { label: 'Plugins', slug: 'cli/plugins' },
+                    ],
+                },
+                {
                     label: 'WordPress Plugin',
                     items: [
                         { label: 'Overview', slug: 'wordpress-plugin' },
@@ -73,15 +82,6 @@ export default defineConfig({
                         { label: 'Using packages in snippets', slug: 'wordpress-plugin/code-snippets' },
                         { label: 'Security Audit', slug: 'wordpress-plugin/audit' },
                         { label: 'Platform Diagnostics', slug: 'wordpress-plugin/diagnostics' },
-                    ],
-                },
-                {
-                    label: 'CLI',
-                    items: [
-                        { label: 'Overview', slug: 'cli' },
-                        { label: 'Getting Started', slug: 'cli/getting-started' },
-                        { label: 'Snippets', slug: 'cli/snippets' },
-                        { label: 'Plugins', slug: 'cli/plugins' },
                     ],
                 },
                 {
