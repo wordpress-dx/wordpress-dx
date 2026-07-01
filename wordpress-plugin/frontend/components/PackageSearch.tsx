@@ -40,7 +40,7 @@ export function PackageSearch({ onInstall, disabled }: Props) {
 
     const { data: versions = [], isFetching: versionsLoading, isError: versionsFailed } = useQuery<PackageVersion[]>({
         queryKey: ['versions', selected?.name],
-        queryFn: () => apiFetch<PackageVersion[]>(`/vendor/versions?package=${encodeURIComponent(selected!.name)}`),
+        queryFn: () => apiFetch<PackageVersion[]>(`/composer/versions?package=${encodeURIComponent(selected!.name)}`),
         enabled: !!selected,
         staleTime: 60_000,
     });

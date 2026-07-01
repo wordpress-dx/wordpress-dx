@@ -9,12 +9,12 @@ export function DiagnosticsBanner({ isLocked }: { isLocked: boolean }) {
 
     const { data: diagnostics } = useQuery<Diagnostics>({
         queryKey: ['diagnostics'],
-        queryFn: () => apiFetch<Diagnostics>('/vendor/diagnostics'),
+        queryFn: () => apiFetch<Diagnostics>('/composer/diagnostics'),
         staleTime: 60_000,
     });
 
     const { mutate: fixPlatform, isPending: fixing } = useMutation({
-        mutationFn: () => apiFetch('/vendor/fix-platform', { method: 'POST' }),
+        mutationFn: () => apiFetch('/composer/fix-platform', { method: 'POST' }),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['diagnostics'] }),
     });
 

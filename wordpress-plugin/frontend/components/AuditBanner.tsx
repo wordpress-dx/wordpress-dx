@@ -7,7 +7,7 @@ import type { AuditResult } from '../types';
 export function AuditBanner() {
     const { data, isError } = useQuery<AuditResult>({
         queryKey: ['audit'],
-        queryFn: () => apiFetch<AuditResult>('/vendor/audit'),
+        queryFn: () => apiFetch<AuditResult>('/composer/audit'),
         staleTime: 5 * 60_000,
     });
 

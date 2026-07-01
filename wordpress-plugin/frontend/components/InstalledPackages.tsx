@@ -19,12 +19,12 @@ export function InstalledPackages() {
 
     const { data: packages = [], isFetching, isError } = useQuery<Package[]>({
         queryKey: ['installed-packages'],
-        queryFn: () => apiFetch<Package[]>('/vendor/installed'),
+        queryFn: () => apiFetch<Package[]>('/composer/installed'),
         staleTime: 30_000,
     });
 
     const { mutate: removePackage, isPending: removing, variables: removingPkg } = useMutation<ComposerResult, ApiError, string>({
-        mutationFn: (packageName) => apiFetch<ComposerResult>('/vendor/remove', {
+        mutationFn: (packageName) => apiFetch<ComposerResult>('/composer/remove', {
             method: 'POST',
             body: JSON.stringify({ package: packageName }),
         }),

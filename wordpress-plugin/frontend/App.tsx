@@ -18,7 +18,7 @@ export default function App() {
         isSuccess: autoRepairDone,
         isError: autoRepairFailed,
     } = useMutation({
-        mutationFn: () => apiFetch('/vendor/repair', { method: 'POST' }),
+        mutationFn: () => apiFetch('/composer/repair', { method: 'POST' }),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['installed-packages'] }),
     });
 

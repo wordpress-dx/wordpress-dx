@@ -84,4 +84,23 @@ class LoopressEnvironment
             throw new \RuntimeException("Failed to write composer.json to {$this->dxDir}");
         }
     }
+
+    public function readComposerLock(): ?string
+    {
+        $path = $this->dxDir . 'composer.lock';
+        if (!file_exists($path)) {
+            return null;
+        }
+
+        $contents = file_get_contents($path);
+        return $contents !== false ? $contents : null;
+    }
+
+    public function writeComposerLock(string $contents): void
+    {
+        $result = file_put_contents($this->dxDir . 'composer.lock', $contents);
+        if ($result === false) {
+            throw new \RuntimeException("Failed to write composer.lock to {$this->dxDir}");
+        }
+    }
 }

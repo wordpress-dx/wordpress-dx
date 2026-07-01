@@ -22,7 +22,7 @@ export function DependencyManagement() {
     } = useMutation<ComposerResult, ApiError, { packageName: string; version: string }>({
         mutationFn: ({ packageName, version }) => {
             setInstalledName(`${packageName} v${version}`);
-            return apiFetch<ComposerResult>('/vendor/require', {
+            return apiFetch<ComposerResult>('/composer/require', {
                 method: 'POST',
                 body: JSON.stringify({ package: packageName, version }),
             });
