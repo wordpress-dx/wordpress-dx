@@ -1,4 +1,8 @@
+import pluginPkg from "../../../../wordpress-plugin/package.json";
 import { SectionLabel } from "./Problem";
+
+const pluginTag = `wordpress-plugin%40${pluginPkg.version}`;
+const pluginDownloadUrl = `https://github.com/loopress/loopress/releases/download/${pluginTag}/loopress.zip`;
 
 export function Features() {
   return (
@@ -30,6 +34,7 @@ export function Features() {
             tag="03"
             title="Composer without SSH"
             body="Search and install any Packagist package from the WordPress admin panel, without opening a terminal."
+            cta={{ label: "Download the plugin", href: pluginDownloadUrl }}
           >
             <ComposerBlock />
           </FeatureCard>
@@ -43,11 +48,13 @@ function FeatureCard({
   tag,
   title,
   body,
+  cta,
   children,
 }: {
   tag: string;
   title: string;
   body: string;
+  cta?: { label: string; href: string };
   children: React.ReactNode;
 }) {
   return (
@@ -55,6 +62,17 @@ function FeatureCard({
       <div className="font-mono text-[10px] tracking-widest text-accent-cyan">F.{tag}</div>
       <h3 className="mt-2 text-xl font-medium text-foreground">{title}</h3>
       <p className="mt-2 max-w-md text-sm text-muted-foreground">{body}</p>
+      {cta && (
+        <a
+          href={cta.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent-cyan transition-opacity hover:opacity-80"
+        >
+          {cta.label}
+          <span>↓</span>
+        </a>
+      )}
       <div className="mt-6">{children}</div>
     </div>
   );
