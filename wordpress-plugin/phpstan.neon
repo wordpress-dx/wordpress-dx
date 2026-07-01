@@ -18,5 +18,3 @@ parameters:
         # Constants defined in the plugin root file (loopress.php), not in src/
         - '#Constant LOOPRESS_PLUGIN_(PATH|URL) not found#'
 
-        # ACF functions are provided by the ACF plugin at runtime, not in WP stubs
-        - '#Function acf_(get_field_groups|get_fields|import_field_group) not found#'
