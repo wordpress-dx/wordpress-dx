@@ -13,7 +13,7 @@ use WP_REST_Response;
 
 class ComposerControllerTest extends TestCase
 {
-    private ComposerService&MockObject $vendorService;
+    private ComposerService&MockObject $composerService;
     private ComposerController $controller;
 
     protected function setUp(): void
@@ -21,7 +21,7 @@ class ComposerControllerTest extends TestCase
         parent::setUp();
         Monkey\setUp();
 
-        $this->composerService = $this->createMock(VendorService::class);
+        $this->composerService = $this->createMock(ComposerService::class);
         $this->controller    = new ComposerController($this->composerService);
     }
 
