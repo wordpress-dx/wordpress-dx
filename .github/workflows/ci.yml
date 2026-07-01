@@ -22,7 +22,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --filter @loopress/cli...
 
       - name: Build CLI
         working-directory: cli
@@ -86,7 +86,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --filter @loopress/wordpress-plugin...
 
       - name: Run tests
         working-directory: wordpress-plugin
