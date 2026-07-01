@@ -4,25 +4,25 @@ namespace Loopress\Tests\Unit\RestApi;
 
 use Brain\Monkey;
 use Loopress\Exception\ProductionLockException;
-use Loopress\RestApi\VendorController;
-use Loopress\Service\VendorService;
+use Loopress\RestApi\ComposerController;
+use Loopress\Service\ComposerService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class VendorControllerTest extends TestCase
+class ComposerControllerTest extends TestCase
 {
-    private VendorService&MockObject $vendorService;
-    private VendorController $controller;
+    private ComposerService&MockObject $vendorService;
+    private ComposerController $controller;
 
     protected function setUp(): void
     {
         parent::setUp();
         Monkey\setUp();
 
-        $this->vendorService = $this->createMock(VendorService::class);
-        $this->controller    = new VendorController($this->vendorService);
+        $this->composerService = $this->createMock(VendorService::class);
+        $this->controller    = new ComposerController($this->composerService);
     }
 
     protected function tearDown(): void
@@ -34,7 +34,7 @@ class VendorControllerTest extends TestCase
     /** @return mixed */
     private function invokePrivate(string $method, mixed ...$args): mixed
     {
-        $ref = new \ReflectionMethod(VendorController::class, $method);
+        $ref = new \ReflectionMethod(ComposerController::class, $method);
         $ref->setAccessible(true);
         return $ref->invoke($this->controller, ...$args);
     }
@@ -71,7 +71,7 @@ class VendorControllerTest extends TestCase
 
     public function test_get_versions_returns_404_when_package_not_found(): void
     {
-        $this->vendorService->method('getVersions')->willReturn(null);
+        $this->composerService->method('getVersions')->willReturn(null);
         $request  = new WP_REST_Request(['package' => 'vendor/package']);
         $response = $this->controller->get_versions($request);
         $this->assertSame(404, $response->status);
@@ -80,7 +80,7 @@ class VendorControllerTest extends TestCase
     public function test_get_versions_returns_versions_list(): void
     {
         $versions = [['version' => '1.0.0', 'php_compatible' => true, 'php_constraint' => '>=8.0']];
-        $this->vendorService->method('getVersions')->willReturn($versions);
+        $this->composerService->method('getVersions')->willReturn($versions);
         $request  = new WP_REST_Request(['package' => 'vendor/package']);
         $response = $this->controller->get_versions($request);
         $this->assertSame(200, $response->status);
@@ -89,7 +89,7 @@ class VendorControllerTest extends TestCase
 
     public function test_get_versions_returns_500_on_runtime_exception(): void
     {
-        $this->vendorService->method('getVersions')
+        $this->composerService->method('getVersions')
             ->willThrowException(new \RuntimeException('Network error'));
         $request  = new WP_REST_Request(['package' => 'vendor/package']);
         $response = $this->controller->get_versions($request);
@@ -100,7 +100,7 @@ class VendorControllerTest extends TestCase
 
     public function test_require_package_returns_403_when_locked(): void
     {
-        $this->vendorService->method('requirePackage')
+        $this->composerService->method('requirePackage')
             ->willThrowException(new ProductionLockException('Locked.'));
         $request  = new WP_REST_Request(['package' => 'vendor/pkg', 'version' => '^1.0']);
         $response = $this->controller->require_package($request);
@@ -109,7 +109,7 @@ class VendorControllerTest extends TestCase
 
     public function test_require_package_returns_200_on_success(): void
     {
-        $this->vendorService->method('requirePackage')->willReturn('Output text');
+        $this->composerService->method('requirePackage')->willReturn('Output text');
         $request  = new WP_REST_Request(['package' => 'vendor/pkg', 'version' => '^1.0']);
         $response = $this->controller->require_package($request);
         $this->assertSame(200, $response->status);
@@ -119,7 +119,7 @@ class VendorControllerTest extends TestCase
 
     public function test_require_package_returns_500_on_failure(): void
     {
-        $this->vendorService->method('requirePackage')
+        $this->composerService->method('requirePackage')
             ->willThrowException(new \RuntimeException('Install failed.'));
         $request  = new WP_REST_Request(['package' => 'vendor/pkg', 'version' => '^1.0']);
         $response = $this->controller->require_package($request);
@@ -130,7 +130,7 @@ class VendorControllerTest extends TestCase
 
     public function test_remove_package_returns_403_when_locked(): void
     {
-        $this->vendorService->method('removePackage')
+        $this->composerService->method('removePackage')
             ->willThrowException(new ProductionLockException('Locked.'));
         $request  = new WP_REST_Request(['package' => 'vendor/pkg']);
         $response = $this->controller->remove_package($request);
@@ -139,7 +139,7 @@ class VendorControllerTest extends TestCase
 
     public function test_remove_package_returns_200_on_success(): void
     {
-        $this->vendorService->method('removePackage')->willReturn('Removed.');
+        $this->composerService->method('removePackage')->willReturn('Removed.');
         $request  = new WP_REST_Request(['package' => 'vendor/pkg']);
         $response = $this->controller->remove_package($request);
         $this->assertSame(200, $response->status);
@@ -149,7 +149,7 @@ class VendorControllerTest extends TestCase
 
     public function test_repair_returns_403_when_locked(): void
     {
-        $this->vendorService->method('repair')
+        $this->composerService->method('repair')
             ->willThrowException(new ProductionLockException('Locked.'));
         $response = $this->controller->repair(new WP_REST_Request());
         $this->assertSame(403, $response->status);
@@ -157,7 +157,7 @@ class VendorControllerTest extends TestCase
 
     public function test_repair_returns_200_on_success(): void
     {
-        $this->vendorService->method('repair')->willReturn('Done.');
+        $this->composerService->method('repair')->willReturn('Done.');
         $response = $this->controller->repair(new WP_REST_Request());
         $this->assertSame(200, $response->status);
     }
@@ -167,7 +167,7 @@ class VendorControllerTest extends TestCase
     public function test_get_diagnostics_returns_200_with_data(): void
     {
         $data = ['php_version' => '8.2.0', 'platform_php' => '8.2.0', 'issues' => []];
-        $this->vendorService->method('getDiagnostics')->willReturn($data);
+        $this->composerService->method('getDiagnostics')->willReturn($data);
         $response = $this->controller->get_diagnostics(new WP_REST_Request());
         $this->assertSame(200, $response->status);
         $this->assertSame($data, $response->data);
@@ -178,14 +178,14 @@ class VendorControllerTest extends TestCase
     public function test_get_audit_returns_200_on_success(): void
     {
         $data = ['advisories' => [], 'abandoned' => []];
-        $this->vendorService->method('audit')->willReturn($data);
+        $this->composerService->method('audit')->willReturn($data);
         $response = $this->controller->get_audit(new WP_REST_Request());
         $this->assertSame(200, $response->status);
     }
 
     public function test_get_audit_returns_500_on_failure(): void
     {
-        $this->vendorService->method('audit')
+        $this->composerService->method('audit')
             ->willThrowException(new \RuntimeException('Audit failed.'));
         $response = $this->controller->get_audit(new WP_REST_Request());
         $this->assertSame(500, $response->status);
@@ -195,7 +195,7 @@ class VendorControllerTest extends TestCase
 
     public function test_fix_platform_returns_403_when_locked(): void
     {
-        $this->vendorService->method('fixPlatform')
+        $this->composerService->method('fixPlatform')
             ->willThrowException(new ProductionLockException('Locked.'));
         $response = $this->controller->fix_platform(new WP_REST_Request());
         $this->assertSame(403, $response->status);
@@ -203,7 +203,7 @@ class VendorControllerTest extends TestCase
 
     public function test_fix_platform_returns_200_on_success(): void
     {
-        $this->vendorService->method('fixPlatform');
+        $this->composerService->method('fixPlatform');
         $response = $this->controller->fix_platform(new WP_REST_Request());
         $this->assertSame(200, $response->status);
         $this->assertArrayHasKey('php_version', $response->data);

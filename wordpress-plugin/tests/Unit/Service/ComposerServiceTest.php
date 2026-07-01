@@ -9,17 +9,17 @@ use Loopress\Infrastructure\ComposerRunner;
 use Loopress\Infrastructure\LoopressEnvironment;
 use Loopress\Infrastructure\PackagistClient;
 use Loopress\Service\SettingsService;
-use Loopress\Service\VendorService;
+use Loopress\Service\ComposerService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class VendorServiceTest extends TestCase
+class ComposerServiceTest extends TestCase
 {
     private LoopressEnvironment&MockObject $dxEnv;
     private ComposerRunner&MockObject $runner;
     private PackagistClient&MockObject $packagist;
     private SettingsService&MockObject $settings;
-    private VendorService $service;
+    private ComposerService $service;
 
     protected function setUp(): void
     {
@@ -31,7 +31,7 @@ class VendorServiceTest extends TestCase
         $this->packagist = $this->createMock(PackagistClient::class);
         $this->settings = $this->createMock(SettingsService::class);
 
-        $this->service = new VendorService(
+        $this->service = new ComposerService(
             $this->dxEnv,
             $this->runner,
             $this->packagist,
