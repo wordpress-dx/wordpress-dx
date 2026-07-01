@@ -7,7 +7,7 @@ use Loopress\Infrastructure\LoopressEnvironment;
 use Loopress\Module\AdminPageModule;
 use Loopress\Module\RestCacheModule;
 use Loopress\Module\SettingsModule;
-use Loopress\Module\VendorModule;
+use Loopress\Module\ComposerModule;
 use Loopress\Module\WPCodeModule;
 use Loopress\Module\WpPluginsModule;
 use Loopress\Service\SettingsService;
@@ -37,7 +37,7 @@ class Plugin
         /** @var Module[] $modules */
         $modules = apply_filters('loopress_modules', [
             new AdminPageModule($autoloadError),
-            new VendorModule($env, $settings),
+            new ComposerModule($env, $settings),
             new SettingsModule($settings),
             new WPCodeModule(),
             new WpPluginsModule(),

@@ -7,7 +7,7 @@ use Loopress\Infrastructure\ComposerRunner;
 use Loopress\Infrastructure\LoopressEnvironment;
 use Loopress\Infrastructure\PackagistClient;
 
-class VendorService
+class ComposerService
 {
     public function __construct(
         private LoopressEnvironment $dxEnv,
@@ -143,5 +143,36 @@ class VendorService
         $json = $this->dxEnv->readComposerJson();
         $json['config']['platform']['php'] = PHP_VERSION;
         $this->dxEnv->writeComposerJson($json);
+    }
+
+    public function getLock(): ?string
+    {
+        return $this->dxEnv->readComposerLock();
+    }
+
+    public function sync(string $composerJson, ?string $composerLock): string
+    {
+        if ($this->settings->isLocked()) {
+            throw new ProductionLockException('Cannot sync dependencies: production lock is enabled.');
+        }
+
+        $decoded = json_decode($composerJson, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException('Invalid composer.json: ' . json_last_error_msg());
+        }
+
+        $this->dxEnv->writeComposerJson($decoded);
+
+        if ($composerLock !== null) {
+            $this->dxEnv->writeComposerLock($composerLock);
+        }
+
+        $result = $this->composerRunner->run($composerLock !== null ? ['install'] : ['update']);
+
+        if ($result['exit_code'] !== 0) {
+            throw new \RuntimeException($result['output']);
+        }
+
+        return $result['output'];
     }
 }

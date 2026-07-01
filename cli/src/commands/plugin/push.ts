@@ -4,6 +4,7 @@ import got from 'got'
 
 import {PushCommand} from '../../lib/push-command.js'
 import {ActivateResult, InstalledPlugin, InstallResult} from '../../types/plugin.js'
+import {getComposerManagedSlugs, readComposerJson} from '../../utils/composer.js'
 import {readLocalConfig} from '../../utils/loopress-config.js'
 import {diffPlugins} from '../../utils/plugins.js'
 
@@ -28,12 +29,25 @@ export default class Push extends PushCommand {
       this.error('No plugins found in loopress.json. Run `lps plugins pull` first.')
     }
 
+    const composerJson = await readComposerJson()
+    const composerSlugs = composerJson ? getComposerManagedSlugs(composerJson) : []
+
+    const filteredManifest = Object.fromEntries(
+      Object.entries(manifest).filter(([slug]) => !composerSlugs.includes(slug)),
+    )
+
+    const skipped = composerSlugs.filter((slug) => slug in manifest)
+    if (skipped.length > 0) {
+      this.log(`Skipping ${skipped.length} Composer-managed ${skipped.length === 1 ? 'plugin' : 'plugins'}: ${skipped.join(', ')}`)
+      this.log('Run `lps composer push` to deploy them.')
+    }
+
     this.log(`Pushing plugins to ${url}`)
 
     const headers = await this.buildAuthHeaders()
     const installed: InstalledPlugin[] = await got.get(`${url}/wp-json/loopress/v1/plugins`, {headers}).json()
 
-    const {drifted, toActivate, toInstall} = diffPlugins(manifest, installed)
+    const {drifted, toActivate, toInstall} = diffPlugins(filteredManifest, installed)
 
     if (toInstall.length === 0 && toActivate.length === 0 && drifted.length === 0) {
       this.log('Everything is already in sync.')

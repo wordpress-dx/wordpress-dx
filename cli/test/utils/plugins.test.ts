@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest'
 
-import {resolvePluginVersion} from '../../src/commands/plugin/require.js'
+import {resolvePluginVersion} from '../../src/commands/plugin/add.js'
 import {InstalledPlugin} from '../../src/types/plugin.js'
 import {diffPlugins, mergePluginManifest} from '../../src/utils/plugins.js'
 
