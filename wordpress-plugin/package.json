@@ -1,5 +1,5 @@
 {
-  "name": "@loopress/wordpress-plugin",
+  "name": "loopress",
   "version": "2026.6.0",
   "private": true,
   "scripts": {
