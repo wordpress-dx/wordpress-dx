@@ -8,7 +8,7 @@ Add the `loopress/setup-ci` action to your workflow. It starts a full WordPress 
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: loopress/setup-ci@v1
+  - uses: loopress/setup-ci@main
   - run: loopress push
 ```
 
@@ -33,7 +33,7 @@ steps:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: loopress/setup-ci@v1
+  - uses: loopress/setup-ci@main
     with:
       wp-version: "6.5"
       port: "9090"
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: loopress/setup-ci@v1
+      - uses: loopress/setup-ci@main
       - run: loopress push
 
   deploy:

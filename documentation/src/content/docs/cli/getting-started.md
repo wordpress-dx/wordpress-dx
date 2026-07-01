@@ -95,7 +95,7 @@ Run `lps init` in your project root to generate `loopress.json` interactively, o
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| `projectId` | — | Project identifier from `~/.loopress/config.json`. Takes precedence over the active project. |
+| `projectId` | — | Name of the project to use, as configured via `lps project config`. Overrides the currently active project. |
 | `snippetPlugin` | `wpcode` | Snippet plugin to use: `wpcode` or `code-snippets` |
 | `rootDir` | `.` | Base directory, all other paths are resolved relative to it |
 | `snippetsDir` | `snippets` | Directory for snippet files |

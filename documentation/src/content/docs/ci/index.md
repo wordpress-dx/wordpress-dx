@@ -16,7 +16,7 @@ description: Bootstrap a full WordPress environment in CI with a single step and
 
 ## Token requirements
 
-CI testing is free and unlimited: no token is needed to run `loopress push` against a local WordPress instance.
+No token is needed to run `lps snippet push` or `lps plugin push` against a local WordPress instance.
 
 A token is required only when deploying to a real site. Get one at [console.loopress.dev/tokens](https://console.loopress.dev/tokens).
 
