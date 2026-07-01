@@ -67,7 +67,7 @@ export default class Add extends LoopressCommand {
   }
 
   private async requireComposerPackage(pkg: string, version: string, dryRun: boolean): Promise<void> {
-    const composerArg = version !== 'latest' ? `${pkg}:${version}` : pkg
+    const composerArg = version === 'latest' ? pkg : `${pkg}:${version}`
     this.log(`Running: composer require ${composerArg}`)
 
     if (dryRun) {

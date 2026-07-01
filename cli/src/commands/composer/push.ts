@@ -1,12 +1,12 @@
 import {Flags} from '@oclif/core'
 import got from 'got'
+import {existsSync} from 'node:fs'
 import {readFile} from 'node:fs/promises'
 import {join} from 'node:path'
-import {existsSync} from 'node:fs'
 
 import {PushCommand} from '../../lib/push-command.js'
-import {readLocalConfig} from '../../utils/loopress-config.js'
 import {ComposerJson} from '../../utils/composer.js'
+import {readLocalConfig} from '../../utils/loopress-config.js'
 
 export default class ComposerPush extends PushCommand {
   static description = 'Upload composer.json and composer.lock to WordPress and run composer install'

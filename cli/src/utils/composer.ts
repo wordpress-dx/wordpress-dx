@@ -3,8 +3,8 @@ import {readFile} from 'node:fs/promises'
 import {join} from 'node:path'
 
 export interface ComposerJson {
-  'require-dev'?: Record<string, string>
   require?: Record<string, string>
+  'require-dev'?: Record<string, string>
 }
 
 export async function readComposerJson(): Promise<ComposerJson | null> {
@@ -18,7 +18,7 @@ export async function readComposerJson(): Promise<ComposerJson | null> {
   }
 }
 
-export async function readComposerLock(): Promise<string | null> {
+export async function readComposerLock(): Promise<null | string> {
   const path = join(process.cwd(), 'composer.lock')
   if (!existsSync(path)) return null
   try {
@@ -30,7 +30,7 @@ export async function readComposerLock(): Promise<string | null> {
 
 // Returns WordPress plugin slugs declared as wpackagist-plugin/* in composer.json
 export function getComposerManagedSlugs(composerJson: ComposerJson): string[] {
-  const packages = {...(composerJson.require ?? {}), ...(composerJson['require-dev'] ?? {})}
+  const packages = {...composerJson.require, ...composerJson['require-dev']}
   return Object.keys(packages)
     .filter((pkg) => pkg.startsWith('wpackagist-plugin/'))
     .map((pkg) => pkg.slice('wpackagist-plugin/'.length))

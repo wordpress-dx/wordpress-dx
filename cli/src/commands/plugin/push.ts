@@ -36,8 +36,9 @@ export default class Push extends PushCommand {
       Object.entries(manifest).filter(([slug]) => !composerSlugs.includes(slug)),
     )
 
-    if (composerSlugs.length > 0) {
-      this.log(`Skipping ${composerSlugs.length} Composer-managed ${composerSlugs.length === 1 ? 'plugin' : 'plugins'}: ${composerSlugs.join(', ')}`)
+    const skipped = composerSlugs.filter((slug) => slug in manifest)
+    if (skipped.length > 0) {
+      this.log(`Skipping ${skipped.length} Composer-managed ${skipped.length === 1 ? 'plugin' : 'plugins'}: ${skipped.join(', ')}`)
       this.log('Run `lps composer push` to deploy them.')
     }
 
