@@ -43,7 +43,7 @@ class WPCodeService
         $id = wp_insert_post([
             'post_type'    => self::POST_TYPE,
             'post_title'   => sanitize_text_field($data['title'] ?? ''),
-            'post_content' => wp_kses_post($data['code'] ?? ''),
+            'post_content' => wp_unslash($data['code'] ?? ''),
             'post_status'  => !empty($data['active']) ? 'publish' : 'draft',
         ]);
 
@@ -66,7 +66,7 @@ class WPCodeService
             $update['post_title'] = sanitize_text_field($data['title']);
         }
         if (isset($data['code'])) {
-            $update['post_content'] = wp_kses_post($data['code']);
+            $update['post_content'] = wp_unslash($data['code']);
         }
         if (isset($data['active'])) {
             $update['post_status'] = $data['active'] ? 'publish' : 'draft';
