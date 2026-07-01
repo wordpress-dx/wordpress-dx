@@ -1,0 +1,27 @@
+---
+import { LinkButton } from '@astrojs/starlight/components';
+import pkg from '../../../wordpress-plugin/package.json';
+
+const version = pkg.version;
+const encodedTag = `wordpress-plugin%40${version}`;
+const downloadUrl = `https://github.com/loopress/loopress/releases/download/${encodedTag}/loopress.zip`;
+const releaseUrl = `https://github.com/loopress/loopress/releases/tag/${encodedTag}`;
+---
+
+<div class="plugin-download">
+  <LinkButton href={downloadUrl} icon="download" variant="primary">
+    Download loopress.zip
+  </LinkButton>
+  <LinkButton href={releaseUrl} icon="github" variant="minimal">
+    v{version} release notes
+  </LinkButton>
+</div>
+
+<style>
+  .plugin-download {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+</style>
