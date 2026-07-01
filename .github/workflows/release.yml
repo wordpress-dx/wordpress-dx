@@ -28,6 +28,7 @@ jobs:
         with:
           node-version: "24"
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -82,19 +83,26 @@ jobs:
           php-version: "8.2"
           coverage: none
 
-      - name: Setup Bun
+      - name: Setup pnpm
         if: steps.check.outputs.exists == 'false'
-        uses: oven-sh/setup-bun@v2
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        if: steps.check.outputs.exists == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         if: steps.check.outputs.exists == 'false'
-        working-directory: wordpress-plugin
-        run: bun install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --filter @loopress/wordpress-plugin...
 
       - name: Build and zip plugin
         if: steps.check.outputs.exists == 'false'
         working-directory: wordpress-plugin
-        run: bun run pack
+        run: pnpm run pack
 
       - name: Find zip file
         if: steps.check.outputs.exists == 'false'
